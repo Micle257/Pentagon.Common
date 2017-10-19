@@ -16,26 +16,32 @@ namespace Pentagon.Helpers
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="selectable"> The container. </param>
         public static void Previous<T>([NotNull] ISelectable<T> selectable)
-            where T : class, IContainable
+            where T : class
         {
             if (selectable.Current == null)
                 throw new ArgumentNullException(nameof(selectable.Current));
             if (selectable.Count <= 1)
                 return;
-            selectable.Select(selectable.Current.Index == selectable.Count - 1 ? selectable[0] : selectable[selectable.Current.Index + 1]);
+
+            var index = selectable[selectable.Current];
+
+            selectable.Select(index == selectable.Count - 1 ? selectable[0] : selectable[index + 1]);
         }
 
         /// <summary> Selects the next element of the selectable container. </summary>
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="selectable"> The container. </param>
         public static void Next<T>([NotNull] ISelectable<T> selectable)
-            where T : class, IContainable
+            where T : class
         {
             if (selectable.Current == null)
                 throw new ArgumentNullException(nameof(selectable.Current));
             if (selectable.Count <= 1)
                 return;
-            selectable.Select(selectable.Current.Index == 0 ? selectable[selectable.Count - 1] : selectable[selectable.Current.Index - 1]);
+
+            var index = selectable[selectable.Current];
+
+            selectable.Select(index == 0 ? selectable[selectable.Count - 1] : selectable[index - 1]);
         }
     }
 }
