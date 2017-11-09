@@ -10,6 +10,7 @@ namespace Pentagon.Common.Tests
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using Helpers;
+    using Moq;
     using Xunit;
 
     public class ObservableTypesTests
@@ -17,7 +18,7 @@ namespace Pentagon.Common.Tests
         public class ObservableObjectTests
         {
             [Fact]
-            public void ShouldNotifyChangeWhenValueHasChanged()
+            public void PropertyChanged_ValueIsChanged_Fires()
             {
                 var o = new Test<int>
                         {
@@ -32,7 +33,7 @@ namespace Pentagon.Common.Tests
             }
 
             [Fact]
-            public void ShouldNotNotifyChangeWhenValueHasNotChanged()
+            public void PropertyChanged_ValueIsNotChanged_DoesNotFire()
             {
                 var o = new Test<int>
                         {
@@ -47,7 +48,7 @@ namespace Pentagon.Common.Tests
             }
 
             [Fact]
-            public void ShouldNotifyChangedPropertyNameBeSameAsTypePropertyName()
+            public void PropertyChanged_EventIsFired_PropertyNameIsEqualToEventArgumentPropertyName()
             {
                 var o = new Test<int>
                         {
@@ -88,15 +89,12 @@ namespace Pentagon.Common.Tests
             ObservableSortedList<Integer> Integers { get; }
 
             [Fact]
-            public void ShouldSortItemsWhenAdded()
+            public void Add_ValuesAdded_SortsValues()
             {
-                var eventFired = false;
-                Integers.CollectionChanged += (sender, args) => { eventFired = args.Action == NotifyCollectionChangedAction.Add; };
                 Integers.Add(new Integer(5));
                 Integers.Add(new Integer(7));
                 Integers.Add(new Integer(4));
-
-                Assert.True(eventFired);
+                
                 Assert.Equal(3, Integers.Count);
                 Assert.Equal(4, Integers[0].Value);
                 Assert.Equal(5, Integers[1].Value);
@@ -104,7 +102,18 @@ namespace Pentagon.Common.Tests
             }
 
             [Fact]
-            public void ShouldReorderWhenChangedComparer()
+            public void CollectionChanges_ItemIsAdded_Fires()
+            {
+                var eventFired = false;
+                Integers.CollectionChanged += (sender, args) => { eventFired = args.Action == NotifyCollectionChangedAction.Add; };
+
+                Integers.Add(new Integer(4));
+
+                Assert.True(eventFired);
+            }
+
+            [Fact]
+            public void ApplyComparer_ReordersValues()
             {
                 Integers.Add(new Integer(5));
                 Integers.Add(new Integer(7));
@@ -134,7 +143,10 @@ namespace Pentagon.Common.Tests
             [Fact]
             public void ShouldFilterItems()
             {
-                var filter = new CollectionFilter<Integer>(i => i.Value < 10);
+                var m = new Mock<ICollectionFilter<Integer>>();
+                m.SetupGet(c => c.Predicate).Returns(i => i.Value < 10);
+
+                var filter = m.Object;
                 var coll = new ObservableSortedList<Integer>(Integer.ValueComparer, filter)
                            {
                                new Integer(3),
@@ -168,7 +180,7 @@ namespace Pentagon.Common.Tests
                 Assert.True(coll.Contains(new Integer(2)));
             }
 
-            class Integer : ObservableObject, IEquatable<Integer>
+           public class Integer : ObservableObject, IEquatable<Integer>
             {
                 int _value;
                 readonly int _initialValue;
@@ -195,17 +207,7 @@ namespace Pentagon.Common.Tests
                         OnPropertyChanged();
                     }
                 }
-
-                #region Operators
-
-                /// <inheritdoc />
-                public static bool operator ==(Integer left, Integer right) => Equals(left, right);
-
-                /// <inheritdoc />
-                public static bool operator !=(Integer left, Integer right) => !Equals(left, right);
-
-                #endregion
-
+                
                 #region IEquatable members
 
                 /// <inheritdoc />

@@ -19,7 +19,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Fact]
-        public void ShouldContainerAddItem()
+        public void AddItem_OneItemAdded_ItemsCountEqualOne()
         {
             IContainer<IItem> c = new TopContainer();
 
@@ -29,7 +29,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Fact]
-        public void ShouldValueIndexerReturnNegativeOneWhenNoValueIsFound()
+        public void Indexer_ItemIsNotInContainer_ReturnNegativeOne()
         {
             var cont = new TopContainer();
             IItem item = new Item(3);
@@ -37,7 +37,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Fact]
-        public void ShouldIndexerThrowExceptionWhenIndexIsOutOfRange()
+        public void Indexer_IndexIsOutOfRange_Throws()
         {
             IContainer<IItem> c = new TopContainer();
 
@@ -45,7 +45,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Fact]
-        public void ShouldContainerContainTheItem()
+        public void AddItem_OneItemAdded_AddedItemIsSameAsFirstItemInContainer()
         {
             IContainer<IItem> c = new TopContainer();
             IItem item = new Item(5);
@@ -56,7 +56,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Fact]
-        public void ShouldItemIndexerReturnSameObject()
+        public void AddItem_OneItemAdded_IndexOfAddedItemIsEqualToZero()
         {
             IContainer<IItem> c = new TopContainer();
             IItem item = new Item(5);
