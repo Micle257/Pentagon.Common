@@ -33,6 +33,6 @@ namespace Pentagon.Exceptions
         /// <summary> Converts the inner message to exception message. </summary>
         /// <param name="inner"> The inner. </param>
         /// <returns> The <see cref="string" /> value of message. </returns>
-        static string GetMessage(string inner = null) => $"String value not valid{(inner == null ? "" : "string should be {inner})")}.";
+        static string GetMessage(string inner = null) => $"String value is not valid{(inner == null ? "" : $"string should be {inner})")}.";
     }
 }

@@ -7,11 +7,9 @@
 namespace Pentagon.EventArguments
 {
     using System;
-    using JetBrains.Annotations;
 
     /// <summary> Provides data for <see cref="SelectedEventHandler{T}" /> method. </summary>
     /// <typeparam name="T"> The type of the element. </typeparam>
-    [UsedImplicitly]
     public sealed class SelectedEventArgs<T> : EventArgs
     {
         /// <summary> Initializes a new instance of the <see cref="SelectedEventArgs{T}" /> class. </summary>
