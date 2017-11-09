@@ -195,8 +195,11 @@ namespace Pentagon
         /// <exception cref="System.ArgumentException"> The given expression is not valid. </exception>
         [NotNull]
         [UsedImplicitly]
-        public static IRequireResult Condition<T>([NotNull] Expression<Func<T>> valueExpression, Func<T, bool> conditionPredicate, string message)
+        public static IRequireResult Condition<T>([NotNull] Expression<Func<T>> valueExpression, Func<T, bool> conditionPredicate, string message = null)
         {
+            if (message == null)
+                message = $"The condition {conditionPredicate} is not true";
+
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
@@ -207,6 +210,30 @@ namespace Pentagon
             if (!conditionPredicate(exactValue))
             {
                 result.Exception = new ArgumentException(message, valueName ?? "value");
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            return result;
+        }
+
+        /// <summary> Requires that specified condition must be true. </summary>
+        /// <param name="conditionPredicate"> The condition predicate. </param>
+        /// <param name="message"> The message. </param>
+        /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
+        /// <exception cref="System.ArgumentException"> The given expression is not valid. </exception>
+        [NotNull]
+        [UsedImplicitly]
+        public static IRequireResult Condition([NotNull] Func<bool> conditionPredicate, string message = null)
+        {
+            if (message == null)
+                message = $"The condition {conditionPredicate} is not true";
+
+            var result = new RequireResult<ArgumentException>();
+
+            if (!conditionPredicate())
+            {
+                result.Exception = new ArgumentException(message);
                 if (ThrowExceptions)
                     throw result.Exception;
             }

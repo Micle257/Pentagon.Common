@@ -17,14 +17,25 @@ namespace Pentagon.Helpers
     public class Range<T> : IRange<T>
         where T : IComparable<T>
     {
-        /// <summary> Initializes a new instance of the <see cref="Range{T}" /> class. </summary>
-        /// <param name="min"> The down boundry. </param>
-        /// <param name="max"> The up boundry. </param>
-        /// <param name="type"> The type or boundaries. </param>
-        public Range(T min, T max, RangeBoundaries type = RangeBoundaries.InIn)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Range{T}" /> class.
+        /// </summary>
+        /// <param name="firstBoundry">The first boundry.</param>
+        /// <param name="secondBoundry">The second boundry.</param>
+        /// <param name="type">The type or boundaries.</param>
+        public Range(T firstBoundry, T secondBoundry, RangeBoundaries type = RangeBoundaries.InIn)
         {
-            Min = min;
-            Max = max;
+            if (firstBoundry.CompareTo(secondBoundry) <= 0)
+            {
+                Min = firstBoundry;
+                Max = secondBoundry;
+            }
+            else
+            {
+                Min = secondBoundry;
+                Max = firstBoundry;
+            }
+            
             BoundariesType = type;
         }
 

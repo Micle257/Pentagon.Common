@@ -13,12 +13,12 @@ namespace Pentagon.Helpers
     public interface IFilterableCollection<T>
     {
         /// <summary> Gets the filter instance. </summary>
-        /// <value> The <see cref="CollectionFilter{T}" />. </value>
+        /// <value> The <see cref="ICollectionFilter{T}" />. </value>
         [NotNull]
-        CollectionFilter<T> Filter { get; }
+        ICollectionFilter<T> Filter { get; }
 
         /// <summary> Applies the filter to this collection. </summary>
         /// <param name="filter"> The filter. </param>
-        void ApplyFilter([NotNull] CollectionFilter<T> filter);
+        void ApplyFilter([NotNull] ICollectionFilter<T> filter);
     }
 }

@@ -35,7 +35,7 @@ namespace Pentagon.Helpers
         /// <summary> Initializes a new instance of the <see cref="ObservableSortedList{T}" /> class. </summary>
         /// <param name="comparer"> The comparer. </param>
         /// <param name="filter"> The filter. </param>
-        public ObservableSortedList(IComparer<T> comparer = null, CollectionFilter<T> filter = null)
+        public ObservableSortedList(IComparer<T> comparer = null, ICollectionFilter<T> filter = null)
         {
             _allItems = new List<T>();
             _items = new List<T>();
@@ -47,7 +47,7 @@ namespace Pentagon.Helpers
         /// <param name="items"> The items. </param>
         /// <param name="comparer"> The comparer. </param>
         /// <param name="filter"> The filter. </param>
-        public ObservableSortedList([NotNull] IEnumerable<T> items, IComparer<T> comparer = null, CollectionFilter<T> filter = null)
+        public ObservableSortedList([NotNull] IEnumerable<T> items, IComparer<T> comparer = null, ICollectionFilter<T> filter = null)
             : this(comparer, filter)
         {
             Require.NotNull(() => items);
@@ -60,7 +60,7 @@ namespace Pentagon.Helpers
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         /// <summary> Occurs when a filter of this collection has changed. </summary>
-        public event EventHandler<CollectionFilter<T>> FilterChanged;
+        public event EventHandler<ICollectionFilter<T>> FilterChanged;
 
         /// <summary> Occurs when a comparer of this collection has changed. </summary>
         public event EventHandler<IComparer<T>> ComparerChanged;
@@ -72,7 +72,7 @@ namespace Pentagon.Helpers
         public bool IsReadOnly => false;
 
         /// <inheritdoc />
-        public CollectionFilter<T> Filter { get; private set; }
+        public ICollectionFilter<T> Filter { get; private set; }
 
         /// <inheritdoc />
         public T this[int index]
@@ -175,7 +175,7 @@ namespace Pentagon.Helpers
         }
 
         /// <inheritdoc />
-        public void ApplyFilter(CollectionFilter<T> filter)
+        public void ApplyFilter(ICollectionFilter<T> filter)
         {
             Filter = filter;
             FilterChanged?.Invoke(this, filter);
