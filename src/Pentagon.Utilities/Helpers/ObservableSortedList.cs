@@ -78,7 +78,7 @@ namespace Pentagon.Helpers
         public T this[int index]
         {
             get => _items[index];
-            set => throw new InvalidOperationException("Cannot set an item at an arbitrary index in a ObservableSortedList.");
+            set => throw new InvalidOperationException(message: "Cannot set an item at an arbitrary index in a ObservableSortedList.");
         }
 
         /// <inheritdoc />
@@ -160,7 +160,7 @@ namespace Pentagon.Helpers
         /// <inheritdoc />
         void IList<T>.Insert(int index, T item)
         {
-            throw new InvalidOperationException("Cannot insert an item at an arbitrary index into a ObservableSortedList.");
+            throw new InvalidOperationException(message: "Cannot insert an item at an arbitrary index into a ObservableSortedList.");
         }
 
         /// <inheritdoc />

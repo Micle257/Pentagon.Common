@@ -44,6 +44,8 @@ namespace Pentagon.Helpers
         /// <inheritdoc />
         public bool HasValue { get; }
 
+        #region Operators
+
         /// <inheritdoc />
         public static bool operator <(Enumeration left, Enumeration right) => Comparer<Enumeration>.Default.Compare(left, right) < 0;
 
@@ -62,27 +64,9 @@ namespace Pentagon.Helpers
         /// <inheritdoc />
         public static bool operator !=(Enumeration left, Enumeration right) => !Equals(left, right);
 
-        /// <inheritdoc />
-        public int CompareTo(Enumeration other)
-        {
-            if (ReferenceEquals(this, other))
-                return 0;
-            if (ReferenceEquals(null, other))
-                return 1;
-            return Index.CompareTo(other.Index);
-        }
+        #endregion
 
-        /// <inheritdoc />
-        public int CompareTo(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return 1;
-            if (ReferenceEquals(this, obj))
-                return 0;
-            if (!(obj is Enumeration))
-                throw new ArgumentException($"Object must be of type {nameof(Enumeration)}");
-            return CompareTo((Enumeration) obj);
-        }
+        #region IEquatable members
 
         /// <inheritdoc />
         public bool Equals(Enumeration other)
@@ -108,6 +92,30 @@ namespace Pentagon.Helpers
 
         /// <inheritdoc />
         public override int GetHashCode() => Index;
+
+        #endregion
+
+        /// <inheritdoc />
+        public int CompareTo(Enumeration other)
+        {
+            if (ReferenceEquals(this, other))
+                return 0;
+            if (ReferenceEquals(null, other))
+                return 1;
+            return Index.CompareTo(other.Index);
+        }
+
+        /// <inheritdoc />
+        public int CompareTo(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return 1;
+            if (ReferenceEquals(this, obj))
+                return 0;
+            if (!(obj is Enumeration))
+                throw new ArgumentException($"Object must be of type {nameof(Enumeration)}");
+            return CompareTo((Enumeration) obj);
+        }
 
         /// <inheritdoc />
         public override string ToString() => Name;

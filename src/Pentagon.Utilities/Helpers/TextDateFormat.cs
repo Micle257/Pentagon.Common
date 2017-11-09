@@ -32,9 +32,10 @@ namespace Pentagon.Helpers
         public DateTime Date { get; }
 
         /// <summary> Gets or sets a value indicating whether this instance has date. </summary>
-        /// <value>
-        ///     <c> true </c> if this instance has date; otherwise, <c> false </c>. </value>
-        public bool HasDate { get;  }
+        /// <value> <c> true </c> if this instance has date; otherwise, <c> false </c>. </value>
+        public bool HasDate { get; }
+
+        #region Operators
 
         /// <inheritdoc />
         public static bool operator ==(TextDateFormat left, TextDateFormat right) => Equals(left, right);
@@ -54,30 +55,9 @@ namespace Pentagon.Helpers
         /// <inheritdoc />
         public static bool operator >=(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default?.Compare(left, right) >= 0;
 
-        /// <inheritdoc />
-        int IComparable.CompareTo(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return 1;
-            if (ReferenceEquals(this, obj))
-                return 0;
-            if (!(obj is TextDateFormat))
-                throw new ArgumentException($"Object must be of type {nameof(TextDateFormat)}");
-            return CompareTo((TextDateFormat) obj);
-        }
+        #endregion
 
-        /// <inheritdoc />
-        public int CompareTo(TextDateFormat other)
-        {
-            if (ReferenceEquals(this, other))
-                return 0;
-            if (ReferenceEquals(null, other))
-                return 1;
-            var textComparison = string.Compare(Text, other.Text, StringComparison.Ordinal);
-            if (textComparison != 0)
-                return textComparison;
-            return Date.CompareTo(other.Date);
-        }
+        #region IEquatable members
 
         /// <inheritdoc />
         public bool Equals(TextDateFormat other)
@@ -108,6 +88,33 @@ namespace Pentagon.Helpers
             {
                 return ((Text?.GetHashCode() ?? 0) * 397) ^ Date.GetHashCode();
             }
+        }
+
+        #endregion
+
+        /// <inheritdoc />
+        int IComparable.CompareTo(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return 1;
+            if (ReferenceEquals(this, obj))
+                return 0;
+            if (!(obj is TextDateFormat))
+                throw new ArgumentException($"Object must be of type {nameof(TextDateFormat)}");
+            return CompareTo((TextDateFormat) obj);
+        }
+
+        /// <inheritdoc />
+        public int CompareTo(TextDateFormat other)
+        {
+            if (ReferenceEquals(this, other))
+                return 0;
+            if (ReferenceEquals(null, other))
+                return 1;
+            var textComparison = string.Compare(Text, other.Text, StringComparison.Ordinal);
+            if (textComparison != 0)
+                return textComparison;
+            return Date.CompareTo(other.Date);
         }
 
         /// <inheritdoc />

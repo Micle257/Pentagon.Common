@@ -22,7 +22,7 @@ namespace Pentagon.Helpers
         public static IEnumerable<(T, TAttribute)> GetValues<T, TAttribute>()
             where TAttribute : Attribute
         {
-            var values = (T[])Enum.GetValues(typeof(T));
+            var values = (T[]) Enum.GetValues(typeof(T));
             foreach (var value in values)
             {
                 var attribute = value.GetItemAttribute<TAttribute>();

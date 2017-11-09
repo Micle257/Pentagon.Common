@@ -14,8 +14,7 @@ namespace Pentagon.Extensions
         /// <summary> Determines whether value data type is default. </summary>
         /// <typeparam name="T"> Type of the value type. </typeparam>
         /// <param name="value"> The value. </param>
-        /// <returns>
-        ///     <c> true </c> if the specified value is default; otherwise, <c> false </c>. </returns>
+        /// <returns> <c> true </c> if the specified value is default; otherwise, <c> false </c>. </returns>
         public static bool IsDefault<T>(this IValueDataType<T> value)
             where T : IValueDataType<T>
             => value?.HasValue ?? false;
@@ -28,7 +27,7 @@ namespace Pentagon.Extensions
         public static bool IsAnyEqual<T>(this T value, [NotNull] params T[] pars)
         {
             Require.NotNull(() => pars);
-            Require.Condition(() => pars, v => v.Length > 0, "Value cannot be an empty collection.");
+            Require.Condition(() => pars, v => v.Length > 0, message: "Value cannot be an empty collection.");
 
             foreach (var item in pars)
             {

@@ -8,10 +8,8 @@ namespace Pentagon.Helpers
 {
     using System;
 
-    /// <summary>
-    /// Represents a range of values.
-    /// </summary>
-    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <summary> Represents a range of values. </summary>
+    /// <typeparam name="T"> The type of the value. </typeparam>
     public interface IRange<T>
         where T : IComparable<T>
     {

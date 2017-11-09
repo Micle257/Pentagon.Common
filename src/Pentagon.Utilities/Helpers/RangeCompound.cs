@@ -9,22 +9,16 @@ namespace Pentagon.Helpers
     using System;
     using System.Linq;
 
-    /// <summary>
-    /// Represents a range with multiple ranges.
-    /// </summary>
-    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <summary> Represents a range with multiple ranges. </summary>
+    /// <typeparam name="T"> The type of the value. </typeparam>
     public class RangeCompound<T> : IRange<T>
         where T : IComparable<T>
     {
-        /// <summary>
-        /// The ranges.
-        /// </summary>
+        /// <summary> The ranges. </summary>
         readonly IRange<T>[] _ranges;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RangeCompound{T}"/> class.
-        /// </summary>
-        /// <param name="ranges">The ranges.</param>
+        /// <summary> Initializes a new instance of the <see cref="RangeCompound{T}" /> class. </summary>
+        /// <param name="ranges"> The ranges. </param>
         public RangeCompound(params IRange<T>[] ranges)
         {
             Require.NotNull(() => ranges);

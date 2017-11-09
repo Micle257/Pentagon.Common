@@ -15,8 +15,7 @@ namespace Pentagon
         /// <summary> Gets a value indicating whether this instance has value and is not default.
         ///     <para />
         ///     Equal to <c> this != default(T) </c>. </summary>
-        /// <value>
-        ///     <c> true </c> if this instance has value; otherwise, <c> false </c>. </value>
+        /// <value> <c> true </c> if this instance has value; otherwise, <c> false </c>. </value>
         bool HasValue { get; }
     }
 }

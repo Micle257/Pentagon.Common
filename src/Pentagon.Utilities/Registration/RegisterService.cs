@@ -1,4 +1,11 @@
-namespace Pentagon.Registration {
+// -----------------------------------------------------------------------
+//  <copyright file="RegisterService.cs">
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
+
+namespace Pentagon.Registration
+{
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;

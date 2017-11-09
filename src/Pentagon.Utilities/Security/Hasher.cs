@@ -44,10 +44,7 @@ namespace Pentagon.Security
         /// <summary> Generates the hash with given password and salt. </summary>
         /// <param name="newPass"> The new pass. </param>
         /// <param name="salt"> The salt. </param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="newPass" /> or <paramref name="salt" /> are
-        ///     <see langword="null" />
-        /// </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="newPass" /> or <paramref name="salt" /> are <see langword="null" /> </exception>
         public void GenerateHash([NotNull] string newPass, [NotNull] string salt)
         {
             if (newPass == null)

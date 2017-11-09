@@ -23,8 +23,7 @@ namespace Pentagon.EventArguments
         public string Message { get; }
 
         /// <summary> Gets or sets a value indicating whether the feedback has been accepted. </summary>
-        /// <value>
-        ///     <c> true </c> if this instance is posted back; otherwise, <c> false </c>. </value>
+        /// <value> <c> true </c> if this instance is posted back; otherwise, <c> false </c>. </value>
         public bool IsPostedBack { get; set; }
     }
 }

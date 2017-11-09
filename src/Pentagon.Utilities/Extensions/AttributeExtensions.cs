@@ -35,8 +35,7 @@ namespace Pentagon.Extensions
         /// <typeparam name="T"> The type of attribute. </typeparam>
         /// <param name="value"> The value object. </param>
         /// <param name="name"> The name of the property. </param>
-        /// <returns>
-        ///     <c> true </c> if the specified name is attribute; otherwise, <c> false </c>. </returns>
+        /// <returns> <c> true </c> if the specified name is attribute; otherwise, <c> false </c>. </returns>
         public static bool IsAttribute<T>([NotNull] this object value, string name)
             where T : Attribute
         {
@@ -48,10 +47,9 @@ namespace Pentagon.Extensions
         /// <summary> Determines whether the specified value has given attribute. </summary>
         /// <typeparam name="T"> The type of attribute. </typeparam>
         /// <param name="value"> The value object. </param>
-        /// <returns>
-        ///     <c> true </c> if the value has attribute; otherwise, <c> false </c>. </returns>
+        /// <returns> <c> true </c> if the value has attribute; otherwise, <c> false </c>. </returns>
         public static bool HasAttribute<T>([NotNull] this object value)
-            where T : Attribute 
+            where T : Attribute
             => value.GetType().GetTypeInfo().GetCustomAttribute<T>() != null;
 
         /// <summary> Gets the attribute property value from type's property. </summary>

@@ -15,29 +15,20 @@ namespace Pentagon.Security
     /// <summary> Provides an Advanced Encryption Standard for the encryption of digital data established by the NIST. </summary>
     public class Aes
     {
-        /// <summary>
-        /// The key size.
-        /// </summary>
+        /// <summary> The key size. </summary>
         const int KeySize = 256;
 
-        /// <summary>
-        /// The block size.
-        /// </summary>
+        /// <summary> The block size. </summary>
         const int BlockSize = 128;
 
-        /// <summary>
-        /// The inner provider.
-        /// </summary>
+        /// <summary> The inner provider. </summary>
         [NotNull]
         readonly System.Security.Cryptography.Aes _provider;
 
-        /// <summary>
-        /// The key.
-        /// </summary>
+        /// <summary> The key. </summary>
         readonly byte[] _key;
-        /// <summary>
-        /// The IV vector.
-        /// </summary>
+
+        /// <summary> The IV vector. </summary>
         byte[] _iv;
 
         /// <summary> Initializes a new instance of the <see cref="Aes" /> class. </summary>
@@ -58,8 +49,7 @@ namespace Pentagon.Security
         }
 
         /// <summary> Gets a value indicating whether this AES instance creates IV vector on encryption. </summary>
-        /// <value>
-        ///     <c> true </c> if create iv; otherwise, <c> false </c>. </value>
+        /// <value> <c> true </c> if create iv; otherwise, <c> false </c>. </value>
         public bool CreateIv { get; }
 
         /// <summary> Decrypts the specified cipher text. </summary>
@@ -72,7 +62,7 @@ namespace Pentagon.Security
             _iv = CreateIv ? cipherTextBuffer.Take(_provider.BlockSize).ToArray() : null;
             var decryptor = _provider.CreateDecryptor(_key, _iv);
             if (decryptor == null)
-                throw new CryptographicException("Decrypter initialization failed.");
+                throw new CryptographicException(message: "Decrypter initialization failed.");
             try
             {
                 var plainTextBuffer = decryptor.TransformFinalBlock(cipherTextBuffer, _iv?.Length ?? 0, cipherTextBuffer.Length - (_iv?.Length ?? 0));
@@ -100,7 +90,7 @@ namespace Pentagon.Security
             _iv = CreateIv ? _provider.IV : null;
             var encryptor = _provider.CreateEncryptor(_key, _iv);
             if (encryptor == null)
-                throw new CryptographicException("Encrypter initialization failed.");
+                throw new CryptographicException(message: "Encrypter initialization failed.");
             var cipherTextBuffer = encryptor.TransformFinalBlock(plainTextBuffer, 0, plainTextBuffer.Length);
             var secureBuffer = cipherTextBuffer;
             if (_iv != null)

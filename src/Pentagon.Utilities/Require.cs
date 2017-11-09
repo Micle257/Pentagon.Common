@@ -17,8 +17,7 @@ namespace Pentagon
     public static class Require
     {
         /// <summary> Gets or sets a value indicating whether require methods should throw exception when the argument is not valid. </summary>
-        /// <value>
-        ///     <c> true </c> if throw exceptions; otherwise, <c> false </c>. </value>
+        /// <value> <c> true </c> if throw exceptions; otherwise, <c> false </c>. </value>
         [UsedImplicitly]
         public static bool ThrowExceptions { get; set; } = true;
 
@@ -32,7 +31,7 @@ namespace Pentagon
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                result.Exception = new StringArgumentException("not null or whitespace");
+                result.Exception = new StringArgumentException(error: "not null or whitespace");
                 if (ThrowExceptions)
                     throw result.Exception;
             }
@@ -52,8 +51,8 @@ namespace Pentagon
             var result = new RequireResult<ValueOutOfRangeException<T>>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-           // if (valueName == null)
-           //     throw new ArgumentException(message: "The given expression is not valid.");
+            // if (valueName == null)
+            //     throw new ArgumentException(message: "The given expression is not valid.");
             var compile = valueExpression.Compile();
             if (compile == null)
                 throw new ArgumentException(message: "The given expression is not valid.");
@@ -69,17 +68,13 @@ namespace Pentagon
             return result;
         }
 
-        /// <summary>
-        /// Requires that reference instance is not null.
-        /// </summary>
-        /// <typeparam name="T">The type of the value.</typeparam>
-        /// <param name="value">The value encapsulated in expression of format '() =&gt; val'.</param>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// A <see cref="IRequireResult" /> containing data about this require.
-        /// </returns>
-        /// <exception cref="ArgumentException">The given expression is not valid.</exception>
-        /// <exception cref="ArgumentNullException">When expression's member is null.</exception>
+        /// <summary> Requires that reference instance is not null. </summary>
+        /// <typeparam name="T"> The type of the value. </typeparam>
+        /// <param name="value"> The value encapsulated in expression of format '() =&gt; val'. </param>
+        /// <param name="message"> The message. </param>
+        /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
+        /// <exception cref="ArgumentException"> The given expression is not valid. </exception>
+        /// <exception cref="ArgumentNullException"> When expression's member is null. </exception>
         [NotNull]
         [UsedImplicitly]
         public static IRequireResult NotNull<T>([NotNull] Expression<Func<T>> value, string message = "") // () => x
@@ -124,7 +119,7 @@ namespace Pentagon
         /// <summary> Requires that arguments matches the type. </summary>
         /// <typeparam name="TIs"> The required type. </typeparam>
         /// <param name="valueExpression"> The value expression. </param>
-        /// <param name="castValue">The output cast value. </param>
+        /// <param name="castValue"> The output cast value. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
         /// <exception cref="ArgumentException"> When value is not valid. </exception>
         [NotNull]
@@ -135,18 +130,19 @@ namespace Pentagon
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-           // if (valueName == null)
+            // if (valueName == null)
             //    throw new ArgumentException("The given expression is not valid.");
             var exactValue = valueExpression.Compile()();
 
             if (!(exactValue is TIs v))
             {
                 result.Exception = new ArgumentException($"Argument must be of type {typeof(TIs).Name}", valueName ?? "value");
-                
+
                 if (ThrowExceptions)
                     throw result.Exception;
             }
-            else castValue = v;
+            else
+                castValue = v;
 
             return result;
         }
@@ -164,8 +160,8 @@ namespace Pentagon
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-           // if (valueName == null)
-           //     throw new ArgumentException("The given expression is not valid.");
+            // if (valueName == null)
+            //     throw new ArgumentException("The given expression is not valid.");
             var exactValue = valueExpression.Compile()();
 
             if (EqualityComparer<T>.Default.Equals(exactValue, default(T)))
@@ -204,8 +200,8 @@ namespace Pentagon
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-           // if (valueName == null)
-           //     throw new ArgumentException("The given expression is not valid.");
+            // if (valueName == null)
+            //     throw new ArgumentException("The given expression is not valid.");
             var exactValue = valueExpression.Compile()();
 
             if (!conditionPredicate(exactValue))

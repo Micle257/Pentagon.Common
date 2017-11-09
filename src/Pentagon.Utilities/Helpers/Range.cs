@@ -38,6 +38,8 @@ namespace Pentagon.Helpers
         /// <inheritdoc />
         public T Max { get; }
 
+        #region Operators
+
         /// <summary> Performs an implicit conversion from value tuple to <see cref="Range{T}" />. </summary>
         /// <param name="range"> The range. </param>
         /// <returns> The <see cref="Range{T}" /> result of the conversion. </returns>
@@ -47,6 +49,8 @@ namespace Pentagon.Helpers
         /// <param name="range"> The range. </param>
         /// <returns> The <see cref="Range{T}" /> result of the conversion. </returns>
         public static implicit operator Range<T>((T min, T max, RangeBoundaries type) range) => new Range<T>(range.min, range.max, range.type);
+
+        #endregion
 
         /// <inheritdoc />
         public virtual bool InRange(T value)

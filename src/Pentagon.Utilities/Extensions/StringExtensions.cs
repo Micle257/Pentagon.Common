@@ -15,11 +15,10 @@ namespace Pentagon.Extensions
 
         /// <summary> Converts the <see cref="string" /> representation of a number as an <see cref="int" />. Equivalent to TryParse method. </summary>
         /// <param name="value"> String value to convert. </param>
-        /// <returns>
-        ///     <see cref="int" /> value from <paramref name="value" /> string value if represents an integer; otherwise zero. </returns>
+        /// <returns> <see cref="int" /> value from <paramref name="value" /> string value if represents an integer; otherwise zero. </returns>
         public static int ToInt(this string value)
         {
-            int.TryParse(value, out int a);
+            int.TryParse(value, out var a);
             return a;
         }
     }

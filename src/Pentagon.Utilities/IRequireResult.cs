@@ -10,8 +10,7 @@ namespace Pentagon
     public interface IRequireResult
     {
         /// <summary> Returns true if the require operation is valid. </summary>
-        /// <value>
-        ///     <c> true </c> if require is valid; otherwise, <c> false </c>. </value>
+        /// <value> <c> true </c> if require is valid; otherwise, <c> false </c>. </value>
         bool IsValid { get; }
     }
 }

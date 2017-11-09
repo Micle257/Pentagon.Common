@@ -18,7 +18,7 @@ namespace Pentagon.Extensions
         public static int Mod(this int a, int mod)
         {
             if (mod == 0)
-                throw new DivideByZeroException("The module cannot be zero.");
+                throw new DivideByZeroException(message: "The module cannot be zero.");
 
             var rem = a % mod;
 

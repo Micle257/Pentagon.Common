@@ -28,6 +28,8 @@ namespace Pentagon.Helpers
         /// <value> The <see cref="Int32" />, default is 7 decimal places. </value>
         public int Precision { get; } = 7;
 
+        #region Operators
+
         /// <summary> Performs an implicit conversion from value tuple to <see cref="MathInterval" />. </summary>
         /// <param name="interval"> The interval. </param>
         /// <returns> The result of the conversion. </returns>
@@ -37,6 +39,8 @@ namespace Pentagon.Helpers
         /// <param name="interval"> The interval. </param>
         /// <returns> The result of the conversion. </returns>
         public static implicit operator MathInterval((double min, double max, RangeBoundaries type) interval) => new MathInterval(interval.min, interval.max, interval.type);
+
+        #endregion
 
         /// <inheritdoc />
         public override bool InRange(double v)
