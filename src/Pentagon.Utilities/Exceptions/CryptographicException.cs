@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Security
+namespace Pentagon.Exceptions
 {
     using System;
     using System.Runtime.Serialization;

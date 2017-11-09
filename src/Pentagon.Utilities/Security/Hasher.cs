@@ -10,8 +10,8 @@ namespace Pentagon.Security
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using Attributes;
     using JetBrains.Annotations;
+    using Registration;
 
     /// <summary> Provides a hasher algorithm (SHA512). </summary>
     [Register]

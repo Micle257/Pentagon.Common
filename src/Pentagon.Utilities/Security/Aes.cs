@@ -9,6 +9,7 @@ namespace Pentagon.Security
     using System;
     using System.Linq;
     using System.Text;
+    using Exceptions;
     using JetBrains.Annotations;
 
     /// <summary> Provides an Advanced Encryption Standard for the encryption of digital data established by the NIST. </summary>

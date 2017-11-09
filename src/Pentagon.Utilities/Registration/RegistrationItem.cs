@@ -1,4 +1,4 @@
-namespace Pentagon.Attributes {
+namespace Pentagon.Registration {
     using System;
 
     /// <summary> Represents a registration item. </summary>

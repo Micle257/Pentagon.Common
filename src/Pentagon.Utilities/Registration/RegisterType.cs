@@ -1,4 +1,4 @@
-namespace Pentagon.Attributes {
+namespace Pentagon.Registration {
     /// <summary> Specifies the type of the registration. </summary>
     public enum RegisterType
     {

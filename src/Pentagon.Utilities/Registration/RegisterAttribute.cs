@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Attributes
+namespace Pentagon.Registration
 {
     using System;
 

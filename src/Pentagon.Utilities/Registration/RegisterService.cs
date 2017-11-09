@@ -1,4 +1,4 @@
-namespace Pentagon.Attributes {
+namespace Pentagon.Registration {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
