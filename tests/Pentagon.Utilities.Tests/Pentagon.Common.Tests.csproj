@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Pentagon.Utilities\Pentagon.Base.csproj" />
+    <ProjectReference Include="..\..\src\Pentagon.Utilities\Pentagon.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

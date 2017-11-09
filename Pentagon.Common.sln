@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pentagon.Base", "src\Pentagon.Utilities\Pentagon.Base.csproj", "{C98C6B1D-CEE2-4654-8444-CC4B1F3FE2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pentagon.Common", "src\Pentagon.Utilities\Pentagon.Common.csproj", "{C98C6B1D-CEE2-4654-8444-CC4B1F3FE2A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pentagon.Utilities.Tests", "tests\Pentagon.Utilities.Tests\Pentagon.Utilities.Tests.csproj", "{8890F392-1C9D-477C-8B07-D4CBE5E20F3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pentagon.Common.Tests", "tests\Pentagon.Utilities.Tests\Pentagon.Common.Tests.csproj", "{8890F392-1C9D-477C-8B07-D4CBE5E20F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
