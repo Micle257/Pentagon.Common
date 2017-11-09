@@ -2,7 +2,6 @@
 
 namespace Pentagon.Root.Tests
 {
-    using System.Runtime.InteropServices;
     using Exceptions;
     using Helpers;
     using Xunit;
@@ -13,7 +12,7 @@ namespace Pentagon.Root.Tests
         [InlineData("")]
         [InlineData("    ")]
         [InlineData(null)]
-        public void Should_StringNotNullNorWhiteSpace_ThrowWhen_StringIsNotValid(string value)
+        public void StringNotNullNorWhiteSpace_ValueIsNotValid_Throws(string value)
         {
             Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorWhiteSpace(value));
         }
@@ -21,7 +20,7 @@ namespace Pentagon.Root.Tests
         [Theory]
         [InlineData("s")]
         [InlineData("  s  ")]
-        public void Should_StringNotNullNorWhiteSpace_Return_IsValid_True_When_StringIsValid  (string value)
+        public void StringNotNullNorWhiteSpace_ValueIsValid_IsValidIsTrue  (string value)
         {
           var result =  Require.StringNotNullNorWhiteSpace(value).IsValid;
 
@@ -29,7 +28,7 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotNull_Validate_WhenValueIsNotNull()
+        public void NotNull_ValueIsNotNull_IsValidIsTrue()
         {
             var notNull = "";
 
@@ -39,7 +38,7 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotNull_Throw_WhenValueIsNull()
+        public void NotNull_ValueIsNull_Throws()
         {
             var stub = default(object);
 
@@ -48,7 +47,7 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotNull_ReturnType_BeOfExpectedType()
+        public void NotNull_ReturnsRequireResultOfExpectedGenericType()
         {
             var notNull = "";
 
@@ -59,12 +58,13 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotNull_ResultException_HaveRightName()
+        public void NotNull_ParameterIsDeclaredImplicitly_ResultExceptionHaveRightParameterName()
         {
             var stub = default(object);
-            string name = "";
+            var name = "";
 
             try { Require.NotNull(() => stub); }
+            // ReSharper disable once UncatchableException
             catch (ArgumentNullException e)
             {
                 name = e.ParamName;
@@ -74,7 +74,23 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotDefault_ThrowWhen_ValueTypeIsDefault()
+        public void NotNull_ParameterIsDeclaredExplicitly_ResultExceptionHaveRightParameterName()
+        {
+            var stub = new TestStruct {Value = null};
+            var name = "";
+
+            try { Require.NotNull(() => stub.Value); }
+            // ReSharper disable once UncatchableException
+            catch (ArgumentNullException e)
+            {
+                name = e.ParamName;
+            }
+
+            Assert.Equal(nameof(stub.Value), name);
+        }
+
+        [Fact]
+        public void NotDefault_ValueIsDefault_Throws()
         {
             var stub = default(double);
 
@@ -82,7 +98,7 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void Should_NotDefault_ThrowWhen_ReferenceTypeIsDefault()
+        public void NotDefault_ReferenceObjectIsDefault_Throws()
         {
             var stub = default(string);
 
@@ -90,7 +106,7 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void ShouldRequire_NotDefault_Return_IsValid_True_ForNotDefaultObject()
+        public void NotDefault_ValueIsNotDefault_IsValidIsTrue()
         {
             var stub = 5d;
             
@@ -100,32 +116,48 @@ namespace Pentagon.Root.Tests
         }
 
         [Fact]
-        public void ShouldValidIsType()
+        public void IsType_ValueTypeDoesntMatchRequiredType_Throws()
         {
             var type = new ChildType();
-
-            Assert.Throws<ArgumentException>(() => Require.IsType<double>(type));
+            
             Assert.Throws<ArgumentException>(() => Require.IsType<string>(type));
-            Require.IsType<IParentType>(type);
-            Require.IsType<ValueType>(5d);
         }
 
         [Fact]
-        public void ShouldValidValueInRange()
+        public void IsType_ValueTypeMatchesRequiredType_IsValidIsTrue()
         {
-            var range1 = new Range<int>(0, 10);
-            var range2 = new Range<TimeSpan>(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(25));
+            var type = new ChildType();
+            
+          var result =  Require.IsType<IParentType>(type);
 
-            Assert.Throws<ValueOutOfRangeException<int>>(() => Require.InRange(() => 11, range1));
-            Assert.Throws<ValueOutOfRangeException<int>>(() => Require.InRange(() => -1, range1));
-            Require.InRange(() => 10, range1);
-
-            Assert.Throws<ValueOutOfRangeException<TimeSpan>>(() => Require.InRange(() => TimeSpan.FromSeconds(26), range2));
-            Assert.Throws<ValueOutOfRangeException<TimeSpan>>(() => Require.InRange(() => TimeSpan.FromSeconds(2), range2));
-            Require.InRange(() => TimeSpan.FromSeconds(10), range2);
+            Assert.True(result.IsValid);
         }
 
-        public struct TestStruct { }
+        [Theory]
+        [InlineData(0, 10, 11)]
+        [InlineData(0, 10, -1)]
+        public void InRange_ValueIsNotInRange_Throws(int min, int max, int value)
+        {
+            var range = new Range<int>(min, max);
+
+            Assert.Throws<ValueOutOfRangeException<int>>(() => Require.InRange(() => value, range));
+        }
+
+        [Theory]
+        [InlineData(0, 10, 10)]
+        [InlineData(0, 10, 2)]
+        public void InRange_ValueIsInRange_IsValidIsTrue(int min, int max, int value)
+        {
+            var range = new Range<int>(min, max);
+
+            Require.InRange(() => value, range);
+        }
+
+
+        public struct TestStruct
+        {
+            public object Value { get; set; }
+        }
 
         public interface IParentType { }
 
