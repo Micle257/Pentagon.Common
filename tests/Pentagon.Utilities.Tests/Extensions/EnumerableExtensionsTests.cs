@@ -1,13 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EnumerableExtensionsTests.cs" company="The Pentagon">
+//  <copyright file="EnumerableExtensionsTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Root.Tests
+namespace Pentagon.Common.Tests.Extensions
 {
     using System.Linq;
-    using Extensions;
+    using Pentagon.Extensions;
     using Xunit;
 
     public class EnumerableExtensionsTests

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ContainerContainmentTests.cs" company="The Pentagon">
+//  <copyright file="ContainerContainmentTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Utilities.Tests
+namespace Pentagon.Common.Tests
 {
     using System;
     using System.Collections;
@@ -13,6 +13,11 @@ namespace Pentagon.Utilities.Tests
 
     public class ContainerContainmentTests
     {
+        interface IItem
+        {
+            int Value { get; }
+        }
+
         [Fact]
         public void ShouldContainerAddItem()
         {
@@ -60,15 +65,15 @@ namespace Pentagon.Utilities.Tests
 
             Assert.Equal(0, c[item]);
         }
-        
+
         class TopContainer : IContainer<IItem>
         {
             readonly List<IItem> _objects = new List<IItem>();
-            
+
             public int Count => _objects.Count;
-            
+
             public IItem this[int index] => _objects[index];
-            
+
             public int this[IItem value] => _objects.IndexOf(value);
 
             public void AddItem(IItem item)
@@ -77,13 +82,8 @@ namespace Pentagon.Utilities.Tests
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-            
-            public IEnumerator<IItem> GetEnumerator() => _objects.GetEnumerator();
-        }
 
-        interface IItem
-        {
-            int Value { get; }
+            public IEnumerator<IItem> GetEnumerator() => _objects.GetEnumerator();
         }
 
         class Item : IItem
@@ -92,7 +92,8 @@ namespace Pentagon.Utilities.Tests
             {
                 Value = value;
             }
-            public int Value { get; set; }
+
+            public int Value { get; }
         }
     }
 }

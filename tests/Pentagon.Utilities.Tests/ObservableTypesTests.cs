@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ObservableTypesTests.cs" company="The Pentagon">
+//  <copyright file="ObservableTypesTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Root.Tests
+namespace Pentagon.Common.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -57,7 +57,7 @@ namespace Pentagon.Root.Tests
                 o.PropertyChanged += (sender, args) => name = args.PropertyName;
                 o.Value = 6;
 
-                Assert.Equal("Value", name);
+                Assert.Equal(expected: "Value", actual: name);
             }
 
             public class Test<T> : ObservableObject
@@ -170,42 +170,13 @@ namespace Pentagon.Root.Tests
 
             class Integer : ObservableObject, IEquatable<Integer>
             {
-                /// <inheritdoc />
-                public bool Equals(Integer other)
-                {
-                    if (ReferenceEquals(null, other))
-                        return false;
-                    if (ReferenceEquals(this, other))
-                        return true;
-                    return _value == other._value;
-                }
-
-                /// <inheritdoc />
-                public override bool Equals(object obj)
-                {
-                    if (ReferenceEquals(null, obj))
-                        return false;
-                    if (ReferenceEquals(this, obj))
-                        return true;
-                    if (obj.GetType() != this.GetType())
-                        return false;
-                    return Equals((Integer) obj);
-                }
-
-                /// <inheritdoc />
-                public override int GetHashCode() => _value;
-
-                /// <inheritdoc />
-                public static bool operator ==(Integer left, Integer right) => Equals(left, right);
-
-                /// <inheritdoc />
-                public static bool operator !=(Integer left, Integer right) => !Equals(left, right);
-
                 int _value;
+                readonly int _initialValue;
 
                 /// <inheritdoc />
                 public Integer(int value)
                 {
+                    _initialValue = value;
                     _value = value;
                 }
 
@@ -224,6 +195,48 @@ namespace Pentagon.Root.Tests
                         OnPropertyChanged();
                     }
                 }
+
+                #region Operators
+
+                /// <inheritdoc />
+                public static bool operator ==(Integer left, Integer right) => Equals(left, right);
+
+                /// <inheritdoc />
+                public static bool operator !=(Integer left, Integer right) => !Equals(left, right);
+
+                #endregion
+
+                #region IEquatable members
+
+                /// <inheritdoc />
+                public bool Equals(Integer other)
+                {
+                    if (ReferenceEquals(null, other))
+                        return false;
+                    if (ReferenceEquals(this, other))
+                        return true;
+                    return _value == other._value;
+                }
+
+                /// <inheritdoc />
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj))
+                        return false;
+                    if (ReferenceEquals(this, obj))
+                        return true;
+                    if (obj.GetType() != GetType())
+                        return false;
+                    return Equals((Integer) obj);
+                }
+
+                /// <inheritdoc />
+                public override int GetHashCode() => _initialValue;
+
+                #endregion
+
+                /// <inheritdoc />
+                public override string ToString() => $"{nameof(Value)}: {Value}";
 
                 sealed class ReverseRelationalComparer : Comparer<Integer>
                 {
@@ -252,9 +265,6 @@ namespace Pentagon.Root.Tests
                         return x._value.CompareTo(y._value);
                     }
                 }
-
-                /// <inheritdoc />
-                public override string ToString() => $"{nameof(Value)}: {Value}";
             }
         }
     }

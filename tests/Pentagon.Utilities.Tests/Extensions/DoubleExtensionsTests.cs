@@ -1,13 +1,12 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="DoubleExtensionsTests.cs" company="The Pentagon">
+//  <copyright file="DoubleExtensionsTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Root.Tests
+namespace Pentagon.Common.Tests.Extensions
 {
-    using System;
-    using Extensions;
+    using Pentagon.Extensions;
     using Xunit;
 
     public class DoubleExtensionsTests
@@ -26,7 +25,7 @@ namespace Pentagon.Root.Tests
         [InlineData(2557.4874, 2557.487, 7)]
         [InlineData(4.87, 5, 1)]
         [InlineData(2787557.4872124, 2787600, 5)]
-        public void ShouldSetSigDig(double number, double expect, int figs)
+        public void ShouldSetSignificantDig(double number, double expect, int figs)
         {
             var result = number.SignificantFigures(figs);
 

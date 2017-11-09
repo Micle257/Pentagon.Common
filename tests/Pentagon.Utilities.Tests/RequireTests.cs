@@ -1,13 +1,20 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="RequireTests.cs">
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
 
-namespace Pentagon.Root.Tests
+namespace Pentagon.Common.Tests
 {
+    using System;
     using Exceptions;
     using Helpers;
     using Xunit;
 
     public class RequireTests
     {
+        public interface IParentType { }
+
         [Theory]
         [InlineData("")]
         [InlineData("    ")]
@@ -20,9 +27,9 @@ namespace Pentagon.Root.Tests
         [Theory]
         [InlineData("s")]
         [InlineData("  s  ")]
-        public void StringNotNullNorWhiteSpace_ValueIsValid_IsValidIsTrue  (string value)
+        public void StringNotNullNorWhiteSpace_ValueIsValid_IsValidIsTrue(string value)
         {
-          var result =  Require.StringNotNullNorWhiteSpace(value).IsValid;
+            var result = Require.StringNotNullNorWhiteSpace(value).IsValid;
 
             Assert.True(result);
         }
@@ -32,7 +39,7 @@ namespace Pentagon.Root.Tests
         {
             var notNull = "";
 
-            var res =  Require.NotNull(() => notNull);
+            var res = Require.NotNull(() => notNull);
 
             Assert.Equal(true, res.IsValid);
         }
@@ -63,7 +70,10 @@ namespace Pentagon.Root.Tests
             var stub = default(object);
             var name = "";
 
-            try { Require.NotNull(() => stub); }
+            try
+            {
+                Require.NotNull(() => stub);
+            }
             // ReSharper disable once UncatchableException
             catch (ArgumentNullException e)
             {
@@ -79,7 +89,10 @@ namespace Pentagon.Root.Tests
             var stub = new TestStruct {Value = null};
             var name = "";
 
-            try { Require.NotNull(() => stub.Value); }
+            try
+            {
+                Require.NotNull(() => stub.Value);
+            }
             // ReSharper disable once UncatchableException
             catch (ArgumentNullException e)
             {
@@ -109,7 +122,7 @@ namespace Pentagon.Root.Tests
         public void NotDefault_ValueIsNotDefault_IsValidIsTrue()
         {
             var stub = 5d;
-            
+
             var result = Require.NotDefault(() => stub);
 
             Assert.True(result.IsValid);
@@ -119,7 +132,7 @@ namespace Pentagon.Root.Tests
         public void IsType_ValueTypeDoesntMatchRequiredType_Throws()
         {
             var type = new ChildType();
-            
+
             Assert.Throws<ArgumentException>(() => Require.IsType<string>(type));
         }
 
@@ -127,8 +140,8 @@ namespace Pentagon.Root.Tests
         public void IsType_ValueTypeMatchesRequiredType_IsValidIsTrue()
         {
             var type = new ChildType();
-            
-          var result =  Require.IsType<IParentType>(type);
+
+            var result = Require.IsType<IParentType>(type);
 
             Assert.True(result.IsValid);
         }
@@ -153,15 +166,11 @@ namespace Pentagon.Root.Tests
             Require.InRange(() => value, range);
         }
 
-
         public struct TestStruct
         {
             public object Value { get; set; }
         }
 
-        public interface IParentType { }
-
         public class ChildType : IParentType { }
     }
-
 }

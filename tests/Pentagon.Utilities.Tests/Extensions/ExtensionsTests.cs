@@ -1,15 +1,15 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ExtensionsTests.cs" company="The Pentagon">
+//  <copyright file="ExtensionsTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Root.Tests
+namespace Pentagon.Common.Tests.Extensions
 {
     using System;
-    using Extensions;
+    using Pentagon.Extensions;
     using Xunit;
-    
+
     public class ExtensionsTests
     {
         [Fact]
@@ -34,10 +34,10 @@ namespace Pentagon.Root.Tests
         {
             var f = new Foo();
 
-          Assert.True(f.HasAttribute<BarAttribute>());
+            Assert.True(f.HasAttribute<BarAttribute>());
         }
 
-        [BarAttribute(false)]
+        [Bar(false)]
         class Foo
         {
             [Bar(true)]
