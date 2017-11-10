@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------
 //  <copyright file="CryptographicBuffer.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal PokornÃ½. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
@@ -9,9 +9,9 @@ namespace Pentagon.Security
     using System;
     using JetBrains.Annotations;
 
-    /// <summary> Represents a cryptographic buffer. </summary>
+    /// <summary> Represents a helper for random generation. </summary>
     [UsedImplicitly]
-    public class CryptographicBuffer
+    public class RandomHelper
     {
         /// <summary> Generates a random byte array of certain length. </summary>
         /// <param name="length"> The length. </param>
