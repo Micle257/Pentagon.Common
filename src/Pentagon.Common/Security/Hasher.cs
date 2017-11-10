@@ -13,27 +13,48 @@ namespace Pentagon.Security
     using JetBrains.Annotations;
     using Registration;
 
-    /// <summary> Provides a hasher algorithm (SHA512). </summary>
-    [Register]
-    public sealed class Hasher
+    /// <summary> Provides a hasher algorithm. </summary>
+    public interface IHasher 
     {
         /// <summary> Gets the random salt used to complicate password. </summary>
         /// <value> The salt. </value>
-        public string Salt { get; private set; }
+        string Salt { get; }
 
         /// <summary> Gets the hashed password with salt. </summary>
         /// <value> The hash. </value>
+        string Hash { get; }
+
+        /// <summary> Generates the hash and random salt for given password. </summary>
+        /// <param name="newPass"> The password. </param>
+        void GenerateHashSalt([NotNull] string newPass);
+
+        /// <summary> Generates the hash with given password and salt. </summary>
+        /// <param name="newPass"> The new pass. </param>
+        /// <param name="salt"> The salt. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="newPass" /> or <paramref name="salt" /> are <see langword="null" /> </exception>
+        void GenerateHash([NotNull] string newPass, [NotNull] string salt);
+
+        /// <summary> Compares the this hasher with another hash value. </summary>
+        /// <param name="dbHash"> The other hash to compare. </param>
+        /// <returns> <c> true </c> if hashes are equal; otherwise <c> false </c>. </returns>
+        bool CompareHash(string dbHash) ;
+    }
+
+    /// <summary> Provides a hasher algorithm (SHA512). </summary>
+    [Register]
+    public sealed class Hasher : IHasher
+    {
+        public string Salt { get; private set; }
+
         public string Hash { get; private set; }
 
         /// <summary> Generates the random salt. </summary>
         /// <param name="size"> The byte size of salt. </param>
         /// <returns> Byte array of salt. </returns>
-        public static byte[] GenerateSalt(int size) => CryptographicBuffer.GenerateRandom(size);
+        public static byte[] GenerateSalt(int size) => RandomHelper.GenerateRandom(size);
 
-        /// <summary> Generates the hash and random salt for given password. </summary>
-        /// <param name="newPass"> The password. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="newPass" /> is <see langword="null" /> </exception>
-        public void GenerateHashSalt([NotNull] string newPass)
+        /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> is <see langword="null" />. </exception>
+        public void GenerateHashSalt(string newPass)
         {
             if (newPass == null)
                 throw new ArgumentNullException(nameof(newPass));
@@ -41,10 +62,7 @@ namespace Pentagon.Security
             Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(Salt)));
         }
 
-        /// <summary> Generates the hash with given password and salt. </summary>
-        /// <param name="newPass"> The new pass. </param>
-        /// <param name="salt"> The salt. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="newPass" /> or <paramref name="salt" /> are <see langword="null" /> </exception>
+        /// <exception cref="ArgumentNullException">when <paramref name="newPass" /> -or- <paramref name="salt" /> are <see langword="null" />. </exception>
         public void GenerateHash([NotNull] string newPass, [NotNull] string salt)
         {
             if (newPass == null)
@@ -53,9 +71,6 @@ namespace Pentagon.Security
             Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(salt)));
         }
 
-        /// <summary> Compares the this hasher with another hash value. </summary>
-        /// <param name="dbHash"> The other hash to compare. </param>
-        /// <returns> <c> true </c> if hashes are equal; otherwise <c> false </c>. </returns>
         public bool CompareHash(string dbHash) => string.CompareOrdinal(Hash, dbHash) == 0;
 
         /// <summary> Generates the hash with give password and salt. </summary>
@@ -66,10 +81,8 @@ namespace Pentagon.Security
         {
             var text = Encoding.UTF8?.GetBytes(password);
             var managed = SHA512.Create();
-            //var has = WinRTCrypto.HashAlgorithmProvider?.OpenAlgorithm(HashAlgorithm.Sha512);
             var textWithSalt = text.Concat(salt).ToArray();
             return managed.ComputeHash(textWithSalt);
-            //return has.HashData(textWithSalt);
         }
     }
 }
