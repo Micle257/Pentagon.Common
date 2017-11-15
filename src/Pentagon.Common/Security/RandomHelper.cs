@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-//  <copyright file="CryptographicBuffer.cs">
+//  <copyright file="RandomHelper.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------

@@ -1,8 +1,15 @@
-﻿namespace Pentagon.Security {
+﻿// -----------------------------------------------------------------------
+//  <copyright file="IHasher.cs">
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
+
+namespace Pentagon.Security
+{
     using JetBrains.Annotations;
 
     /// <summary> Provides a hasher algorithm. </summary>
-    public interface IHasher 
+    public interface IHasher
     {
         /// <summary> Gets the random salt used to complicate password. </summary>
         /// <value> The salt. </value>
@@ -24,6 +31,6 @@
         /// <summary> Compares the this hasher with another hash value. </summary>
         /// <param name="dbHash"> The other hash to compare. </param>
         /// <returns> <c> true </c> if hashes are equal; otherwise <c> false </c>. </returns>
-        bool CompareHash(string dbHash) ;
+        bool CompareHash(string dbHash);
     }
 }

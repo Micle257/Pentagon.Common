@@ -18,7 +18,7 @@ namespace Pentagon.Collections
 
     /// <summary> Represents an observable collection which maintains its items in sorted order. It also supports filtering its items. The items are sorted when they change. </summary>
     /// <typeparam name="T"> The type of an item. </typeparam>
-    public sealed class ObservableSortedList<T> : ObservableObject, IObservableReadOnlyList<T>,IObservableCollection<T>, IList<T>, IFilterableCollection<T>
+    public sealed class ObservableSortedList<T> : ObservableObject, IObservableReadOnlyList<T>, IObservableCollection<T>, IList<T>, IFilterableCollection<T>
         where T : INotifyPropertyChanged
     {
         /// <summary> Inner collection representing this instance in outer scope (filtered items). </summary>
@@ -67,13 +67,13 @@ namespace Pentagon.Collections
         public event EventHandler<IComparer<T>> ComparerChanged;
 
         /// <inheritdoc />
-        public int Count => _items.Count;
-
-        /// <inheritdoc />
         public bool IsReadOnly => false;
 
         /// <inheritdoc />
         public ICollectionFilter<T> Filter { get; private set; }
+
+        /// <inheritdoc />
+        public int Count => _items.Count;
 
         /// <inheritdoc />
         public T this[int index]

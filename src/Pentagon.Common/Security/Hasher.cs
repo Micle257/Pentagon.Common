@@ -22,11 +22,6 @@ namespace Pentagon.Security
         /// <inheritdoc />
         public string Hash { get; private set; }
 
-        /// <summary> Generates the random salt. </summary>
-        /// <param name="size"> The byte size of salt. </param>
-        /// <returns> Byte array of salt. </returns>
-        public static byte[] GenerateSalt(int size) => RandomHelper.GenerateRandom(size);
-
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> is <see langword="null" />. </exception>
         public void GenerateHashSalt(string newPass)
@@ -38,8 +33,8 @@ namespace Pentagon.Security
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">when <paramref name="newPass" /> -or- <paramref name="salt" /> are <see langword="null" />. </exception>
-        public void GenerateHash( string newPass, string salt)
+        /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> -or- <paramref name="salt" /> are <see langword="null" />. </exception>
+        public void GenerateHash(string newPass, string salt)
         {
             if (newPass == null)
                 throw new ArgumentNullException(nameof(newPass));
@@ -49,6 +44,11 @@ namespace Pentagon.Security
 
         /// <inheritdoc />
         public bool CompareHash(string dbHash) => string.CompareOrdinal(Hash, dbHash) == 0;
+
+        /// <summary> Generates the random salt. </summary>
+        /// <param name="size"> The byte size of salt. </param>
+        /// <returns> Byte array of salt. </returns>
+        public static byte[] GenerateSalt(int size) => RandomHelper.GenerateRandom(size);
 
         /// <summary> Generates the hash with give password and salt. </summary>
         /// <param name="password"> The password. </param>
