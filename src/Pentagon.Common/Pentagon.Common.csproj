@@ -7,10 +7,10 @@
     <Authors>Michal Pokorný</Authors>
     <Company></Company>
     <Product>Pentagon</Product>
-    <Description>Class library for generalized re-usable technology of various kinds (extensions methods, data accessing, crypting).</Description>
+    <Description>Class library for generalized basic dependecy-free technology.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.3.3</Version>
+    <Version>1.4.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
