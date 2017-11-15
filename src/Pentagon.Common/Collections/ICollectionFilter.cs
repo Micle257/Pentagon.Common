@@ -16,10 +16,6 @@ namespace Pentagon.Collections
         /// <value> The method for determining filtered elements. </value>
         Predicate<T> Predicate { get; }
 
-        /// <summary> Gets a value indicating whether this filter pass every element. </summary>
-        /// <value> <c> true </c> if this instance is all pass; otherwise, <c> false </c>. </value>
-        bool IsAllPass { get; }
-
         /// <summary> Applies this filter to the filterable collection. </summary>
         /// <param name="coll"> The collection. </param>
         void ApplyFilter(IFilterableCollection<T> coll);

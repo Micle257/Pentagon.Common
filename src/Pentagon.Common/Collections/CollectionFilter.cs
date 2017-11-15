@@ -28,19 +28,4 @@ namespace Pentagon.Collections
             coll?.ApplyFilter(this);
         }
     }
-
-    public class AllPassCollectionFilter<T> : ICollectionFilter<T> {
-        public AllPassCollectionFilter() {
-            Predicate = obj => true;
-        }
-
-        /// <inheritdoc />
-        public Predicate<T> Predicate { get; }
-
-        /// <inheritdoc />
-        public void ApplyFilter(IFilterableCollection<T> coll)
-        {
-            coll?.ApplyFilter(this);
-        }
-    }
 }

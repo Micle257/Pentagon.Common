@@ -22,8 +22,4 @@ namespace Pentagon.Collections
         /// <param name="item"> The item to add. </param>
         void AddItem(T item);
     }
-
-    public interface INotifyContainer<T> : IContainer<T>, ICollectionNotify {
-        
-    }
 }
