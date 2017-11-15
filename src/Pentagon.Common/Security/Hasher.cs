@@ -31,7 +31,6 @@ namespace Pentagon.Security
         /// <summary> Generates the hash with given password and salt. </summary>
         /// <param name="newPass"> The new pass. </param>
         /// <param name="salt"> The salt. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="newPass" /> or <paramref name="salt" /> are <see langword="null" /> </exception>
         void GenerateHash([NotNull] string newPass, [NotNull] string salt);
 
         /// <summary> Compares the this hasher with another hash value. </summary>
@@ -44,8 +43,10 @@ namespace Pentagon.Security
     [Register]
     public sealed class Hasher : IHasher
     {
+        /// <inheritdoc />
         public string Salt { get; private set; }
 
+        /// <inheritdoc />
         public string Hash { get; private set; }
 
         /// <summary> Generates the random salt. </summary>
@@ -53,6 +54,7 @@ namespace Pentagon.Security
         /// <returns> Byte array of salt. </returns>
         public static byte[] GenerateSalt(int size) => RandomHelper.GenerateRandom(size);
 
+        /// <inheritdoc />
         /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> is <see langword="null" />. </exception>
         public void GenerateHashSalt(string newPass)
         {
@@ -62,8 +64,9 @@ namespace Pentagon.Security
             Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(Salt)));
         }
 
+        /// <inheritdoc />
         /// <exception cref="ArgumentNullException">when <paramref name="newPass" /> -or- <paramref name="salt" /> are <see langword="null" />. </exception>
-        public void GenerateHash([NotNull] string newPass, [NotNull] string salt)
+        public void GenerateHash( string newPass, string salt)
         {
             if (newPass == null)
                 throw new ArgumentNullException(nameof(newPass));
@@ -71,6 +74,7 @@ namespace Pentagon.Security
             Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(salt)));
         }
 
+        /// <inheritdoc />
         public bool CompareHash(string dbHash) => string.CompareOrdinal(Hash, dbHash) == 0;
 
         /// <summary> Generates the hash with give password and salt. </summary>
