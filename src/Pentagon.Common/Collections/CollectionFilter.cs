@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------
 //  <copyright file="CollectionFilter.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal PokornÃ½. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
@@ -17,14 +17,25 @@ namespace Pentagon.Collections
         public CollectionFilter(Predicate<T> rulePredicate = null)
         {
             Predicate = rulePredicate ?? (obj => true);
-            IsAllPass = true;
         }
 
         /// <inheritdoc />
         public Predicate<T> Predicate { get; }
 
         /// <inheritdoc />
-        public bool IsAllPass { get; }
+        public void ApplyFilter(IFilterableCollection<T> coll)
+        {
+            coll?.ApplyFilter(this);
+        }
+    }
+
+    public class AllPassCollectionFilter<T> : ICollectionFilter<T> {
+        public AllPassCollectionFilter() {
+            Predicate = obj => true;
+        }
+
+        /// <inheritdoc />
+        public Predicate<T> Predicate { get; }
 
         /// <inheritdoc />
         public void ApplyFilter(IFilterableCollection<T> coll)

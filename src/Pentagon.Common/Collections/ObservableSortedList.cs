@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------
 //  <copyright file="ObservableSortedList.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal PokornÃ½. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ namespace Pentagon.Collections
             _allItems = new List<T>();
             _items = new List<T>();
             _comparer = comparer ?? (Comparer<T>.Default ?? throw new ArgumentNullException());
-            Filter = filter ?? new CollectionFilter<T>();
+            Filter = filter ?? new AllPassCollectionFilter<T>();
         }
 
         /// <summary> Initializes a new instance of the <see cref="ObservableSortedList{T}" /> class. </summary>
