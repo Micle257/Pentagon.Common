@@ -1,4 +1,4 @@
-namespace Pentagon.Helpers {
+namespace Pentagon.Collections {
     using System;
 
     /// <summary> Represents a filter for a collection, that can ensure public items exposure by the rule predicate. </summary>

@@ -9,6 +9,7 @@ namespace Pentagon.Common.Tests
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using Collections;
     using Helpers;
     using Moq;
     using Xunit;

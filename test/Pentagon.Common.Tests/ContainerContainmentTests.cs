@@ -9,6 +9,7 @@ namespace Pentagon.Common.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Collections;
     using Xunit;
 
     public class ContainerContainmentTests

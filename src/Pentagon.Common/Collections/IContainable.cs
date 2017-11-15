@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IContainable.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal Pokorn�. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon
+namespace Pentagon.Collections
 {
     /// <summary> Represents an element in <see cref="IContainer{T}" /> with container dependency. </summary>
     /// <typeparam name="T"> The type of parent collection. </typeparam>

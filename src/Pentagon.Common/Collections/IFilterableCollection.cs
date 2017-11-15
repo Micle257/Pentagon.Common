@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon.Collections
 {
     using JetBrains.Annotations;
 

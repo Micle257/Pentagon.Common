@@ -8,6 +8,7 @@ namespace Pentagon.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using Collections;
     using JetBrains.Annotations;
 
     /// <summary> Represents a custom implementation of <see cref="Enum" />. </summary>

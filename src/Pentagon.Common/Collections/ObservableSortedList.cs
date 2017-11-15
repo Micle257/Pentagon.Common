@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon.Collections
 {
     using System;
     using System.Collections;
@@ -13,6 +13,7 @@ namespace Pentagon.Helpers
     using System.ComponentModel;
     using System.Linq;
     using Extensions;
+    using Helpers;
     using JetBrains.Annotations;
 
     /// <summary> Represents an observable collection which maintains its items in sorted order. It also supports filtering its items. The items are sorted when they change. </summary>
