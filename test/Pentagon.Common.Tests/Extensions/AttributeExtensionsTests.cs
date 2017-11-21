@@ -10,7 +10,7 @@ namespace Pentagon.Common.Tests.Extensions
     using Pentagon.Extensions;
     using Xunit;
 
-    public class ExtensionsTests
+    public class AttributeExtensionsTests
     {
         [Fact]
         public void ShouldIsAttributeReturnTrue()
