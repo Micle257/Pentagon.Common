@@ -7,17 +7,17 @@
 namespace Pentagon.Extensions
 {
     using System;
-    using System.Numerics;
 
     /// <summary> Contains extension methods for <see cref="double" />. </summary>
     public static class DoubleExtensions
     {
         /// <summary> The default precision for comparing float number based values. </summary>
-        const double DefaultPrecision = .000001;
+        internal const double DefaultPrecision = 1e-15d;
 
         /// <summary> Calculate Mod function of number. </summary>
-        /// <param name="a"> Operand. </param>
-        /// <param name="mod"> Modulo. </param>
+        /// <param name="a"> The operand. </param>
+        /// <param name="mod"> The modulo. </param>
+        /// <returns> A <see cref="double" />. </returns>
         /// <exception cref="System.DivideByZeroException"> <paramref name="mod" /> is equal to zero. </exception>
         public static double Mod(this double a, int mod)
         {
@@ -34,32 +34,26 @@ namespace Pentagon.Extensions
         /// <summary> Compare to another <see cref="double" /> with default precision. </summary>
         /// <param name="a"> The value of first <see cref="double" />. </param>
         /// <param name="b"> The value of second <see cref="double" />. </param>
+        /// <returns> <c> true </c> if value is equal to other value; otherwise, <c> false </c>. </returns>
         public static bool EqualTo(this double a, double b) => a.EqualTo(b, DefaultPrecision);
 
         /// <summary> Compare to another <see cref="double" /> with certain precision. </summary>
         /// <param name="a"> The value of first <see cref="double" />. </param>
         /// <param name="b"> The value of second <see cref="double" />. </param>
         /// <param name="precision"> The comparing precision. </param>
+        /// <returns> <c> true </c> if value is equal to other value with tolerance; otherwise, <c> false </c>. </returns>
         public static bool EqualTo(this double a, double b, double precision) => Math.Abs(a - b) <= precision;
-
-        /// <summary> Compare to another <see cref="Complex" /> with certain precision. </summary>
-        /// <param name="a"> The value of first <see cref="Complex" />. </param>
-        /// <param name="b"> The value of second <see cref="Complex" />. </param>
-        /// <param name="precision"> The comparing precision. </param>
-        public static bool EqualTo(this Complex a, Complex b, double precision) => Math.Abs(a.Real - b.Real) <= precision && Math.Abs(a.Imaginary - b.Imaginary) <= precision;
-
-        /// <summary> Compare to another <see cref="Complex" /> with default precision. </summary>
-        /// <param name="a"> The value of first <see cref="Complex" />. </param>
-        /// <param name="b"> The value of second <see cref="Complex" />. </param>
-        public static bool EqualTo(this Complex a, Complex b) => a.EqualTo(b, DefaultPrecision);
 
         /// <summary> Gets the value rounded to significant digits. </summary>
         /// <param name="d"> Value to round. </param>
         /// <param name="digits"> Number of the significant figures. </param>
-        /// <returns> Rounded value. </returns>
-        public static double SignificantFigures(this double d, int digits)
+        /// <returns> A <see cref="double" />. </returns>
+        public static double RoundSignificantFigures(this double d, int digits)
         {
-            if (d.EqualTo(0))
+            if (digits <= 0)
+                throw new ArgumentException(message: "Significant digits must be greaten than zero.", paramName: nameof(digits));
+
+            if (d.EqualTo(0, 10e-250d))
                 return 0;
 
             var scale = (decimal) Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1);

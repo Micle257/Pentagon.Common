@@ -30,10 +30,15 @@ namespace Pentagon.Extensions
             return i;
         }
 
-        /// <summary> Dynamically shifts collection to the right. </summary>
-        /// <typeparam name="T"> Type of collection items. </typeparam>
-        /// <param name="collection"> The collection. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="collection" /> is <see langword="null" /> </exception>
+        /// <summary>
+        /// Dynamically shifts collection to the right.
+        /// </summary>
+        /// <typeparam name="T">Type of collection items.</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <returns>
+        /// An iteration of the shifted collection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection" /> is <see langword="null" /></exception>
         [NotNull]
         public static IEnumerable<T> ShiftRight<T>([NotNull] this IEnumerable<T> collection)
         {
@@ -50,6 +55,9 @@ namespace Pentagon.Extensions
         /// <summary> Dynamically shifts collection to the left. </summary>
         /// <typeparam name="T"> Type of collection items. </typeparam>
         /// <param name="collection"> The collection. </param>
+        /// <returns>
+        /// An iteration of the shifted collection.
+        /// </returns>
         /// <exception cref="ArgumentNullException"> <paramref name="collection" /> is <see langword="null" /> </exception>
         [NotNull]
         public static IEnumerable<T> ShiftLeft<T>([NotNull] this IEnumerable<T> collection)
@@ -76,6 +84,8 @@ namespace Pentagon.Extensions
         /// <returns> A collection with union of both unique items in collections. </returns>
         public static IEnumerable<T> SymmetricExcept<T>([NotNull] this IEnumerable<T> coll, [NotNull] IEnumerable<T> second)
         {
+            Require.NotNull(() => coll);
+            Require.NotNull(() => second);
             var hash = new HashSet<T>(coll);
             hash.SymmetricExceptWith(second);
             return hash;
