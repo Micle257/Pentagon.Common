@@ -13,40 +13,83 @@ namespace Pentagon.Common.Tests.Extensions
     public class AttributeExtensionsTests
     {
         [Fact]
-        public void ShouldIsAttributeReturnTrue()
+        public void GetAttributeValue_ParameterValueIsNull_Throws()
         {
-            var obj = new Foo {Count = 5};
-            Assert.Equal(5, obj.Count);
-            var result = obj.IsAttribute<BarAttribute>(nameof(obj.Count));
-            Assert.True(result);
+            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.GetAttributeValue<TestedAttribute, bool>(null, a => true));
         }
 
         [Fact]
-        public void ShouldGetPropertyAttributeValue()
+        public void GetAttributeValue_ParameterValueSelectorIsNull_Throws()
         {
-            var value = AttributeExtensions.GetPropertyAttributeValue((Foo foo) => foo.Count, (BarAttribute attribute) => attribute.IsActive);
+            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.GetAttributeValue<TestedAttribute, bool>(typeof(Stub), null));
+        }
+
+        [Fact]
+        public void GetAttributeValue_PassedCorrectParameters_ReturnsCorrectValue()
+        {
+            var type = typeof(Stub);
+
+            var result = type.GetAttributeValue<TestedAttribute, bool>(attribute => attribute.IsActive);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void HasAttribute_ParameterValueIsNull_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.HasAttribute<TestedAttribute>(null));
+        }
+
+        [Fact]
+        public void HasAttribute_PassedCorrectParameters_ReturnsCorrectValue()
+        {
+            var f = new Stub();
+
+            Assert.True(f.HasAttribute<TestedAttribute>());
+        }
+
+        [Fact]
+        public void GetPropertyAttributeValue_ParameterValueIsNull_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.GetPropertyAttributeValue((Stub)null, foo => foo.Count, (TestedAttribute attribute) => attribute.IsActive));
+        }
+
+        [Fact]
+        public void GetPropertyAttributeValue_ParameterPropertyExpressionIsNull_Throws()
+        {
+            var obj = new Stub { Count = 5 };
+
+            Assert.Throws<ArgumentNullException>(() => obj.GetPropertyAttributeValue<Stub, int, TestedAttribute, bool>(null, (attribute) => attribute.IsActive));
+        }
+
+        [Fact]
+        public void GetPropertyAttributeValue_ParameterValueSelectorIsNull_Throws()
+        {
+            var obj = new Stub { Count = 5 };
+
+            Assert.Throws<ArgumentNullException>(() => obj.GetPropertyAttributeValue<Stub, int, TestedAttribute, bool>(foo => foo.Count, null));
+        }
+
+        [Fact]
+        public void GetPropertyAttributeValue_PassedCorrectParameters_ReturnsCorrectAttributeValue()
+        {
+            var obj = new Stub { Count = 5 };
+
+            var value = obj.GetPropertyAttributeValue(foo => foo.Count, (TestedAttribute attribute) => attribute.IsActive);
 
             Assert.True(value);
         }
 
-        [Fact]
-        public void ShouldHasAttribute()
+        [Tested(false)]
+        class Stub
         {
-            var f = new Foo();
-
-            Assert.True(f.HasAttribute<BarAttribute>());
-        }
-
-        [Bar(false)]
-        class Foo
-        {
-            [Bar(true)]
+            [Tested(true)]
             public int Count { get; set; }
         }
 
-        class BarAttribute : Attribute
+        class TestedAttribute : Attribute
         {
-            public BarAttribute(bool isActive)
+            public TestedAttribute(bool isActive)
             {
                 IsActive = isActive;
             }
