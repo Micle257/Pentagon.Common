@@ -51,8 +51,7 @@ namespace Pentagon
             var result = new RequireResult<ValueOutOfRangeException<T>>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //     throw new ArgumentException(message: "The given expression is not valid.");
+
             var compile = valueExpression.Compile();
             if (compile == null)
                 throw new ArgumentException(message: "The given expression is not valid.");
@@ -73,7 +72,6 @@ namespace Pentagon
         /// <param name="value"> The value encapsulated in expression of format '() =&gt; val'. </param>
         /// <param name="message"> The message. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
-        /// <exception cref="ArgumentException"> The given expression is not valid. </exception>
         /// <exception cref="ArgumentNullException"> When expression's member is null. </exception>
         [NotNull]
         [UsedImplicitly]
@@ -130,8 +128,7 @@ namespace Pentagon
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //    throw new ArgumentException("The given expression is not valid.");
+
             var exactValue = valueExpression.Compile()();
 
             if (!(exactValue is TIs v))
@@ -151,22 +148,20 @@ namespace Pentagon
         /// <typeparam name="T"> Type of the value. </typeparam>
         /// <param name="valueExpression"> The value expression. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
-        /// <exception cref="System.ArgumentException"> The given expression is not valid. </exception>
-        /// <exception cref="ArgumentException"> When value is not valid. </exception>
+        /// <exception cref="ArgumentNullException"> When value is not valid. </exception>
         [NotNull]
         [UsedImplicitly]
         public static IRequireResult NotDefault<T>([NotNull] Expression<Func<T>> valueExpression)
         {
-            var result = new RequireResult<ArgumentException>();
+            var result = new RequireResult<ArgumentNullException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //     throw new ArgumentException("The given expression is not valid.");
+
             var exactValue = valueExpression.Compile()();
 
             if (EqualityComparer<T>.Default.Equals(exactValue, default(T)))
             {
-                result.Exception = new ArgumentException(valueName ?? "value");
+                result.Exception = new ArgumentNullException(valueName ?? "value", $"Parameter {valueName} cannot be null.");
                 if (ThrowExceptions)
                     throw result.Exception;
             }
