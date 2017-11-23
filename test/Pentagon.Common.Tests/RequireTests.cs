@@ -107,7 +107,7 @@ namespace Pentagon.Common.Tests
         {
             var stub = default(double);
 
-            Assert.Throws<ArgumentException>(() => Require.NotDefault(() => stub));
+            Assert.Throws<ArgumentNullException>(() => Require.NotDefault(() => stub));
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Pentagon.Common.Tests
         {
             var stub = default(string);
 
-            Assert.Throws<ArgumentException>(() => Require.NotDefault(() => stub));
+            Assert.Throws<ArgumentNullException>(() => Require.NotDefault(() => stub));
         }
 
         [Fact]
