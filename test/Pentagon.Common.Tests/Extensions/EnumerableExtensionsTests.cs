@@ -17,7 +17,7 @@ namespace Pentagon.Common.Tests.Extensions
         {
             var collection = new[] { 0, 1, 2, 3, 4, 5 };
 
-          var order =  collection.FindOrderIndex(n =>false);
+            var order = collection.FindOrderIndex(n => false);
 
             Assert.Equal(0, order);
         }
@@ -35,7 +35,7 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void ShiftLeft_ShiftsCollectionToLeft()
         {
-            var array = new[] {0, 1, 2, 3, 4, 5};
+            var array = new[] { 0, 1, 2, 3, 4, 5 };
 
             var shifted = array.ShiftLeft().ToArray();
 
@@ -45,7 +45,7 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void ShiftRight_ShiftsCollectionToRight()
         {
-            var array = new[] {0, 1, 2, 3, 4, 5};
+            var array = new[] { 0, 1, 2, 3, 4, 5 };
 
             var shifted = array.ShiftRight().ToArray();
 
@@ -55,12 +55,12 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void SymmetricExcept_Scenario_ExpectedBehavior()
         {
-            var c1 = new[] {0, 1, 2, 3, 4, 5};
-            var c2 = new[] { 3, 4, 5,6,7 };
+            var c1 = new[] { 0, 1, 2, 3, 4, 5 };
+            var c2 = new[] { 3, 4, 5, 6, 7 };
 
             var except = c1.SymmetricExcept(c2);
 
-            Assert.Equal(new [] {0,1,2,6,7}, except);
+            Assert.Equal(new[] { 0, 1, 2, 6, 7 }, except);
         }
     }
 }

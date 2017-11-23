@@ -7,7 +7,6 @@
 namespace Pentagon.Common.Tests.Extensions
 {
     using System;
-    using System.Globalization;
     using Pentagon.Extensions;
     using Xunit;
 
@@ -40,7 +39,7 @@ namespace Pentagon.Common.Tests.Extensions
         {
             var date = new DateTime(year, month, day);
 
-            var week = date.GetWeekNumber(CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            var week = date.GetWeekNumber();
 
             Assert.Equal(weekNumber, week);
         }
