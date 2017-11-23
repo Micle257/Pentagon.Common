@@ -42,22 +42,18 @@ namespace Pentagon.Extensions
             return value.GetType().GetTypeInfo().GetCustomAttribute<TAttribute>() != null;
         }
 
-        /// <summary>
-        /// Gets the attribute property value from type's property.
-        /// </summary>
-        /// <typeparam name="TType">The type of the type which contains the property.</typeparam>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
-        /// <typeparam name="TValue">The type of the attribute property.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <param name="propertyExpression">The property expression (<typeparamref name="TType" /> =&gt; <typeparamref name="TProperty" />).</param>
-        /// <param name="valueSelector">The attribute's value selector.</param>
-        /// <returns>
-        /// A value from selected attribute property.
-        /// </returns>
+        /// <summary> Gets the attribute property value from type's property. </summary>
+        /// <typeparam name="TType"> The type of the type which contains the property. </typeparam>
+        /// <typeparam name="TProperty"> The type of the property. </typeparam>
+        /// <typeparam name="TAttribute"> The type of the attribute. </typeparam>
+        /// <typeparam name="TValue"> The type of the attribute property. </typeparam>
+        /// <param name="value"> The value. </param>
+        /// <param name="propertyExpression"> The property expression (<typeparamref name="TType" /> =&gt; <typeparamref name="TProperty" />). </param>
+        /// <param name="valueSelector"> The attribute's value selector. </param>
+        /// <returns> A value from selected attribute property. </returns>
         public static TValue GetPropertyAttributeValue<TType, TProperty, TAttribute, TValue>([NotNull] this TType value,
-            [NotNull] Expression<Func<TType, TProperty>> propertyExpression,
-            [NotNull] Func<TAttribute, TValue> valueSelector)
+                                                                                             [NotNull] Expression<Func<TType, TProperty>> propertyExpression,
+                                                                                             [NotNull] Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute
         {
             Require.NotDefault(() => value);

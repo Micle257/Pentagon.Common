@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ExtensionsTests.cs">
+//  <copyright file="AttributeExtensionsTests.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void GetAttributeValue_ParameterValueSelectorIsNull_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.GetAttributeValue<TestedAttribute, bool>(typeof(Stub), null));
+            Assert.Throws<ArgumentNullException>(() => typeof(Stub).GetAttributeValue<TestedAttribute, bool>(null));
         }
 
         [Fact]
@@ -51,21 +51,21 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void GetPropertyAttributeValue_ParameterValueIsNull_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => AttributeExtensions.GetPropertyAttributeValue((Stub)null, foo => foo.Count, (TestedAttribute attribute) => attribute.IsActive));
+            Assert.Throws<ArgumentNullException>(() => ((Stub) null).GetPropertyAttributeValue(foo => foo.Count, (TestedAttribute attribute) => attribute.IsActive));
         }
 
         [Fact]
         public void GetPropertyAttributeValue_ParameterPropertyExpressionIsNull_Throws()
         {
-            var obj = new Stub { Count = 5 };
+            var obj = new Stub {Count = 5};
 
-            Assert.Throws<ArgumentNullException>(() => obj.GetPropertyAttributeValue<Stub, int, TestedAttribute, bool>(null, (attribute) => attribute.IsActive));
+            Assert.Throws<ArgumentNullException>(() => obj.GetPropertyAttributeValue<Stub, int, TestedAttribute, bool>(null, attribute => attribute.IsActive));
         }
 
         [Fact]
         public void GetPropertyAttributeValue_ParameterValueSelectorIsNull_Throws()
         {
-            var obj = new Stub { Count = 5 };
+            var obj = new Stub {Count = 5};
 
             Assert.Throws<ArgumentNullException>(() => obj.GetPropertyAttributeValue<Stub, int, TestedAttribute, bool>(foo => foo.Count, null));
         }
@@ -73,7 +73,7 @@ namespace Pentagon.Common.Tests.Extensions
         [Fact]
         public void GetPropertyAttributeValue_PassedCorrectParameters_ReturnsCorrectAttributeValue()
         {
-            var obj = new Stub { Count = 5 };
+            var obj = new Stub {Count = 5};
 
             var value = obj.GetPropertyAttributeValue(foo => foo.Count, (TestedAttribute attribute) => attribute.IsActive);
 

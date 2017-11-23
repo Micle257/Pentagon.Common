@@ -1,4 +1,11 @@
-﻿namespace Pentagon.Common.Tests {
+﻿// -----------------------------------------------------------------------
+//  <copyright file="RangeCompoundTests.cs">
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
+
+namespace Pentagon.Common.Tests
+{
     using System;
     using Helpers;
     using Xunit;
@@ -21,7 +28,7 @@
         [Fact]
         public void Min_ReturnsMinValue()
         {
-            var range = new RangeCompound<sbyte>(new Range<sbyte>(0,2), new Range<sbyte>(-6, 5));
+            var range = new RangeCompound<sbyte>(new Range<sbyte>(0, 2), new Range<sbyte>(-6, 5));
 
             Assert.Equal(-6, range.Min);
         }

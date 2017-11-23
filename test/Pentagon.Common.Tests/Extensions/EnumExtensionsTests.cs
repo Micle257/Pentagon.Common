@@ -1,10 +1,25 @@
-﻿namespace Pentagon.Common.Tests.Extensions {
+﻿// -----------------------------------------------------------------------
+//  <copyright file="EnumExtensionsTests.cs">
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
+
+namespace Pentagon.Common.Tests.Extensions
+{
     using System;
     using Pentagon.Extensions;
     using Xunit;
 
     public class EnumExtensionsTests
     {
+        enum Stub
+        {
+            First,
+
+            [Tested]
+            Second
+        }
+
         [Fact]
         public void GetItemValue_ParameterValueIsNull_Throws()
         {
@@ -37,16 +52,6 @@
             Assert.Null(result);
         }
 
-        enum Stub
-        {
-            First,
-            [Tested]
-            Second
-        }
-
-        class TestedAttribute : Attribute
-        {
-
-        }
+        class TestedAttribute : Attribute { }
     }
 }

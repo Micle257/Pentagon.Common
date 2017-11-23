@@ -30,15 +30,11 @@ namespace Pentagon.Extensions
             return i;
         }
 
-        /// <summary>
-        /// Dynamically shifts collection to the right.
-        /// </summary>
-        /// <typeparam name="T">Type of collection items.</typeparam>
-        /// <param name="collection">The collection.</param>
-        /// <returns>
-        /// An iteration of the shifted collection.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection" /> is <see langword="null" /></exception>
+        /// <summary> Dynamically shifts collection to the right. </summary>
+        /// <typeparam name="T"> Type of collection items. </typeparam>
+        /// <param name="collection"> The collection. </param>
+        /// <returns> An iteration of the shifted collection. </returns>
+        /// <exception cref="ArgumentNullException"> <paramref name="collection" /> is <see langword="null" /> </exception>
         [NotNull]
         public static IEnumerable<T> ShiftRight<T>([NotNull] this IEnumerable<T> collection)
         {
@@ -55,9 +51,7 @@ namespace Pentagon.Extensions
         /// <summary> Dynamically shifts collection to the left. </summary>
         /// <typeparam name="T"> Type of collection items. </typeparam>
         /// <param name="collection"> The collection. </param>
-        /// <returns>
-        /// An iteration of the shifted collection.
-        /// </returns>
+        /// <returns> An iteration of the shifted collection. </returns>
         /// <exception cref="ArgumentNullException"> <paramref name="collection" /> is <see langword="null" /> </exception>
         [NotNull]
         public static IEnumerable<T> ShiftLeft<T>([NotNull] this IEnumerable<T> collection)

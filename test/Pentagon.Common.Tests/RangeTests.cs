@@ -3,7 +3,7 @@
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
-// ReSharper disable ExceptionNotDocumented
+
 namespace Pentagon.Common.Tests
 {
     using Helpers;
@@ -14,7 +14,7 @@ namespace Pentagon.Common.Tests
         [Fact]
         public void RangeConstructor_FirstBoundryIsLessThanSecondBoundry_MinValueIsLessThanOrEqualToMaxValue()
         {
-           var range =  new Range<byte>(1, 3);
+            var range = new Range<byte>(1, 3);
 
             Assert.True(range.Min <= range.Max);
         }
@@ -29,7 +29,7 @@ namespace Pentagon.Common.Tests
 
         [Theory]
         [InlineData(0, 10d, 5)]
-        [InlineData(0,double.PositiveInfinity, double.MaxValue)]
+        [InlineData(0, double.PositiveInfinity, double.MaxValue)]
         public void InRange_ValueIsInRange_ReturnsTrue(double b1, double b2, double value)
         {
             var range = new Range<double>(b1, b2);
@@ -48,7 +48,7 @@ namespace Pentagon.Common.Tests
         }
 
         [Theory]
-        [InlineData(0 , 10, 10, RangeBoundaries.InIn)]
+        [InlineData(0, 10, 10, RangeBoundaries.InIn)]
         [InlineData(0, 10, 0, RangeBoundaries.InIn)]
         [InlineData(0, 10, 0, RangeBoundaries.InOut)]
         [InlineData(0, 10, 10, RangeBoundaries.OutIn)]

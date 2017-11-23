@@ -9,7 +9,7 @@ namespace Pentagon.Common.Tests.Extensions
     using System;
     using Pentagon.Extensions;
     using Xunit;
-    
+
     public class DoubleExtensionsTests
     {
         [Theory]
