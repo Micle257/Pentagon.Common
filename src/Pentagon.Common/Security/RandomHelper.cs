@@ -19,7 +19,7 @@ namespace Pentagon.Security
         public static byte[] GenerateRandom(int length)
         {
             var buffer = new byte[length];
-            var r = new Random(0);
+            var r = new Random();
             r.NextBytes(buffer);
             return buffer;
         }
