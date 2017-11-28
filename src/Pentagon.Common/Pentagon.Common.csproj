@@ -10,7 +10,7 @@
     <Description>Class library for generalized basic dependecy-free technology.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.4.2</Version>
+    <Version>1.4.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

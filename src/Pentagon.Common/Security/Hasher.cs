@@ -10,46 +10,52 @@ namespace Pentagon.Security
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using Exceptions;
     using Registration;
-
-    /// <summary> Provides a hasher algorithm (SHA512). </summary>
-    [Register]
+    
+    /// <summary> An <see cref="IHasher"/> implementation with SHA512 hashing algorithm. </summary>
+    [Register(RegisterType.Transient, typeof(IHasher))]
     public sealed class Hasher : IHasher
     {
-        /// <inheritdoc />
-        public string Salt { get; private set; }
+        /// <summary>
+        /// The salt.
+        /// </summary>
+        const string Salt = "QcCWi5geGEm2MrqWi17FxqiOIHddbVeZDtErHem5L7Y=";
 
         /// <inheritdoc />
-        public string Hash { get; private set; }
-
-        /// <inheritdoc />
-        /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> is <see langword="null" />. </exception>
-        public void GenerateHashSalt(string newPass)
+        /// <exception cref="StringArgumentException"> When <paramref name="password"/> is null or empty. </exception>
+        public string HashPassword(string password)
         {
-            if (newPass == null)
-                throw new ArgumentNullException(nameof(newPass));
-            Salt = Convert.ToBase64String(GenerateSalt(32));
-            Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(Salt)));
+            Require.StringNotNullNorEmpty(() => password);
+            var hashBytes = GenerateSaltedHash(password, Convert.FromBase64String(Salt));
+            return Convert.ToBase64String(hashBytes);
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException"> when <paramref name="newPass" /> -or- <paramref name="salt" /> are <see langword="null" />. </exception>
-        public void GenerateHash(string newPass, string salt)
+        /// <exception cref="StringArgumentException"> When <paramref name="password"/> or <paramref name="salt"/> is null or empty. </exception>
+        public string HashPassword(string password, string salt)
         {
-            if (newPass == null)
-                throw new ArgumentNullException(nameof(newPass));
-            Salt = salt ?? throw new ArgumentNullException(nameof(salt));
-            Hash = Convert.ToBase64String(GenerateSaltedHash(newPass, Convert.FromBase64String(salt)));
+            Require.StringNotNullNorEmpty(() => password);
+            Require.StringNotNullNorEmpty(() => salt);
+
+            Require.Condition(() => salt.Length > 0, "The salt length must be grater than zero");
+
+            var saltBytes = Convert.FromBase64String(salt);
+            var hashBytes = GenerateSaltedHash(password, saltBytes);
+            return Convert.ToBase64String(hashBytes);
         }
 
         /// <inheritdoc />
-        public bool CompareHash(string dbHash) => string.CompareOrdinal(Hash, dbHash) == 0;
+        /// <exception cref="StringArgumentException"> When <paramref name="hashedPassword"/> or <paramref name="providedPassword"/> are null or empty. </exception>
+        public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
+        {
+            Require.StringNotNullNorEmpty(() => hashedPassword);
+            Require.StringNotNullNorEmpty(() => providedPassword);
 
-        /// <summary> Generates the random salt. </summary>
-        /// <param name="size"> The byte size of salt. </param>
-        /// <returns> Byte array of salt. </returns>
-        public static byte[] GenerateSalt(int size) => RandomHelper.GenerateRandom(size);
-
+            var providedPasswordHash = HashPassword(providedPassword, Salt);
+            return string.CompareOrdinal(hashedPassword, providedPasswordHash) == 0;
+        }
+        
         /// <summary> Generates the hash with give password and salt. </summary>
         /// <param name="password"> The password. </param>
         /// <param name="salt"> The salt. </param>

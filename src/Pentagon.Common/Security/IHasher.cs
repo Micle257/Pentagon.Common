@@ -11,26 +11,35 @@ namespace Pentagon.Security
     /// <summary> Provides a hasher algorithm. </summary>
     public interface IHasher
     {
-        /// <summary> Gets the random salt used to complicate password. </summary>
-        /// <value> The salt. </value>
-        string Salt { get; }
+        /// <summary>
+        /// Computes hash string from a password.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <returns>
+        /// A <see cref="string"/> containing the hash.
+        /// </returns>
+        [NotNull]
+        string HashPassword([NotNull] string password);
 
-        /// <summary> Gets the hashed password with salt. </summary>
-        /// <value> The hash. </value>
-        string Hash { get; }
+        /// <summary>
+        /// Computes hash string from a password with provided custom salt string.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <param name="salt">The salt.</param>
+        /// <returns>
+        /// A <see cref="string"/> containing the hash.
+        /// </returns>
+        [NotNull]
+        string HashPassword([NotNull] string password, [NotNull] string salt);
 
-        /// <summary> Generates the hash and random salt for given password. </summary>
-        /// <param name="newPass"> The password. </param>
-        void GenerateHashSalt([NotNull] string newPass);
-
-        /// <summary> Generates the hash with given password and salt. </summary>
-        /// <param name="newPass"> The new pass. </param>
-        /// <param name="salt"> The salt. </param>
-        void GenerateHash([NotNull] string newPass, [NotNull] string salt);
-
-        /// <summary> Compares the this hasher with another hash value. </summary>
-        /// <param name="dbHash"> The other hash to compare. </param>
-        /// <returns> <c> true </c> if hashes are equal; otherwise <c> false </c>. </returns>
-        bool CompareHash(string dbHash);
+        /// <summary>
+        /// Verifies if the hash string of a provided password matches the hashed password.
+        /// </summary>
+        /// <param name="hashedPassword">The hashed password.</param>
+        /// <param name="providedPassword">The provided password.</param>
+        /// <returns>
+        /// <c>true</c> if the hashes are equal; otherwise, <c>false</c>.
+        /// </returns>
+        bool VerifyHashedPassword([NotNull] string hashedPassword, [NotNull] string providedPassword);
     }
 }
