@@ -21,17 +21,67 @@ namespace Pentagon
         [UsedImplicitly]
         public static bool ThrowExceptions { get; set; } = true;
 
-        /// <summary> Requires that <see cref="string" /> is not null and don't contains just whitespace. </summary>
+        /// <summary> Requires that <see cref="string" /> is not null and doesn't contain just whitespaces. </summary>
         /// <param name="value"> The value. </param>
         /// <exception cref="StringArgumentException"> When value is not valid. </exception>
+        /// <exception cref="ArgumentException"> When value is not of type <see cref="string"/>. </exception>
         [UsedImplicitly]
-        public static IRequireResult StringNotNullNorWhiteSpace(string value)
+        public static IRequireResult StringNotNullNorWhiteSpace<T>([NotNull] Expression<Func<T>> value)
         {
             var result = new RequireResult<StringArgumentException>();
 
-            if (string.IsNullOrWhiteSpace(value))
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (exactValue == null)
             {
-                result.Exception = new StringArgumentException(error: "not null or whitespace");
+                result.Exception = new StringArgumentException("not null", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            if (!(exactValue is string))
+            {
+                throw new ArgumentException($"Argument must be of type string", valueName ?? "value");
+            }
+
+            if (string.IsNullOrWhiteSpace(exactValue as string))
+            {
+                result.Exception = new StringArgumentException("not null or whitespace", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            return result;
+        }
+
+        /// <summary> Requires that <see cref="string" /> is not null and don't contains just whitespace. </summary>
+        /// <param name="value"> The value. </param>
+        /// <exception cref="StringArgumentException"> When require criteria are not matched. </exception>
+        /// <exception cref="ArgumentException"> When value is not of type <see cref="string"/>. </exception>
+        [UsedImplicitly]
+        public static IRequireResult StringNotNullNorEmpty<T>([NotNull] Expression<Func<T>> value)
+        {
+            var result = new RequireResult<StringArgumentException>();
+
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (exactValue == null)
+            {
+                result.Exception = new StringArgumentException("not null", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            if (!(exactValue is string))
+            {
+                throw new ArgumentException($"Argument must be of type string", valueName ?? "value");
+            }
+
+            if (string.IsNullOrEmpty(exactValue as string))
+            {
+                result.Exception = new StringArgumentException("not null or empty", valueName);
                 if (ThrowExceptions)
                     throw result.Exception;
             }

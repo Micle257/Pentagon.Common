@@ -21,7 +21,7 @@ namespace Pentagon.Common.Tests
         [InlineData(null)]
         public void StringNotNullNorWhiteSpace_ValueIsNotValid_Throws(string value)
         {
-            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorWhiteSpace(value));
+            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorWhiteSpace(() => value));
         }
 
         [Theory]
@@ -29,7 +29,26 @@ namespace Pentagon.Common.Tests
         [InlineData("  s  ")]
         public void StringNotNullNorWhiteSpace_ValueIsValid_IsValidIsTrue(string value)
         {
-            var result = Require.StringNotNullNorWhiteSpace(value).IsValid;
+            var result = Require.StringNotNullNorWhiteSpace(() => value).IsValid;
+
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void StringNotNullNorEmpty_ValueIsNotValid_Throws(string value)
+        {
+            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorEmpty(() => value));
+        }
+
+        [Theory]
+        [InlineData("s")]
+        [InlineData("    ")]
+        [InlineData("  s  ")]
+        public void StringNotNullNorEmpty_ValueIsValid_IsValidIsTrue(string value)
+        {
+            var result = Require.StringNotNullNorEmpty(() => value).IsValid;
 
             Assert.True(result);
         }

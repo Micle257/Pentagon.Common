@@ -16,9 +16,12 @@ namespace Pentagon.Exceptions
         /// <summary> Initializes a new instance of the <see cref="StringArgumentException" /> class. </summary>
         public StringArgumentException() : base(GetMessage()) { }
 
-        /// <summary> Initializes a new instance of the <see cref="StringArgumentException" /> class. </summary>
-        /// <param name="error"> The message specifing the error. </param>
-        public StringArgumentException(string error) : base(GetMessage(error)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringArgumentException" /> class.
+        /// </summary>
+        /// <param name="error">The message specifing the error.</param>
+        /// <param name="paramName">Name of the parameter.</param>
+        public StringArgumentException(string error, string paramName) : base(GetMessage(error), paramName) { }
 
         /// <summary> Initializes a new instance of the <see cref="StringArgumentException" /> class. </summary>
         /// <param name="error"> The message specifing the error. </param>
@@ -33,6 +36,6 @@ namespace Pentagon.Exceptions
         /// <summary> Converts the inner message to exception message. </summary>
         /// <param name="inner"> The inner. </param>
         /// <returns> The <see cref="string" /> value of message. </returns>
-        static string GetMessage(string inner = null) => $"String value is not valid{(inner == null ? "" : $"string should be {inner})")}.";
+        static string GetMessage(string inner = null) => $"String value is not valid{(inner == null ? "" : $" string should be {inner})")}.";
     }
 }
