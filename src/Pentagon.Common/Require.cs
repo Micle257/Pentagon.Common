@@ -8,6 +8,7 @@ namespace Pentagon
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using Exceptions;
     using Helpers;
@@ -119,7 +120,7 @@ namespace Pentagon
 
         /// <summary> Requires that reference instance is not null. </summary>
         /// <typeparam name="T"> The type of the value. </typeparam>
-        /// <param name="value"> The value encapsulated in expression of format '() =&gt; val'. </param>
+        /// <param name="value"> The value encapsulated in expression of format '() => val'. </param>
         /// <param name="message"> The message. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
         /// <exception cref="ArgumentNullException"> When expression's member is null. </exception>
@@ -141,6 +142,43 @@ namespace Pentagon
             }
 
             return result;
+        }
+
+        /// <summary> Requires that collection is not empty. </summary>
+        /// <typeparam name="T"> The type of the value. </typeparam>
+        /// <param name="value"> The value encapsulated in expression of format '() => val'. </param>
+        /// <param name="message"> The message. </param>
+        /// <returns> A <see cref="IRequireResult" /> containing data about this constrain. </returns>
+        /// <exception cref="ArgumentException"> When collection is empty. </exception>
+        [NotNull]
+        [UsedImplicitly]
+        public static IRequireResult NotEmpty<T>([NotNull] Expression<Func<IEnumerable<T>>> value, string message = null)
+        {
+            var result = new RequireResult<ArgumentException>();
+
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (!exactValue.Any())
+            {
+                result.Exception = new ArgumentException(message ?? "The collection cannot be empty.", valueName ?? "value");
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            return result;
+        }
+
+        /// <summary> Requires that all elements in a collection are not default value. </summary>
+        /// <typeparam name="T"> Type of the value. </typeparam>
+        /// <param name="items"> The items. </param>
+        /// <exception cref="ArgumentNullException"> When any of items is not valid. </exception>
+        [NotNull]
+        [UsedImplicitly]
+        public static IEnumerable<IRequireResult> ItemsNotDefault<T>([NotNull] IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                yield return NotDefault(() => item);
         }
 
         /// <summary> Requires that arguments matches the type. </summary>
@@ -183,7 +221,7 @@ namespace Pentagon
 
             if (!(exactValue is TIs v))
             {
-                result.Exception = new ArgumentException($"Argument must be of type {typeof(TIs).Name}", valueName ?? "value");
+                result.Exception = new ArgumentException($"Argument must be of type {typeof(TIs).Name}.", valueName ?? "value");
 
                 if (ThrowExceptions)
                     throw result.Exception;
@@ -219,18 +257,6 @@ namespace Pentagon
             return result;
         }
 
-        /// <summary> Requires that all elements in a collection are not default value. </summary>
-        /// <typeparam name="T"> Type of the value. </typeparam>
-        /// <param name="items"> The items. </param>
-        /// <exception cref="ArgumentNullException"> When any of items is not valid. </exception>
-        [NotNull]
-        [UsedImplicitly]
-        public static IEnumerable<IRequireResult> ItemsNotDefault<T>([NotNull] IEnumerable<T> items)
-        {
-            foreach (var item in items)
-                yield return NotDefault(() => item);
-        }
-
         /// <summary> Requires that specified condition must be true. </summary>
         /// <typeparam name="T"> The type of the value. </typeparam>
         /// <param name="valueExpression"> The value expression. </param>
@@ -243,7 +269,7 @@ namespace Pentagon
         public static IRequireResult Condition<T>([NotNull] Expression<Func<T>> valueExpression, Func<T, bool> conditionPredicate, string message = null)
         {
             if (message == null)
-                message = $"The condition {conditionPredicate} is not true";
+                message = $"The condition {conditionPredicate} is not true.";
 
             var result = new RequireResult<ArgumentException>();
 
@@ -272,7 +298,7 @@ namespace Pentagon
         public static IRequireResult Condition([NotNull] Func<bool> conditionPredicate, string message = null)
         {
             if (message == null)
-                message = $"The condition {conditionPredicate} is not true";
+                message = $"The condition {conditionPredicate} is not true.";
 
             var result = new RequireResult<ArgumentException>();
 

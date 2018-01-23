@@ -7,6 +7,7 @@
 namespace Pentagon.Common.Tests
 {
     using System;
+    using System.Collections.Generic;
     using Exceptions;
     using Helpers;
     using Xunit;
@@ -145,6 +146,57 @@ namespace Pentagon.Common.Tests
             var result = Require.NotDefault(() => stub);
 
             Assert.True(result.IsValid);
+        }
+
+        [Fact]
+        public void NotEmpty_ValueIsNotEmpty_IsValidIsTrue()
+        {
+            var notEmpty = new [] { 1};
+
+            var res = Require.NotEmpty(() => notEmpty);
+
+            Assert.Equal(true, res.IsValid);
+        }
+
+        [Fact]
+        public void NotEmpty_ValueIsEmpty_Throws()
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var empty = new List<int>();
+            
+            Require.ThrowExceptions = true;
+            Assert.Throws<ArgumentException>(() => Require.NotEmpty(() => empty));
+        }
+
+        [Fact]
+        public void NotEmpty_ReturnsRequireResultOfExpectedGenericType()
+        {
+            var notEmpty = new[] { 1 };
+
+            var res = Require.NotEmpty(() => notEmpty);
+            var concrete = res as RequireResult<ArgumentException>;
+
+            Assert.NotNull(concrete);
+        }
+
+        [Fact]
+        public void NotEmpty_ParameterIsDeclaredImplicitly_ResultExceptionHaveRightParameterName()
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var empty = new List<int>();
+            var name = "";
+
+            try
+            {
+                Require.NotEmpty(() => empty);
+            }
+            // ReSharper disable once UncatchableException
+            catch (ArgumentException e)
+            {
+                name = e.ParamName;
+            }
+
+            Assert.Equal(nameof(empty), name);
         }
 
         [Fact]
