@@ -15,7 +15,6 @@ namespace Pentagon.Common.Tests.Extensions
         enum Stub
         {
             First,
-
             [Tested]
             Second
         }

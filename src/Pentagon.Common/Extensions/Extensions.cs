@@ -16,7 +16,7 @@ namespace Pentagon.Extensions
         /// <param name="value"> The value. </param>
         /// <returns> <c> true </c> if the specified value is default; otherwise, <c> false </c>. </returns>
         public static bool IsDefault<T>(this IValueDataType<T> value)
-            where T : IValueDataType<T>
+                where T : IValueDataType<T>
             => value?.HasValue ?? false;
 
         /// <summary> Determines if given object is equal to any of parameters </summary>
@@ -36,6 +36,7 @@ namespace Pentagon.Extensions
                 if (value.Equals(item))
                     return true;
             }
+
             return false;
         }
     }

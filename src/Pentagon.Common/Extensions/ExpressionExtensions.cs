@@ -9,6 +9,7 @@ namespace Pentagon.Extensions
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
+    using JetBrains.Annotations;
 
     /// <summary> Contains extension methods for <see cref="Expression" />. </summary>
     public static class ExpressionExtensions
@@ -35,6 +36,22 @@ namespace Pentagon.Extensions
             var target = Expression.Lambda(memberEx.Expression).Compile().DynamicInvoke();
 
             propertyInfo.SetValue(target, value);
+        }
+
+        /// <summary> Gets the value from the <see cref="MemberExpression" />. </summary>
+        /// <param name="expression"> The expression. </param>
+        /// <returns> A <see cref="Object" /> that represents value of member expression. </returns>
+        public static object GetMemberValue([NotNull] this MemberExpression expression)
+        {
+            Require.NotNull(() => expression);
+
+            // casts the expression to object
+            var objectMember = Expression.Convert(expression, typeof(object));
+
+            // create a lambda from object expression
+            var getterLambda = Expression.Lambda<Func<object>>(objectMember);
+
+            return getterLambda.Compile()();
         }
     }
 }
