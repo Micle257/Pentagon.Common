@@ -55,6 +55,50 @@ namespace Pentagon.Common.Tests.Extensions
         }
 
         [Fact]
+        public void Append_ParameterIsNull_IteratesSameItems()
+        {
+            var collection = new[] {1, 2};
+
+            var result = collection.Append(null);
+
+            Assert.Equal(collection, result);
+        }
+        
+        [Fact]
+        public void Append_ParameterIsValid_AppendsItems()
+        {
+            var collection = new[] { 1, 2 };
+
+            var added = new[] {6, 4};
+
+            var result = collection.Append(added);
+
+            Assert.Equal(new [] {1,2,6,4 }, result);
+        }
+
+        [Fact]
+        public void Prepend_ParameterIsNull_IteratesSameItems()
+        {
+            var collection = new[] { 1, 2 };
+
+            var result = collection.Prepend(null);
+
+            Assert.Equal(collection, result);
+        }
+        
+        [Fact]
+        public void Prepend_ParameterIsValid_PrependsItems()
+        {
+            var collection = new[] { 1, 2 };
+
+            var added = new[] { 6, 4 };
+
+            var result = collection.Prepend(added);
+
+            Assert.Equal(new[] { 6, 4, 1, 2 }, result);
+        }
+
+        [Fact]
         public void SymmetricExcept_Scenario_ExpectedBehavior()
         {
             var c1 = new[] {0, 1, 2, 3, 4, 5};

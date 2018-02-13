@@ -71,6 +71,7 @@ namespace Pentagon.Extensions
                     firstElement = e;
                 a = true;
             }
+
             yield return firstElement;
         }
 
@@ -90,13 +91,69 @@ namespace Pentagon.Extensions
             return hash;
         }
 
-        /// <summary>
-        /// Removes and returns the object at the beginning; and adds an object to the end of the <see cref="Queue{T}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of an element.</typeparam>
-        /// <param name="queue">The queue.</param>
-        /// <param name="value">The value to enqueue.</param>
-        /// <returns>The <see cref="T"/> that represents dequeued value from the queue.</returns>
+        /// <summary> Appends items of the collection at the end of this collection. </summary>
+        /// <typeparam name="T"> The type of the item. </typeparam>
+        /// <param name="collection"> This collection. </param>
+        /// <param name="toAdd"> To collection to append. </param>
+        /// <returns> An iteration of appended collection. </returns>
+        [Pure]
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, IEnumerable<T> toAdd)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            foreach (var item in collection)
+                yield return item;
+
+            if (toAdd != null)
+            {
+                foreach (var item in toAdd)
+                    yield return item;
+            }
+        }
+
+        /// <summary> Appends items of the collection at the end of this collection. </summary>
+        /// <typeparam name="T"> The type of the item. </typeparam>
+        /// <param name="collection"> This collection. </param>
+        /// <param name="toAdd"> To collection to append. </param>
+        /// <returns> An iteration of appended collection. </returns>
+        [Pure]
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, params T[] toAdd) => Append(collection, toAdd.AsEnumerable());
+
+        /// <summary> Prepends items of the collection at the beginning of this collection. </summary>
+        /// <typeparam name="T"> The type of the item. </typeparam>
+        /// <param name="collection"> This collection. </param>
+        /// <param name="toAdd"> To collection to prepend. </param>
+        /// <returns> An iteration of prepended collection. </returns>
+        [Pure]
+        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, IEnumerable<T> toAdd)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            if (toAdd != null)
+            {
+                foreach (var item in toAdd)
+                    yield return item;
+            }
+
+            foreach (var item in collection)
+                yield return item;
+        }
+
+        /// <summary> Prepends items of the collection at the beginning of this collection. </summary>
+        /// <typeparam name="T"> The type of the item. </typeparam>
+        /// <param name="collection"> This collection. </param>
+        /// <param name="toAdd"> To collection to prepend. </param>
+        /// <returns> An iteration of prepended collection. </returns>
+        [Pure]
+        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, params T[] toAdd) => Prepend(collection, toAdd.AsEnumerable());
+
+        /// <summary> Removes and returns the object at the beginning; and adds an object to the end of the <see cref="Queue{T}" />. </summary>
+        /// <typeparam name="T"> The type of an element. </typeparam>
+        /// <param name="queue"> The queue. </param>
+        /// <param name="value"> The value to enqueue. </param>
+        /// <returns> The <see cref="T" /> that represents dequeued value from the queue. </returns>
         public static T Requeue<T>([NotNull] this Queue<T> queue, T value)
         {
             Require.NotNull(() => queue);
