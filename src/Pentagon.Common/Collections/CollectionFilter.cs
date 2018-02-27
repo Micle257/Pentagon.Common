@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
 //  <copyright file="CollectionFilter.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal PokornÃ½. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon.Collections
 {
     using System;
 
@@ -17,14 +17,10 @@ namespace Pentagon.Helpers
         public CollectionFilter(Predicate<T> rulePredicate = null)
         {
             Predicate = rulePredicate ?? (obj => true);
-            IsAllPass = true;
         }
 
         /// <inheritdoc />
         public Predicate<T> Predicate { get; }
-
-        /// <inheritdoc />
-        public bool IsAllPass { get; }
 
         /// <inheritdoc />
         public void ApplyFilter(IFilterableCollection<T> coll)

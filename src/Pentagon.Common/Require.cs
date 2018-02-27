@@ -8,6 +8,7 @@ namespace Pentagon
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using Exceptions;
     using Helpers;
@@ -21,17 +22,67 @@ namespace Pentagon
         [UsedImplicitly]
         public static bool ThrowExceptions { get; set; } = true;
 
-        /// <summary> Requires that <see cref="string" /> is not null and don't contains just whitespace. </summary>
+        /// <summary> Requires that <see cref="string" /> is not null and doesn't contain just whitespaces. </summary>
         /// <param name="value"> The value. </param>
         /// <exception cref="StringArgumentException"> When value is not valid. </exception>
+        /// <exception cref="ArgumentException"> When value is not of type <see cref="string"/>. </exception>
         [UsedImplicitly]
-        public static IRequireResult StringNotNullNorWhiteSpace(string value)
+        public static IRequireResult StringNotNullNorWhiteSpace<T>([NotNull] Expression<Func<T>> value)
         {
             var result = new RequireResult<StringArgumentException>();
 
-            if (string.IsNullOrWhiteSpace(value))
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (exactValue == null)
             {
-                result.Exception = new StringArgumentException(error: "not null or whitespace");
+                result.Exception = new StringArgumentException("not null", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            if (!(exactValue is string))
+            {
+                throw new ArgumentException($"Argument must be of type string", valueName ?? "value");
+            }
+
+            if (string.IsNullOrWhiteSpace(exactValue as string))
+            {
+                result.Exception = new StringArgumentException("not null or whitespace", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            return result;
+        }
+
+        /// <summary> Requires that <see cref="string" /> is not null and don't contains just whitespace. </summary>
+        /// <param name="value"> The value. </param>
+        /// <exception cref="StringArgumentException"> When require criteria are not matched. </exception>
+        /// <exception cref="ArgumentException"> When value is not of type <see cref="string"/>. </exception>
+        [UsedImplicitly]
+        public static IRequireResult StringNotNullNorEmpty<T>([NotNull] Expression<Func<T>> value)
+        {
+            var result = new RequireResult<StringArgumentException>();
+
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (exactValue == null)
+            {
+                result.Exception = new StringArgumentException("not null", valueName);
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            if (!(exactValue is string))
+            {
+                throw new ArgumentException($"Argument must be of type string", valueName ?? "value");
+            }
+
+            if (string.IsNullOrEmpty(exactValue as string))
+            {
+                result.Exception = new StringArgumentException("not null or empty", valueName);
                 if (ThrowExceptions)
                     throw result.Exception;
             }
@@ -51,8 +102,7 @@ namespace Pentagon
             var result = new RequireResult<ValueOutOfRangeException<T>>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //     throw new ArgumentException(message: "The given expression is not valid.");
+
             var compile = valueExpression.Compile();
             if (compile == null)
                 throw new ArgumentException(message: "The given expression is not valid.");
@@ -70,10 +120,9 @@ namespace Pentagon
 
         /// <summary> Requires that reference instance is not null. </summary>
         /// <typeparam name="T"> The type of the value. </typeparam>
-        /// <param name="value"> The value encapsulated in expression of format '() =&gt; val'. </param>
+        /// <param name="value"> The value encapsulated in expression of format '() => val'. </param>
         /// <param name="message"> The message. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
-        /// <exception cref="ArgumentException"> The given expression is not valid. </exception>
         /// <exception cref="ArgumentNullException"> When expression's member is null. </exception>
         [NotNull]
         [UsedImplicitly]
@@ -93,6 +142,43 @@ namespace Pentagon
             }
 
             return result;
+        }
+
+        /// <summary> Requires that collection is not empty. </summary>
+        /// <typeparam name="T"> The type of the value. </typeparam>
+        /// <param name="value"> The value encapsulated in expression of format '() => val'. </param>
+        /// <param name="message"> The message. </param>
+        /// <returns> A <see cref="IRequireResult" /> containing data about this constrain. </returns>
+        /// <exception cref="ArgumentException"> When collection is empty. </exception>
+        [NotNull]
+        [UsedImplicitly]
+        public static IRequireResult NotEmpty<T>([NotNull] Expression<Func<IEnumerable<T>>> value, string message = null)
+        {
+            var result = new RequireResult<ArgumentException>();
+
+            var valueName = (value.Body as MemberExpression)?.Member?.Name;
+            var exactValue = value.Compile()();
+
+            if (!exactValue.Any())
+            {
+                result.Exception = new ArgumentException(message ?? "The collection cannot be empty.", valueName ?? "value");
+                if (ThrowExceptions)
+                    throw result.Exception;
+            }
+
+            return result;
+        }
+
+        /// <summary> Requires that all elements in a collection are not default value. </summary>
+        /// <typeparam name="T"> Type of the value. </typeparam>
+        /// <param name="items"> The items. </param>
+        /// <exception cref="ArgumentNullException"> When any of items is not valid. </exception>
+        [NotNull]
+        [UsedImplicitly]
+        public static IEnumerable<IRequireResult> ItemsNotDefault<T>([NotNull] IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                yield return NotDefault(() => item);
         }
 
         /// <summary> Requires that arguments matches the type. </summary>
@@ -130,13 +216,12 @@ namespace Pentagon
             var result = new RequireResult<ArgumentException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //    throw new ArgumentException("The given expression is not valid.");
+
             var exactValue = valueExpression.Compile()();
 
             if (!(exactValue is TIs v))
             {
-                result.Exception = new ArgumentException($"Argument must be of type {typeof(TIs).Name}", valueName ?? "value");
+                result.Exception = new ArgumentException($"Argument must be of type {typeof(TIs).Name}.", valueName ?? "value");
 
                 if (ThrowExceptions)
                     throw result.Exception;
@@ -151,39 +236,25 @@ namespace Pentagon
         /// <typeparam name="T"> Type of the value. </typeparam>
         /// <param name="valueExpression"> The value expression. </param>
         /// <returns> A <see cref="IRequireResult" /> containing data about this require. </returns>
-        /// <exception cref="System.ArgumentException"> The given expression is not valid. </exception>
-        /// <exception cref="ArgumentException"> When value is not valid. </exception>
+        /// <exception cref="ArgumentNullException"> When value is not valid. </exception>
         [NotNull]
         [UsedImplicitly]
         public static IRequireResult NotDefault<T>([NotNull] Expression<Func<T>> valueExpression)
         {
-            var result = new RequireResult<ArgumentException>();
+            var result = new RequireResult<ArgumentNullException>();
 
             var valueName = (valueExpression.Body as MemberExpression)?.Member?.Name;
-            // if (valueName == null)
-            //     throw new ArgumentException("The given expression is not valid.");
+
             var exactValue = valueExpression.Compile()();
 
             if (EqualityComparer<T>.Default.Equals(exactValue, default(T)))
             {
-                result.Exception = new ArgumentException(valueName ?? "value");
+                result.Exception = new ArgumentNullException(valueName ?? "value", $"Parameter {valueName} cannot be null.");
                 if (ThrowExceptions)
                     throw result.Exception;
             }
 
             return result;
-        }
-
-        /// <summary> Requires that all elements in a collection are not default value. </summary>
-        /// <typeparam name="T"> Type of the value. </typeparam>
-        /// <param name="items"> The items. </param>
-        /// <exception cref="ArgumentNullException"> When any of items is not valid. </exception>
-        [NotNull]
-        [UsedImplicitly]
-        public static IEnumerable<IRequireResult> ItemsNotDefault<T>([NotNull] IEnumerable<T> items)
-        {
-            foreach (var item in items)
-                yield return NotDefault(() => item);
         }
 
         /// <summary> Requires that specified condition must be true. </summary>
@@ -198,7 +269,7 @@ namespace Pentagon
         public static IRequireResult Condition<T>([NotNull] Expression<Func<T>> valueExpression, Func<T, bool> conditionPredicate, string message = null)
         {
             if (message == null)
-                message = $"The condition {conditionPredicate} is not true";
+                message = $"The condition {conditionPredicate} is not true.";
 
             var result = new RequireResult<ArgumentException>();
 
@@ -227,7 +298,7 @@ namespace Pentagon
         public static IRequireResult Condition([NotNull] Func<bool> conditionPredicate, string message = null)
         {
             if (message == null)
-                message = $"The condition {conditionPredicate} is not true";
+                message = $"The condition {conditionPredicate} is not true.";
 
             var result = new RequireResult<ArgumentException>();
 

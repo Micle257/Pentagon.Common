@@ -9,6 +9,7 @@ namespace Pentagon.Common.Tests
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using Collections;
     using Helpers;
     using Moq;
     using Xunit;
@@ -94,7 +95,7 @@ namespace Pentagon.Common.Tests
                 Integers.Add(new Integer(5));
                 Integers.Add(new Integer(7));
                 Integers.Add(new Integer(4));
-                
+
                 Assert.Equal(3, Integers.Count);
                 Assert.Equal(4, Integers[0].Value);
                 Assert.Equal(5, Integers[1].Value);
@@ -180,10 +181,10 @@ namespace Pentagon.Common.Tests
                 Assert.True(coll.Contains(new Integer(2)));
             }
 
-           public class Integer : ObservableObject, IEquatable<Integer>
+            public class Integer : ObservableObject, IEquatable<Integer>
             {
-                int _value;
                 readonly int _initialValue;
+                int _value;
 
                 /// <inheritdoc />
                 public Integer(int value)
@@ -207,7 +208,7 @@ namespace Pentagon.Common.Tests
                         OnPropertyChanged();
                     }
                 }
-                
+
                 #region IEquatable members
 
                 /// <inheritdoc />

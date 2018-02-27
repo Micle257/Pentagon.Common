@@ -3,6 +3,7 @@
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
+
 namespace Pentagon.Common.Tests
 {
     using System;
@@ -13,7 +14,7 @@ namespace Pentagon.Common.Tests
         [Fact]
         public void IsValid_ExceptionIsNull_IsTrue()
         {
-            var result= new RequireResult<Exception>();
+            var result = new RequireResult<Exception>();
 
             Assert.True(result.IsValid);
         }

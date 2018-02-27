@@ -6,6 +6,8 @@
 
 namespace Pentagon
 {
+    using Collections;
+
     /// <summary> Provides an ability of the object to dynamically select an element from the container. </summary>
     /// <typeparam name="T"> The type of the element. </typeparam>
     public interface ISelectable<T> : IContainer<T>

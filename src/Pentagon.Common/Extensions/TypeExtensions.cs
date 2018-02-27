@@ -18,16 +18,15 @@ namespace Pentagon.Extensions
         /// <summary> Gets the generic type of the nullable. </summary>
         /// <param name="dataType"> Type of the data. </param>
         /// <returns> The <see cref="Type" /> of generic, if failed <c> null </c>. </returns>
-        public static Type GetNullableType(this Type dataType)
+        public static Type GetNullableType([NotNull] this Type dataType)
         {
-            if (dataType == null)
-                return null;
+            Require.NotNull(() => dataType);
 
             if (dataType.GetTypeInfo().IsGenericType &&
                 dataType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                dataType = Nullable.GetUnderlyingType(dataType);
+                return Nullable.GetUnderlyingType(dataType);
 
-            return dataType;
+            return null;
         }
 
         /// <summary> Gets the non static, get/set properties of the type. </summary>
@@ -36,6 +35,28 @@ namespace Pentagon.Extensions
         public static IEnumerable<PropertyInfo> GetAutoProperties([NotNull] this Type type)
         {
             return type.GetRuntimeProperties().Where(p => p.CanWrite && p.CanRead && p.GetMethod.IsPublic && p.SetMethod.IsPublic && !p.GetMethod.IsStatic);
+        }
+
+        /// <summary>
+        /// Gets the value from the field or propertu member info.
+        /// </summary>
+        /// <param name="memberInfo">The member metadata.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// A <see cref="object"/> that represents the value; or <c>null</c> if the member is not filed nor property.
+        /// </returns>
+        public static object GetValue([NotNull] this MemberInfo memberInfo, object instance)
+        {
+            Require.NotNull(() => memberInfo);
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo)memberInfo).GetValue(instance);
+                case MemberTypes.Property:
+                    return ((PropertyInfo)memberInfo).GetValue(instance);
+                default:
+                    return null;
+            }
         }
     }
 }

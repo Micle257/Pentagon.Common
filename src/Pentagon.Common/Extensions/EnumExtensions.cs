@@ -15,13 +15,13 @@ namespace Pentagon.Extensions
     {
         /// <summary> Gets an attribute on an enum field value. </summary>
         /// <typeparam name="TAttribute"> The type of the attribute on the enum value. </typeparam>
-        /// <param name="enumValueBox"> The enum value. </param>
+        /// <param name="value"> The enum value. </param>
         /// <returns> A <see cref="TAttribute" /> that is on the enum value or <c> null </c>. </returns>
-        public static TAttribute GetItemAttribute<TAttribute>([NotNull] this object enumValueBox)
+        public static TAttribute GetItemAttribute<TAttribute>([NotNull] this object value)
             where TAttribute : Attribute
         {
-            Require.NotNull(() => enumValueBox);
-            Require.IsType(() => enumValueBox, out Enum enumValue);
+            Require.NotNull(() => value);
+            Require.IsType(() => value, out Enum enumValue);
             var type = enumValue.GetType();
             var memberInfos = type.GetTypeInfo()?.GetMember(Enum.GetName(type, enumValue));
             if (memberInfos == null || memberInfos.Length <= 0)

@@ -25,46 +25,38 @@ namespace Pentagon.Extensions
         public static TValue GetAttributeValue<TAttribute, TValue>([NotNull] this Type type, [NotNull] Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute
         {
-            if (valueSelector == null)
-                throw new ArgumentNullException(nameof(valueSelector));
+            Require.NotNull(() => type);
+            Require.NotNull(() => valueSelector);
             var att = type.GetTypeInfo().GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
             return att != null ? valueSelector(att) : default(TValue);
         }
 
-        /// <summary> Determines whether the specified name of value's property has given attribute. </summary>
-        /// <typeparam name="T"> The type of attribute. </typeparam>
-        /// <param name="value"> The value object. </param>
-        /// <param name="name"> The name of the property. </param>
-        /// <returns> <c> true </c> if the specified name is attribute; otherwise, <c> false </c>. </returns>
-        public static bool IsAttribute<T>([NotNull] this object value, string name)
-            where T : Attribute
-        {
-            Require.NotNull(() => value);
-            var att = value.GetType().GetRuntimeProperties().FirstOrDefault(a => a?.Name == name).GetCustomAttributes<T>(true).FirstOrDefault();
-            return att != null;
-        }
-
         /// <summary> Determines whether the specified value has given attribute. </summary>
-        /// <typeparam name="T"> The type of attribute. </typeparam>
+        /// <typeparam name="TAttribute"> The type of attribute. </typeparam>
         /// <param name="value"> The value object. </param>
         /// <returns> <c> true </c> if the value has attribute; otherwise, <c> false </c>. </returns>
-        public static bool HasAttribute<T>([NotNull] this object value)
-            where T : Attribute
-            => value.GetType().GetTypeInfo().GetCustomAttribute<T>() != null;
+        public static bool HasAttribute<TAttribute>([NotNull] this object value)
+            where TAttribute : Attribute
+        {
+            Require.NotNull(() => value);
+            return value.GetType().GetTypeInfo().GetCustomAttribute<TAttribute>() != null;
+        }
 
         /// <summary> Gets the attribute property value from type's property. </summary>
         /// <typeparam name="TType"> The type of the type which contains the property. </typeparam>
         /// <typeparam name="TProperty"> The type of the property. </typeparam>
         /// <typeparam name="TAttribute"> The type of the attribute. </typeparam>
         /// <typeparam name="TValue"> The type of the attribute property. </typeparam>
-        /// <param name="propertyExpression"> The property expression (<typeparamref name="TType" /> => <typeparamref name="TProperty" />). </param>
+        /// <param name="value"> The value. </param>
+        /// <param name="propertyExpression"> The property expression (<typeparamref name="TType" /> =&gt; <typeparamref name="TProperty" />). </param>
         /// <param name="valueSelector"> The attribute's value selector. </param>
         /// <returns> A value from selected attribute property. </returns>
-        public static TValue GetPropertyAttributeValue<TType, TProperty, TAttribute, TValue>(
-            [NotNull] Expression<Func<TType, TProperty>> propertyExpression,
-            [NotNull] Func<TAttribute, TValue> valueSelector)
+        public static TValue GetPropertyAttributeValue<TType, TProperty, TAttribute, TValue>([NotNull] this TType value,
+                                                                                             [NotNull] Expression<Func<TType, TProperty>> propertyExpression,
+                                                                                             [NotNull] Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute
         {
+            Require.NotDefault(() => value);
             Require.NotNull(() => propertyExpression);
             Require.NotNull(() => valueSelector);
             var expression = (MemberExpression) propertyExpression.Body;

@@ -7,6 +7,7 @@
 namespace Pentagon.Common.Tests
 {
     using System;
+    using System.Collections.Generic;
     using Exceptions;
     using Helpers;
     using Xunit;
@@ -21,7 +22,7 @@ namespace Pentagon.Common.Tests
         [InlineData(null)]
         public void StringNotNullNorWhiteSpace_ValueIsNotValid_Throws(string value)
         {
-            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorWhiteSpace(value));
+            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorWhiteSpace(() => value));
         }
 
         [Theory]
@@ -29,7 +30,26 @@ namespace Pentagon.Common.Tests
         [InlineData("  s  ")]
         public void StringNotNullNorWhiteSpace_ValueIsValid_IsValidIsTrue(string value)
         {
-            var result = Require.StringNotNullNorWhiteSpace(value).IsValid;
+            var result = Require.StringNotNullNorWhiteSpace(() => value).IsValid;
+
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void StringNotNullNorEmpty_ValueIsNotValid_Throws(string value)
+        {
+            Assert.Throws<StringArgumentException>(() => Require.StringNotNullNorEmpty(() => value));
+        }
+
+        [Theory]
+        [InlineData("s")]
+        [InlineData("    ")]
+        [InlineData("  s  ")]
+        public void StringNotNullNorEmpty_ValueIsValid_IsValidIsTrue(string value)
+        {
+            var result = Require.StringNotNullNorEmpty(() => value).IsValid;
 
             Assert.True(result);
         }
@@ -107,7 +127,7 @@ namespace Pentagon.Common.Tests
         {
             var stub = default(double);
 
-            Assert.Throws<ArgumentException>(() => Require.NotDefault(() => stub));
+            Assert.Throws<ArgumentNullException>(() => Require.NotDefault(() => stub));
         }
 
         [Fact]
@@ -115,7 +135,7 @@ namespace Pentagon.Common.Tests
         {
             var stub = default(string);
 
-            Assert.Throws<ArgumentException>(() => Require.NotDefault(() => stub));
+            Assert.Throws<ArgumentNullException>(() => Require.NotDefault(() => stub));
         }
 
         [Fact]
@@ -126,6 +146,57 @@ namespace Pentagon.Common.Tests
             var result = Require.NotDefault(() => stub);
 
             Assert.True(result.IsValid);
+        }
+
+        [Fact]
+        public void NotEmpty_ValueIsNotEmpty_IsValidIsTrue()
+        {
+            var notEmpty = new [] { 1};
+
+            var res = Require.NotEmpty(() => notEmpty);
+
+            Assert.Equal(true, res.IsValid);
+        }
+
+        [Fact]
+        public void NotEmpty_ValueIsEmpty_Throws()
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var empty = new List<int>();
+            
+            Require.ThrowExceptions = true;
+            Assert.Throws<ArgumentException>(() => Require.NotEmpty(() => empty));
+        }
+
+        [Fact]
+        public void NotEmpty_ReturnsRequireResultOfExpectedGenericType()
+        {
+            var notEmpty = new[] { 1 };
+
+            var res = Require.NotEmpty(() => notEmpty);
+            var concrete = res as RequireResult<ArgumentException>;
+
+            Assert.NotNull(concrete);
+        }
+
+        [Fact]
+        public void NotEmpty_ParameterIsDeclaredImplicitly_ResultExceptionHaveRightParameterName()
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var empty = new List<int>();
+            var name = "";
+
+            try
+            {
+                Require.NotEmpty(() => empty);
+            }
+            // ReSharper disable once UncatchableException
+            catch (ArgumentException e)
+            {
+                name = e.ParamName;
+            }
+
+            Assert.Equal(nameof(empty), name);
         }
 
         [Fact]
