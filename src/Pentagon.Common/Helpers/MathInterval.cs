@@ -26,7 +26,7 @@ namespace Pentagon.Helpers
 
         /// <summary> Gets or sets the precision for numeric types with floating decimal point. </summary>
         /// <value> The <see cref="Int32" />, default is 7 decimal places. </value>
-        public int Precision { get; } = 7;
+        public int Precision { get; set; } = 7;
 
         #region Operators
 
@@ -74,7 +74,7 @@ namespace Pentagon.Helpers
         /// <param name="lengthOfElement"> The length of element. </param>
         /// <returns> An <see cref="IEnumerable{T}" /> of diveded interval. </returns>
         [NotNull]
-        public IEnumerable<double> Sampling(double lengthOfElement)
+        public IEnumerable<double> GetSampledInterval(double lengthOfElement)
         {
             for (var i = Min; i < Max; i += lengthOfElement)
                 yield return i;

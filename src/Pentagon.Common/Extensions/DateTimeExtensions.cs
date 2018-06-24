@@ -23,6 +23,6 @@ namespace Pentagon.Extensions
         /// <param name="dayOfWeek"> The day of week. </param>
         /// <returns> A <see cref="int" /> of week number, -or- negative 1 if failed to find the number. </returns>
         public static int GetWeekNumber(this DateTime dateTime, CalendarWeekRule weekRule = CalendarWeekRule.FirstDay, DayOfWeek dayOfWeek = DayOfWeek.Monday)
-            => CultureInfo.CurrentCulture?.Calendar?.GetWeekOfYear(dateTime, weekRule, dayOfWeek) ?? -1;
+            => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, weekRule, dayOfWeek);
     }
 }

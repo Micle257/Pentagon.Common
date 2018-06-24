@@ -60,7 +60,7 @@ namespace Pentagon.Extensions
             Require.NotNull(() => propertyExpression);
             Require.NotNull(() => valueSelector);
             var expression = (MemberExpression) propertyExpression.Body;
-            var propertyInfo = (PropertyInfo) expression?.Member;
+            var propertyInfo = (PropertyInfo) expression.Member;
             var att = propertyInfo.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
             return att != null ? valueSelector(att) : default(TValue);
         }
