@@ -10,7 +10,7 @@
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
