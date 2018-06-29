@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Pentagon</RootNamespace>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <Authors>Michal Pokorný</Authors>
     <Company></Company>
-    <Product>Pentagon</Product>
+    <Product>Pentagon.Common</Product>
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.5.1</Version>
+    <Version>1.5.2</Version>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>

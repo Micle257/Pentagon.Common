@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{44FA4F93
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pentagon.Common.Tests", "test\Pentagon.Common.Tests\Pentagon.Common.Tests.csproj", "{4F25B768-7568-4E44-827F-D61D2390036B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pentagon.Extensions.TimePeriod", "src\Pentagon.Extensions.TimePeriod\Pentagon.Extensions.TimePeriod.csproj", "{D9854983-7081-4EDD-B1BB-B724780E38CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{4F25B768-7568-4E44-827F-D61D2390036B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F25B768-7568-4E44-827F-D61D2390036B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F25B768-7568-4E44-827F-D61D2390036B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9854983-7081-4EDD-B1BB-B724780E38CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9854983-7081-4EDD-B1BB-B724780E38CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9854983-7081-4EDD-B1BB-B724780E38CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9854983-7081-4EDD-B1BB-B724780E38CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
