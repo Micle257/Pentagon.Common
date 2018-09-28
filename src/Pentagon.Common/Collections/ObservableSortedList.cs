@@ -40,7 +40,7 @@ namespace Pentagon.Collections
         {
             _allItems = new List<T>();
             _items = new List<T>();
-            _comparer = comparer ?? (Comparer<T>.Default ?? throw new ArgumentNullException());
+            _comparer = comparer ?? (Comparer<T>.Default);
             Filter = filter ?? new AllPassCollectionFilter<T>();
         }
 

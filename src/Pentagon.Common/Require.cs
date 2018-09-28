@@ -33,7 +33,7 @@ namespace Pentagon
 
             var valueName = (value.Body as MemberExpression)?.Member?.Name;
             var exactValue = value.Compile()();
-
+            
             if (exactValue == null)
             {
                 result.Exception = new StringArgumentException("not null", valueName);

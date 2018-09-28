@@ -1,15 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IValuable.cs">
+//  <copyright file="IDeepCloneable'1.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
 namespace Pentagon
 {
-    /// <summary> Represents an ability of type to be access by major value. </summary>
-    public interface IValuable<out T>
+    public interface IDeepCloneable<out T> : IDeepCloneable
     {
-        /// <summary> Gets the value. </summary>
-        T Value { get; }
+        T DeepClone();
     }
 }

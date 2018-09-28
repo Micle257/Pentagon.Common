@@ -12,6 +12,7 @@ namespace Pentagon.Common.Tests
     using Collections;
     using Helpers;
     using Moq;
+    using Pentagon.Helpers;
     using Xunit;
 
     public class ObservableTypesTests

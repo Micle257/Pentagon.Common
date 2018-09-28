@@ -9,6 +9,7 @@ namespace Pentagon.Helpers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Extensions;
     using JetBrains.Annotations;
 
@@ -30,7 +31,7 @@ namespace Pentagon.Helpers
         /// <returns> An enumerable of value pair of <see cref="T" /> and <see cref="TAttribute" />. </returns>
         [NotNull]
         public static IEnumerable<(T, TAttribute)> GetValues<T, TAttribute>()
-            where TAttribute : Attribute
+                where TAttribute : Attribute
         {
             var values = (T[]) Enum.GetValues(typeof(T));
 
@@ -50,6 +51,42 @@ namespace Pentagon.Helpers
             var realValue = Convert.ToInt32(enumValue);
             var compareValue = Convert.ToInt32(value);
             return (realValue & compareValue) == compareValue;
+        }
+
+        public static TEnum ConvertFromString<TEnum>(string value)
+        {
+            if (value == null)
+                return default;
+
+            if (string.IsNullOrEmpty(value))
+                return default;
+
+            try
+            {
+                var result = GetValues<TEnum, DescriptionAttribute>()
+                             .FirstOrDefault(e => e.Item2?.Description == value).Item1;
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                return default;
+            }
+        }
+
+        public static string ConvertToString<TEnum>(TEnum value)
+        {
+            try
+            {
+                var result = GetValues<TEnum, DescriptionAttribute>()
+                             .FirstOrDefault(e => Enum.GetName(typeof(TEnum), value) == Enum.GetName(typeof(TEnum), e.Item1)).Item2;
+
+                return result.Description;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

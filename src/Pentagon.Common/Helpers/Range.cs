@@ -94,7 +94,7 @@ namespace Pentagon.Helpers
         /// <param name="max"> The up boundry. </param>
         /// <param name="type"> The type of bounties. </param>
         /// <returns> A <c> true </c> if value is in range; otherwise <c> false </c>. </returns>
-        public static bool InRange(T value, T min, T max, RangeBoundaries type)
+        public static bool InRange(in T value, T min, T max, RangeBoundaries type)
         {
             var obj = new Range<T>(min, max, type);
             return obj.InRange(value);

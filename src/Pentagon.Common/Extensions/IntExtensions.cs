@@ -30,6 +30,6 @@ namespace Pentagon.Extensions
         /// <summary> Convert int to string with left padded zeros. </summary>
         /// <param name="value"> The value. </param>
         /// <param name="numberOfDigits"> The number of digits. </param>
-        public static string ToFillString(this int value, int numberOfDigits) => value.ToString()?.PadLeft(numberOfDigits, '0');
+        public static string ToFillString(this int value, int numberOfDigits) => value.ToString().PadLeft(numberOfDigits, '0');
     }
 }

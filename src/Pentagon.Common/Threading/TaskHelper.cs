@@ -13,7 +13,7 @@ namespace Pentagon.Threading
     /// <summary> Provides a helper methods for <seealso cref="Task" />. </summary>
     public class TaskHelper
     {
-        /// <summary> Attemps invoking the function for desired limit count, if the function throws an exception. </summary>
+        /// <summary> Attempts invoking the function for desired limit count, if the function throws an exception. </summary>
         /// <remarks> Method is from Microsoft docs. </remarks>
         /// <typeparam name="T"> The type of the task result. </typeparam>
         /// <param name="function"> The function to invoke. </param>

@@ -44,16 +44,16 @@ namespace Pentagon.Helpers
         public static bool operator !=(TextDateFormat left, TextDateFormat right) => !Equals(left, right);
 
         /// <inheritdoc />
-        public static bool operator <(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default?.Compare(left, right) < 0;
+        public static bool operator <(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default.Compare(left, right) < 0;
 
         /// <inheritdoc />
-        public static bool operator >(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default?.Compare(left, right) > 0;
+        public static bool operator >(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default.Compare(left, right) > 0;
 
         /// <inheritdoc />
-        public static bool operator <=(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default?.Compare(left, right) <= 0;
+        public static bool operator <=(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default.Compare(left, right) <= 0;
 
         /// <inheritdoc />
-        public static bool operator >=(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default?.Compare(left, right) >= 0;
+        public static bool operator >=(TextDateFormat left, TextDateFormat right) => Comparer<TextDateFormat>.Default.Compare(left, right) >= 0;
 
         #endregion
 
