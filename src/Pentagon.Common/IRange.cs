@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon
 {
     using System;
 
@@ -13,11 +13,11 @@ namespace Pentagon.Helpers
     public interface IRange<T>
         where T : IComparable<T>
     {
-        /// <summary> Gets the down boundry. </summary>
+        /// <summary> Gets the down boundary. </summary>
         /// <value> The <see cref="T" />. </value>
         T Min { get; }
 
-        /// <summary> Gets the up boundry. </summary>
+        /// <summary> Gets the up boundary. </summary>
         /// <value> The <see cref="T" />. </value>
         T Max { get; }
 

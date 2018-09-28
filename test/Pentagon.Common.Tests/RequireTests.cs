@@ -10,6 +10,7 @@ namespace Pentagon.Common.Tests
     using System.Collections.Generic;
     using Exceptions;
     using Helpers;
+    using Pentagon.Helpers;
     using Xunit;
 
     public class RequireTests
