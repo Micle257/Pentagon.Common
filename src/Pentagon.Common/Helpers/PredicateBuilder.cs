@@ -22,14 +22,20 @@ namespace Pentagon.Helpers
 
         public IStartedPredicateBuilder<T> And(Expression<Func<T, bool>> predicate)
         {
-            _predicateBody = Expression.AndAlso(_predicateBody, predicate.Body);
+            if (_predicateBody == null)
+                _predicateBody = predicate.Body;
+            else
+                _predicateBody = Expression.AndAlso(_predicateBody, predicate.Body);
 
             return this;
         }
 
         public IStartedPredicateBuilder<T> Or(Expression<Func<T, bool>> predicate)
         {
-            _predicateBody = Expression.OrElse(_predicateBody, predicate.Body);
+            if (_predicateBody == null)
+                _predicateBody = predicate.Body;
+            else
+                _predicateBody = Expression.OrElse(_predicateBody, predicate.Body);
 
             return this;
         }
