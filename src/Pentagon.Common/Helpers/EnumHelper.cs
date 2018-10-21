@@ -19,9 +19,10 @@ namespace Pentagon.Helpers
         /// <summary> Gets the description from enum item with <see cref="DescriptionAttribute" />. </summary>
         /// <param name="enumItem"> The enum item. </param>
         /// <returns> A <see cref="String" /> representing description, -or- <c> null </c> if description attribute is not present. </returns>
-        public static string GetDescription(this Enum enumItem)
+        public static string GetDescription<TEnum>(this TEnum enumItem)
+            where TEnum : Enum
         {
-            var attribute = enumItem?.GetItemAttribute<DescriptionAttribute>();
+            var attribute = enumItem.GetItemAttribute<DescriptionAttribute, TEnum>();
             return attribute?.Description;
         }
 
@@ -30,14 +31,15 @@ namespace Pentagon.Helpers
         /// <typeparam name="TAttribute"> The type of the attribute. </typeparam>
         /// <returns> An enumerable of value pair of <see cref="T" /> and <see cref="TAttribute" />. </returns>
         [NotNull]
-        public static IEnumerable<(T, TAttribute)> GetValues<T, TAttribute>()
+        public static IEnumerable<(TEnum, TAttribute)> GetValues<TEnum, TAttribute>()
+                where TEnum : Enum
                 where TAttribute : Attribute
         {
-            var values = (T[]) Enum.GetValues(typeof(T));
+            var values = (TEnum[]) Enum.GetValues(typeof(TEnum));
 
             foreach (var value in values)
             {
-                var attribute = value.GetItemAttribute<TAttribute>();
+                var attribute = value.GetItemAttribute<TAttribute, TEnum>();
                 yield return (value, attribute);
             }
         }
@@ -54,6 +56,7 @@ namespace Pentagon.Helpers
         }
 
         public static TEnum ConvertFromString<TEnum>(string value)
+            where TEnum : Enum
         {
             if (value == null)
                 return default;
@@ -75,6 +78,7 @@ namespace Pentagon.Helpers
         }
 
         public static string ConvertToString<TEnum>(TEnum value)
+                where TEnum : Enum
         {
             try
             {
