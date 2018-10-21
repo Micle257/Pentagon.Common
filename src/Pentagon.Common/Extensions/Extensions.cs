@@ -11,14 +11,6 @@ namespace Pentagon.Extensions
     /// <summary> Contains general extension methods. </summary>
     public static class Extensions
     {
-        /// <summary> Determines whether value data type is default. </summary>
-        /// <typeparam name="T"> Type of the value type. </typeparam>
-        /// <param name="value"> The value. </param>
-        /// <returns> <c> true </c> if the specified value is default; otherwise, <c> false </c>. </returns>
-        public static bool IsDefault<T>(this IValueDataType<T> value)
-                where T : IValueDataType<T>
-            => value?.HasValue ?? false;
-
         /// <summary> Determines if given object is equal to any of parameters </summary>
         /// <typeparam name="T"> Type of value. </typeparam>
         /// <param name="value"> Modified object </param>
