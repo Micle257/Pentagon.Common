@@ -18,25 +18,13 @@ namespace Pentagon.Common.Tests.Extensions
             [Tested]
             Second
         }
-
-        [Fact]
-        public void GetItemValue_ParameterValueIsNull_Throws()
-        {
-            Assert.Throws<ArgumentNullException>(() => EnumExtensions.GetItemAttribute<TestedAttribute>(null));
-        }
-
-        [Fact]
-        public void GetItemValue_PassedValueNotEnum_Throws()
-        {
-            Assert.Throws<ArgumentException>(() => new object().GetItemAttribute<TestedAttribute>());
-        }
-
+        
         [Fact]
         public void GetItemValue_PassedEnumItemWithAttribute_ReturnsNotNullAttribute()
         {
             var item = Stub.Second;
 
-            var result = item.GetItemAttribute<TestedAttribute>();
+            var result = item.GetItemAttribute<TestedAttribute, Stub>();
 
             Assert.NotNull(result);
         }
@@ -46,7 +34,7 @@ namespace Pentagon.Common.Tests.Extensions
         {
             var item = Stub.First;
 
-            var result = item.GetItemAttribute<TestedAttribute>();
+            var result = item.GetItemAttribute<TestedAttribute, Stub>();
 
             Assert.Null(result);
         }
