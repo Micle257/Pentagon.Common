@@ -33,7 +33,6 @@ namespace Pentagon.Threading
                     if (task != null)
                        return await task.ConfigureAwait(false);
                 }
-                // ReSharper disable once CatchAllClause
                 catch
                 {
                     if (i == tryLimit - 1)
@@ -41,7 +40,6 @@ namespace Pentagon.Threading
                 }
 
                 if (iterationDelayInMilliseconds > 0)
-                        // ReSharper disable once PossibleNullReferenceException
                     await Task.Delay(iterationDelayInMilliseconds).ConfigureAwait(false);
             }
 
