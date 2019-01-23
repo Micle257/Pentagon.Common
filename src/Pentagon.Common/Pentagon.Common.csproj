@@ -8,7 +8,7 @@
     <Product>Pentagon.Common</Product>
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
-    <Version>1.5.5</Version>
+    <Version>1.5.6</Version>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
