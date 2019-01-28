@@ -22,8 +22,11 @@ namespace Pentagon.Extensions
         [Pure]
         public static int FindOrderIndex<T>([NotNull] this ICollection<T> collection, [NotNull] Func<int, bool> selector)
         {
-            Require.NotNull(() => collection);
-            Require.NotNull(() => selector);
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
 
             var i = 0;
             var count = collection.Count;
@@ -41,7 +44,8 @@ namespace Pentagon.Extensions
         [Pure]
         public static IEnumerable<T> ShiftRight<T>([NotNull] this IEnumerable<T> collection)
         {
-            Require.NotNull(() => collection);
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
             var list = collection.ToList();
 
@@ -59,7 +63,8 @@ namespace Pentagon.Extensions
         [Pure]
         public static IEnumerable<T> ShiftLeft<T>([NotNull] this IEnumerable<T> collection)
         {
-            Require.NotNull(() => collection);
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
             var a = false;
             var firstElement = default(T);
@@ -83,8 +88,11 @@ namespace Pentagon.Extensions
         [Pure]
         public static IEnumerable<T> SymmetricExcept<T>([NotNull] this IEnumerable<T> coll, [NotNull] IEnumerable<T> second)
         {
-            Require.NotNull(() => coll);
-            Require.NotNull(() => second);
+            if (coll == null)
+                throw new ArgumentNullException(nameof(coll));
+
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
 
             var hash = new HashSet<T>(coll);
             hash.SymmetricExceptWith(second);
@@ -156,8 +164,11 @@ namespace Pentagon.Extensions
         /// <returns> The <see cref="T" /> that represents dequeued value from the queue. </returns>
         public static T Requeue<T>([NotNull] this Queue<T> queue, T value)
         {
-            Require.NotNull(() => queue);
-            Require.NotEmpty(() => queue);
+            if (queue == null)
+                throw new ArgumentNullException(nameof(queue));
+
+            if (!queue.Any())
+                throw new InvalidOperationException("Empty queue cannot be dequeued.");
 
             var dequeuedValue = queue.Dequeue();
             queue.Enqueue(value);

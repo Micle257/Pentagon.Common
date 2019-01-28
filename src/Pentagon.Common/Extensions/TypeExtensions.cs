@@ -20,7 +20,8 @@ namespace Pentagon.Extensions
         /// <returns> The <see cref="Type" /> of generic, if failed <c> null </c>. </returns>
         public static Type GetNullableType([NotNull] this Type dataType)
         {
-            Require.NotNull(() => dataType);
+            if (dataType == null)
+                throw new ArgumentNullException(nameof(dataType));
 
             if (dataType.GetTypeInfo().IsGenericType &&
                 dataType.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -47,7 +48,9 @@ namespace Pentagon.Extensions
         /// </returns>
         public static object GetValue([NotNull] this MemberInfo memberInfo, object instance)
         {
-            Require.NotNull(() => memberInfo);
+            if (memberInfo == null)
+                throw new ArgumentNullException(nameof(memberInfo));
+
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:

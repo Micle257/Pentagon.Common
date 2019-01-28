@@ -6,8 +6,11 @@
 
 namespace Pentagon.Collections
 {
+    using System;
+
     /// <summary> Represents an element in <see cref="IContainer{T}" /> with container dependency. </summary>
     /// <typeparam name="T"> The type of parent collection. </typeparam>
+    [Obsolete("API is no longer supported.", true)]
     public interface IContainable<out T>
     {
         /// <summary> Gets the index of the collection that represents this instance. </summary>

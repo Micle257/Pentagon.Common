@@ -6,10 +6,12 @@
 
 namespace Pentagon.Collections
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary> Represents a collection of indexed elements with . </summary>
     /// <typeparam name="T"> The type of element. </typeparam>
+    [Obsolete("API is no longer supported.", true)]
     public interface IContainer<T> : IReadOnlyList<T>
     {
         /// <summary> Gets the index of value in this container. </summary>

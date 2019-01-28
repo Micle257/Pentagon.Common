@@ -51,7 +51,8 @@ namespace Pentagon.Collections
         public ObservableSortedList([NotNull] IEnumerable<T> items, IComparer<T> comparer = null, ICollectionFilter<T> filter = null)
             : this(comparer, filter)
         {
-            Require.NotNull(() => items);
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
 
             foreach (var item in items)
                 Add(item);
@@ -91,7 +92,9 @@ namespace Pentagon.Collections
         /// <inheritdoc />
         public void Add(T item)
         {
-            Require.NotDefault(() => item);
+            if (EqualityComparer<T>.Default.Equals(item, default))
+                throw new ArgumentNullException(nameof(item));
+
             //var i = _allItems.BinarySearch(item, _comparer);
             //if (i < 0)
             //    i = ~i;

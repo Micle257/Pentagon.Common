@@ -10,6 +10,7 @@ namespace Pentagon.Helpers
     using JetBrains.Annotations;
 
     /// <summary> Provides helper methods for select logic of <see cref="ISelectable{T}" />. </summary>
+    [Obsolete("API is no longer supported.", true)]
     public static class SelectableHelper
     {
         /// <summary> Selects the previous element of the selectable container. </summary>
