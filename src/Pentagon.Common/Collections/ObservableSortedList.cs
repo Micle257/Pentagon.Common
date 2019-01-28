@@ -13,7 +13,6 @@ namespace Pentagon.Collections
     using System.ComponentModel;
     using System.Linq;
     using Extensions;
-    using FluentValidation.Validators;
     using Helpers;
     using JetBrains.Annotations;
 
