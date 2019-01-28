@@ -43,7 +43,8 @@ namespace Pentagon.Extensions
         /// <returns> A <see cref="Object" /> that represents value of member expression. </returns>
         public static object GetMemberValue([NotNull] this MemberExpression expression)
         {
-            Require.NotNull(() => expression);
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
 
             // casts the expression to object
             var objectMember = Expression.Convert(expression, typeof(object));

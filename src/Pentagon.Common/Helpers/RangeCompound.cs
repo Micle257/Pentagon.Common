@@ -23,8 +23,11 @@ namespace Pentagon.Helpers
         /// <param name="ranges"> The ranges. </param>
         public RangeCompound([NotNull] params IRange<T>[] ranges)
         {
-            Require.NotNull(() => ranges);
-            Require.Condition(() => ranges.Length > 0);
+            if (ranges == null)
+                throw new ArgumentNullException(nameof(ranges));
+
+            if (ranges.Length == 0)
+                throw new ArgumentException("Compound range cannot be empty.");
 
             _ranges = ranges;
         }

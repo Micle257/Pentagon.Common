@@ -7,6 +7,7 @@
 namespace Pentagon.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -25,8 +26,12 @@ namespace Pentagon.Extensions
         public static TValue GetAttributeValue<TAttribute, TValue>([NotNull] this Type type, [NotNull] Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute
         {
-            Require.NotNull(() => type);
-            Require.NotNull(() => valueSelector);
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            if (valueSelector == null)
+                throw new ArgumentNullException(nameof(valueSelector));
+
             var att = type.GetTypeInfo().GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
             return att != null ? valueSelector(att) : default(TValue);
         }
@@ -38,8 +43,10 @@ namespace Pentagon.Extensions
         public static bool HasAttribute<TAttribute>([NotNull] this object value)
             where TAttribute : Attribute
         {
-            Require.NotNull(() => value);
-            return value.GetType().GetTypeInfo().GetCustomAttribute<TAttribute>() != null;
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            return value.GetType().GetTypeInfo()?.GetCustomAttribute<TAttribute>() != null;
         }
 
         /// <summary> Gets the attribute property value from type's property. </summary>
@@ -56,9 +63,15 @@ namespace Pentagon.Extensions
                                                                                              [NotNull] Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute
         {
-            Require.NotDefault(() => value);
-            Require.NotNull(() => propertyExpression);
-            Require.NotNull(() => valueSelector);
+            if (EqualityComparer<TType>.Default.Equals(value, default))
+                throw new ArgumentNullException(nameof(value));
+
+            if (propertyExpression == null)
+                throw new ArgumentNullException(nameof(propertyExpression));
+
+            if (valueSelector == null)
+                throw new ArgumentNullException(nameof(valueSelector));
+
             var expression = (MemberExpression) propertyExpression.Body;
             var propertyInfo = (PropertyInfo) expression.Member;
             var att = propertyInfo.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;

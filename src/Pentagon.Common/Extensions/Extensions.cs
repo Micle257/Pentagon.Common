@@ -6,6 +6,7 @@
 
 namespace Pentagon.Extensions
 {
+    using System;
     using JetBrains.Annotations;
 
     /// <summary> Contains general extension methods. </summary>
@@ -18,8 +19,11 @@ namespace Pentagon.Extensions
         /// <returns> </returns>
         public static bool IsAnyEqual<T>(this T value, [NotNull] params T[] pars)
         {
-            Require.NotNull(() => pars);
-            Require.Condition(() => pars, v => v.Length > 0, message: "Value cannot be an empty collection.");
+            if (pars == null)
+                throw new ArgumentNullException(nameof(pars));
+
+            if (pars.Length == 0)
+                throw new InvalidOperationException("Value cannot be an empty collection.");
 
             foreach (var item in pars)
             {
