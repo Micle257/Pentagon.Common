@@ -122,7 +122,7 @@ namespace Pentagon.Common.Tests.Extensions
         {
             var queue = new Queue<int>();
 
-            Assert.Throws<ArgumentException>(() => queue.Requeue(5));
+            Assert.Throws<InvalidOperationException>(() => queue.Requeue(5));
         }
 
         [Fact]
