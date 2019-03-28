@@ -10,57 +10,65 @@ namespace Pentagon.Collections
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     /// <summary> Represents a collection in hierarchy structure. </summary>
     /// <typeparam name="T"> The type of an item. </typeparam>
-    public class HierarchyList<T> : IEnumerable<T>
+    public class HierarchyList<T> : IEnumerable<HierarchyListNode<T>>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HierarchyList{T}"/> class.
-        /// </summary>
-        /// <param name="rootItem">The root item.</param>
+        /// <summary> Initializes a new instance of the <see cref="HierarchyList{T}" /> class. </summary>
+        /// <param name="rootItem"> The root item. </param>
         public HierarchyList(T rootItem)
         {
-            Root = new HierarchyListItem<T>(rootItem, null);
+            Root = new HierarchyListNode<T>(rootItem, null, 0);
         }
 
         /// <summary> Gets the root item. </summary>
-        /// <value> The list of the <see cref="HierarchyListItem{T}" />. </value>
-        public HierarchyListItem<T> Root { get;  }
+        /// <value> The list of the <see cref="HierarchyListNode{T}" />. </value>
+        public HierarchyListNode<T> Root { get; }
 
         /// <inheritdoc />
-        public IEnumerator<T> GetEnumerator() => new Enumerator(Root);
+        public IEnumerator<HierarchyListNode<T>> GetEnumerator() => new Enumerator(Root);
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        /// <summary> Represents an enumerator for <see cref="HierarchyList{T}" />. </summary>
-        class Enumerator : IEnumerator<T>
+        /// <inheritdoc />
+        public string ToTreeString()
         {
-            /// <summary>
-            /// The root item.
-            /// </summary>
-            readonly HierarchyListItem<T> _item;
+            var sb = new StringBuilder();
 
-            /// <summary>
-            /// The current item row.
-            /// </summary>
-            List<HierarchyListItem<T>> _currentItemRow;
+            foreach (var item in this)
+            {
+                sb.Append(new string('-', item.Depth));
+                sb.Append(item.Value);
+                sb.AppendLine();
+            }
 
-            /// <summary>
-            /// The current index in the row.
-            /// </summary>
+            return sb.ToString();
+        }
+
+        /// <summary> Represents an enumerator for <see cref="HierarchyList{T}" />. </summary>
+        class Enumerator : IEnumerator<HierarchyListNode<T>>
+        {
+            /// <summary> The root item. </summary>
+            readonly HierarchyListNode<T> _node;
+
+            /// <summary> The current item row. </summary>
+            List<HierarchyListNode<T>> _currentItemRow;
+
+            /// <summary> The current index in the row. </summary>
             int _currentIndex;
 
             /// <summary> Initializes a new instance of the <see cref="Enumerator" /> class. </summary>
-            /// <param name="item"> The item. </param>
-            public Enumerator(HierarchyListItem<T> item)
+            /// <param name="node"> The item. </param>
+            public Enumerator(HierarchyListNode<T> node)
             {
-                _item = item;
+                _node = node;
             }
 
             /// <inheritdoc />
-            public T Current { get; private set; }
+            public HierarchyListNode<T> Current { get; private set; }
 
             /// <inheritdoc />
             object IEnumerator.Current => Current;
@@ -69,11 +77,11 @@ namespace Pentagon.Collections
             public bool MoveNext()
             {
                 if (_currentItemRow == null)
-                    _currentItemRow = new List<HierarchyListItem<T>> {_item};
+                    _currentItemRow = new List<HierarchyListNode<T>> {_node};
                 else if (_currentItemRow.Count == 0)
                     return false;
 
-                Current = (_currentItemRow[_currentIndex] ?? throw new ArgumentNullException()).Value;
+                Current = _currentItemRow[_currentIndex] ?? throw new ArgumentNullException();
 
                 if (_currentIndex == _currentItemRow.Count - 1)
                 {
