@@ -11,39 +11,43 @@ namespace Pentagon.Collections
     using JetBrains.Annotations;
 
     /// <summary> Represents an item in hierarchy structure. </summary>
-    /// <typeparam name="T"> </typeparam>
-    public class HierarchyListItem<T>
+    /// <typeparam name="T"> The type of the inner value. </typeparam>
+    public class HierarchyListNode<T>
     {
-        /// <summary>
-        /// The list of children.
-        /// </summary>
+        /// <summary> The list of children. </summary>
         [NotNull]
-        readonly List<HierarchyListItem<T>> _children = new List<HierarchyListItem<T>>();
+        readonly List<HierarchyListNode<T>> _children = new List<HierarchyListNode<T>>();
 
-        /// <summary> Initializes a new instance of the <see cref="HierarchyListItem{T}" /> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="HierarchyListNode{T}" /> class. </summary>
         /// <param name="value"> The value. </param>
         /// <param name="parent"> The parent. </param>
-        public HierarchyListItem(T value, HierarchyListItem<T> parent)
+        /// <param name="depth"> The depth of a node. </param>
+        internal HierarchyListNode(T value, HierarchyListNode<T> parent, int depth)
         {
             Value = value;
             Parent = parent;
+            Depth = depth;
         }
 
-        /// <summary> Gets the parent. </summary>
-        /// <value> The list of the <see cref="HierarchyListItem{T}" />. </value>
-        public HierarchyListItem<T> Parent { get; }
+        public int Depth { get; }
 
         /// <summary> Gets the children items. </summary>
         /// <value> The list of the <see cref="IList{T}" />. </value>
-        public IReadOnlyList<HierarchyListItem<T>> Children => _children;
+        [NotNull]
+        public IReadOnlyList<HierarchyListNode<T>> Children => _children;
 
         /// <summary> Gets the item that share the same parent. </summary>
-        /// <value> The list of the <see cref="HierarchyListItem{T}" />. </value>
-        public IReadOnlyList<HierarchyListItem<T>> Siblings => GetSiblings();
+        /// <value> The list of the <see cref="HierarchyListNode{T}" />. </value>
+        [NotNull]
+        public IReadOnlyList<HierarchyListNode<T>> Siblings => GetSiblings().ToList();
 
         /// <summary> Gets a value indicating whether this item is root. </summary>
         /// <value> <c> true </c> if this item is root; otherwise, <c> false </c>. </value>
         public bool IsRoot => Parent == null;
+
+        /// <summary> Gets the parent. </summary>
+        /// <value> The list of the <see cref="HierarchyListNode{T}" />. </value>
+        public HierarchyListNode<T> Parent { get; }
 
         /// <summary> Gets or sets the value. </summary>
         /// <value> The <see cref="T" />. </value>
@@ -53,20 +57,37 @@ namespace Pentagon.Collections
         /// <param name="item"> The children. </param>
         public void AddChildren(T item)
         {
-            _children.Add(new HierarchyListItem<T>(item, this));
+            _children.Add(new HierarchyListNode<T>(item, this, Depth + 1));
+        }
+
+        public IReadOnlyList<HierarchyListNode<T>> GetAllChildren()
+        {
+            var result = new List<HierarchyListNode<T>>();
+            var cursor = Children;
+
+            while (cursor.Any())
+            {
+                result.AddRange(cursor);
+                cursor = cursor.SelectMany(a => a.Children).ToList();
+            }
+
+            return result;
         }
 
         /// <summary> Gets the siblings. </summary>
-        /// <returns> A list of the <see cref="HierarchyListItem{T}" />. </returns>
-        IReadOnlyList<HierarchyListItem<T>> GetSiblings()
+        /// <returns> A list of the <see cref="HierarchyListNode{T}" />. </returns>
+        [NotNull]
+        [Pure]
+        IEnumerable<HierarchyListNode<T>> GetSiblings()
         {
             if (IsRoot || Parent == null)
-                return null;
+                yield break;
 
-            if (Parent.Children != null && Parent.Children.Count != 0)
-                return Parent.Children.Except(new[] {this}).ToList();
+            if (Parent.Children == null || Parent.Children.Count == 0)
+                yield break;
 
-            return null;
+            foreach (var node in Parent.Children.Except(new[] {this}))
+                yield return node;
         }
     }
 }
