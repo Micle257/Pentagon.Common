@@ -4,13 +4,13 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
     using System.Threading;
     using System.Threading.Tasks;
 
-    public interface IRequestHandler<in TRequest, TResponse>
-            where TRequest : IRequest<TResponse>
+    public interface ICommandHandler<in TRequest, TResponse>
+            where TRequest : ICommand<TResponse>
     {
         Task<TResponse> ExecuteAsync(TRequest request, CancellationToken cancellationToken);
 

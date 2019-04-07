@@ -1,10 +1,12 @@
 // -----------------------------------------------------------------------
-//  <copyright file="IRequest'1.cs">
+//  <copyright file="CommandHandlerDelegate.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
-    public interface IRequest<out TResponse> : IRequest { }
+    using System.Threading.Tasks;
+
+    public delegate Task<TResponse> CommandHandlerDelegate<TResponse>();
 }
