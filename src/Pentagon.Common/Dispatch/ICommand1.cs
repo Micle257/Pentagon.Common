@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
-//  <copyright file="IRequest.cs">
+//  <copyright file="IRequest'1.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
-    public interface IRequest { }
+    public interface ICommand<out TResponse> : ICommand { }
 }

@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
-//  <copyright file="RequestHandlerWrapper.cs">
+//  <copyright file="CommandHandlerWrapper.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
     using System;
     using System.Linq;
@@ -13,21 +13,21 @@ namespace Pentagon.Mediator
     using JetBrains.Annotations;
     using Microsoft.Extensions.DependencyInjection;
 
-    class RequestHandlerWrapper<TRequest, TResponse>
-            where TRequest : IRequest<TResponse>
+    class CommandHandlerWrapper<TRequest, TResponse>
+            where TRequest : ICommand<TResponse>
     {
-        public Task<TResponse> Handle(IRequest<TResponse> request,
+        public Task<TResponse> Handle(ICommand<TResponse> command,
                                       CancellationToken cancellationToken,
                                       IServiceProvider serviceFactory)
         {
-            var handler = GetHandler<IRequestHandler<TRequest, TResponse>>(serviceFactory);
+            var handler = GetHandler<ICommandHandler<TRequest, TResponse>>(serviceFactory);
 
-            Task<TResponse> Handler() => handler.ExecuteAsync((TRequest) request, cancellationToken);
+            Task<TResponse> Handler() => handler.ExecuteAsync((TRequest) command, cancellationToken);
 
             return serviceFactory
                    .GetServices<IPipelineBehavior<TRequest, TResponse>>()
                    .Reverse()
-                   .Aggregate((RequestHandlerDelegate<TResponse>) Handler, (next, pipeline) => () => pipeline.Handle((TRequest) request, cancellationToken, next))();
+                   .Aggregate((CommandHandlerDelegate<TResponse>) Handler, (next, pipeline) => () => pipeline.Handle((TRequest) command, cancellationToken, next))();
         }
 
         static THandler GetHandler<THandler>([NotNull] IServiceProvider services)

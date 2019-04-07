@@ -1,38 +1,38 @@
 // -----------------------------------------------------------------------
-//  <copyright file="Mediator.cs">
+//  <copyright file="Dispatcher.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
     using System;
     using System.Collections.Concurrent;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class Mediator : IMediator
+    public class Dispatcher : IDispatcher
     {
         static readonly ConcurrentDictionary<Type, object> _requestHandlers = new ConcurrentDictionary<Type, object>();
         readonly IServiceProvider _serviceFactory;
 
-        /// <summary> Initializes a new instance of the <see cref="Mediator" /> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="Dispatcher" /> class. </summary>
         /// <param name="serviceFactory"> The single instance factory. </param>
-        public Mediator(IServiceProvider serviceFactory)
+        public Dispatcher(IServiceProvider serviceFactory)
         {
             _serviceFactory = serviceFactory;
         }
 
         public Task<TResponse> Execute<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
-                where TRequest : IRequest<TResponse>
+                where TRequest : ICommand<TResponse>
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
             var requestType = request.GetType();
 
-            var handler = (RequestHandlerWrapper<TRequest, TResponse>) _requestHandlers.GetOrAdd(requestType,
-                                                                                                 t => Activator.CreateInstance(typeof(RequestHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResponse))));
+            var handler = (CommandHandlerWrapper<TRequest, TResponse>) _requestHandlers.GetOrAdd(requestType,
+                                                                                                 t => Activator.CreateInstance(typeof(CommandHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResponse))));
 
             return handler.Handle(request, cancellationToken, _serviceFactory);
         }

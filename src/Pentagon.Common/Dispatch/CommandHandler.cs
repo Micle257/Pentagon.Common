@@ -4,13 +4,13 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
     using System.Threading;
     using System.Threading.Tasks;
 
-    public abstract class RequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
-            where TRequest : IRequest<TResponse>
+    public abstract class CommandHandler<TRequest, TResponse> : ICommandHandler<TRequest, TResponse>
+            where TRequest : ICommand<TResponse>
     {
         /// <inheritdoc />
         public abstract Task<TResponse> ExecuteAsync(TRequest request, CancellationToken cancellationToken);

@@ -4,13 +4,13 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
     using System.Threading;
     using System.Threading.Tasks;
 
     public interface IPipelineBehavior<in TRequest, TResponse>
     {
-        Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next);
+        Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, CommandHandlerDelegate<TResponse> next);
     }
 }

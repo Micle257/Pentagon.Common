@@ -1,12 +1,10 @@
 // -----------------------------------------------------------------------
-//  <copyright file="RequestHandlerDelegate.cs">
+//  <copyright file="ICommand.cs">
 //   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Mediator
+namespace Pentagon.Dispatch
 {
-    using System.Threading.Tasks;
-
-    public delegate Task<TResponse> RequestHandlerDelegate<TResponse>();
+    public interface ICommand { }
 }
