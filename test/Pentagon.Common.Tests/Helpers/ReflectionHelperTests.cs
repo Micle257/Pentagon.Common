@@ -7,9 +7,8 @@
 namespace Pentagon.Common.Tests.Helpers
 {
     using System;
-    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;
     using Pentagon.Helpers;
     using Xunit;
 
@@ -28,9 +27,9 @@ namespace Pentagon.Common.Tests.Helpers
         {
             var fields = ReflectionHelper.GetPublicConstants(typeof(TestClass));
 
-            Assert.True(fields.Any(a => a.Name == "First"));
-            Assert.True(fields.Any(a => a.Name == "Second"));
-            Assert.True(fields.Any(a => a.Name == "Test"));
+            Assert.Contains(expected: "First", fields.Select(a => a.Name));
+            Assert.Contains(expected: "Second", fields.Select(a => a.Name));
+            Assert.Contains(expected: "Test", fields.Select(a => a.Name));
         }
 
         [Fact]
@@ -38,12 +37,13 @@ namespace Pentagon.Common.Tests.Helpers
         {
             var fields = ReflectionHelper.GetPublicConstants(typeof(TestClass));
 
-            Assert.Equal("First", fields[0].Name);
-            Assert.Equal("Second", fields[1].Name);
-            Assert.Equal("Test", fields[2].Name);
+            Assert.Equal(expected: "First", fields[0].Name);
+            Assert.Equal(expected: "Second", fields[1].Name);
+            Assert.Equal(expected: "Test", fields[2].Name);
         }
 
         [Fact]
+        [SuppressMessage(category: "ReSharper", checkId: "AssignNullToNotNullAttribute")]
         public void GetPublicConstants_TypeIsNull_Throws()
         {
             Assert.Throws<ArgumentNullException>(() => ReflectionHelper.GetPublicConstants(null));
@@ -62,8 +62,8 @@ namespace Pentagon.Common.Tests.Helpers
         {
             var fields = ReflectionHelper.GetAllPublicConstantValues<int>(typeof(TestClass));
 
-            Assert.True(fields.Any(a => a == 1));
-            Assert.True(fields.Any(a => a == 2));
+            Assert.Contains(1, fields);
+            Assert.Contains(2, fields);
         }
 
         [Fact]
@@ -81,15 +81,16 @@ namespace Pentagon.Common.Tests.Helpers
             Assert.Throws<ArgumentNullException>(() => ReflectionHelper.GetAllPublicConstantValues<object>(null));
         }
 
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Local", Justification = "Testing reflection")]
         class TestClass
         {
             public const int First = 1;
 
             public const int Second = 2;
 
-            const int Third = 3;
-
             public const string Test = "test";
+
+            const int Third = 3;
 
             const string Foo = "bar";
         }
