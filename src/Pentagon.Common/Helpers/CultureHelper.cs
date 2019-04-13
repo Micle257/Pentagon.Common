@@ -12,6 +12,9 @@ namespace Pentagon.Helpers
     using System.Linq;
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// Provides helper logic for culture tasks.
+    /// </summary>
     public static class CultureHelper
     {
         [NotNull]

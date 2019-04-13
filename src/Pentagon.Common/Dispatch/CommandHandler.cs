@@ -9,6 +9,11 @@ namespace Pentagon.Dispatch
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Represents a handler for command-request process.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
     public abstract class CommandHandler<TRequest, TResponse> : ICommandHandler<TRequest, TResponse>
             where TRequest : ICommand<TResponse>
     {

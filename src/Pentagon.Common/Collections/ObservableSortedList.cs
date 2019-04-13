@@ -211,10 +211,14 @@ namespace Pentagon.Collections
         {
             var oldIndex = list.IndexOf(item);
 
-            if (Count <= 1
-                || (oldIndex == 0 || _comparer.Compare(list[oldIndex - 1], item) <= 0)
-                && (oldIndex == Count - 1 || _comparer.Compare(item, list[oldIndex + 1]) <= 0))
+            if (Count <= 1)
                 return;
+
+            if (oldIndex == 0 || _comparer.Compare(list[oldIndex - 1], item) <= 0)
+            {
+                if (oldIndex == Count - 1 || _comparer.Compare(item, list[oldIndex + 1]) <= 0)
+                    return;
+            }
 
             list.RemoveAt(oldIndex);
             var newIndex = list.BinarySearch(item, _comparer);
@@ -234,7 +238,7 @@ namespace Pentagon.Collections
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, new[] {item}, newIndex, oldIndex));
         }
 
-        /// <summary> Sortes the collection in sorted order. </summary>
+        /// <summary> Sorts the collection in sorted order. </summary>
         void Sort()
         {
             foreach (var item in _allItems.ToList())
