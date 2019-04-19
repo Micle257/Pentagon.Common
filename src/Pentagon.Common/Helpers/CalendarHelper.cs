@@ -9,9 +9,12 @@ namespace Pentagon.Helpers
     using System;
     using System.Globalization;
 
+    /// <summary>
+    /// Provides helper logic for calendar.
+    /// </summary>
     public static class CalendarHelper
     {
-        /// <summary> Gets the first date of week in the specified year. Uses ISO8601 standart. </summary>
+        /// <summary> Gets the first date of week in the specified year. Uses ISO8601 standard. </summary>
         /// <param name="year"> The year. </param>
         /// <param name="weekOfYear"> The week number. </param>
         /// <returns> A <see cref="DateTime" /> of the first weekday. </returns>

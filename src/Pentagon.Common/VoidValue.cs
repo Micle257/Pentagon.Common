@@ -14,36 +14,6 @@ namespace Pentagon
         /// <summary> Default and only value of the <see cref="VoidValue" /> type. </summary>
         public static readonly VoidValue Value = new VoidValue();
 
-        #region Operators
-
-        /// <summary> Determines whether the <paramref name="first" /> object is equal to the <paramref name="second" /> object. </summary>
-        /// <param name="first"> The first object. </param>
-        /// <param name="second"> The second object. </param>
-        /// <c> true </c>
-        /// if the
-        /// <paramref name="first" />
-        /// object is equal to the
-        /// <paramref name="second" />
-        /// object; otherwise,
-        /// <c> false </c>
-        /// .
-        public static bool operator ==(VoidValue first, VoidValue second) => true;
-
-        /// <summary> Determines whether the <paramref name="first" /> object is not equal to the <paramref name="second" /> object. </summary>
-        /// <param name="first"> The first object. </param>
-        /// <param name="second"> The second object. </param>
-        /// <c> true </c>
-        /// if the
-        /// <paramref name="first" />
-        /// object is not equal to the
-        /// <paramref name="second" />
-        /// object; otherwise,
-        /// <c> false </c>
-        /// .
-        public static bool operator !=(VoidValue first, VoidValue second) => false;
-
-        #endregion
-
         /// <summary> Returns a hash code for this instance. </summary>
         /// <returns> A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </returns>
         public override int GetHashCode() => 0;

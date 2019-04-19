@@ -29,6 +29,8 @@ namespace Pentagon.Collections
             Depth = depth;
         }
 
+        /// <summary>Gets the depth in current hierarchy context.</summary>
+        /// <value>The depth.</value>
         public int Depth { get; }
 
         /// <summary> Gets the children items. </summary>
@@ -60,6 +62,10 @@ namespace Pentagon.Collections
             _children.Add(new HierarchyListNode<T>(item, this, Depth + 1));
         }
 
+        /// <summary>
+        /// Gets all children nodes.
+        /// </summary>
+        /// <returns>Read-only list of <see cref="HierarchyListNode{T}"/>.</returns>
         public IReadOnlyList<HierarchyListNode<T>> GetAllChildren()
         {
             var result = new List<HierarchyListNode<T>>();
@@ -83,7 +89,7 @@ namespace Pentagon.Collections
             if (IsRoot || Parent == null)
                 yield break;
 
-            if (Parent.Children == null || Parent.Children.Count == 0)
+            if (Parent.Children.Count == 0)
                 yield break;
 
             foreach (var node in Parent.Children.Except(new[] {this}))
