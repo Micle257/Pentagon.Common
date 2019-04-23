@@ -37,6 +37,8 @@ namespace Pentagon
 
         public static implicit operator TProperty(DtoProperty<TProperty> wrap) => wrap.Value;
 
+        public static implicit operator DtoProperty<TProperty>(TProperty wrap) => new DtoProperty<TProperty>(wrap);
+
         #endregion
 
         /// <summary> Marks this property as undefined. </summary>
@@ -44,5 +46,8 @@ namespace Pentagon
         {
             IsDefined = false;
         }
+
+        /// <inheritdoc />
+        public override string ToString() => Value?.ToString() ?? $"DTO property undefined, type: {typeof(TProperty).Name}";
     }
 }
