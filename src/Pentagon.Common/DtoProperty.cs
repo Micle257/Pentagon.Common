@@ -46,5 +46,8 @@ namespace Pentagon
         {
             IsDefined = false;
         }
+
+        /// <inheritdoc />
+        public override string ToString() => Value?.ToString() ?? $"DTO property undefined, type: {typeof(TProperty).Name}";
     }
 }

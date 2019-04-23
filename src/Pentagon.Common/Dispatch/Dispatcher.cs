@@ -14,6 +14,7 @@ namespace Pentagon.Dispatch
     public class Dispatcher : IDispatcher
     {
         static readonly ConcurrentDictionary<Type, object> _requestHandlers = new ConcurrentDictionary<Type, object>();
+
         readonly IServiceProvider _serviceFactory;
 
         /// <summary> Initializes a new instance of the <see cref="Dispatcher" /> class. </summary>
@@ -31,10 +32,23 @@ namespace Pentagon.Dispatch
 
             var requestType = request.GetType();
 
-            var handler = (CommandHandlerWrapper<TRequest, TResponse>) _requestHandlers.GetOrAdd(requestType,
-                                                                                                 t => Activator.CreateInstance(typeof(CommandHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResponse))));
+            var s = typeof(ICommandHandler<,>).MakeGenericType(typeof(TRequest), typeof(TResponse));
 
-            return handler.Handle(request, cancellationToken, _serviceFactory);
+            var commandHandler = _serviceFactory.GetService(s);
+
+            if (commandHandler == null)
+            {
+                throw new ArgumentException("Command handler is not registered in service provider.");
+            }
+
+            var commandHandler1 = (ICommandHandler<TRequest, TResponse>)commandHandler;
+
+            return commandHandler1.ExecuteAsync(request, cancellationToken);
+
+            // var handler = (CommandHandlerWrapper<TRequest, TResponse>) _requestHandlers.GetOrAdd(requestType,
+            //                                                                                      t => Activator.CreateInstance(typeof(CommandHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResponse))));
+            //
+            // return handler.Handle(request, cancellationToken, _serviceFactory);
         }
     }
 }
