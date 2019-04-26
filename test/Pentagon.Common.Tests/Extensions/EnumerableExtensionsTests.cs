@@ -6,8 +6,6 @@
 
 namespace Pentagon.Common.Tests.Extensions
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Pentagon.Extensions;
     using Xunit;
@@ -63,43 +61,43 @@ namespace Pentagon.Common.Tests.Extensions
 
             Assert.Equal(collection, result);
         }
-        
+
         [Fact]
         public void Append_ParameterIsValid_AppendsItems()
         {
-            var collection = new[] { 1, 2 };
+            var collection = new[] {1, 2};
 
             var added = new[] {6, 4};
 
             var result = collection.Append(added);
 
-            Assert.Equal(new [] {1,2,6,4 }, result);
+            Assert.Equal(new[] {1, 2, 6, 4}, result);
         }
 
         [Fact]
         public void Prepend_ParameterIsNull_IteratesSameItems()
         {
-            var collection = new[] { 1, 2 };
+            var collection = new[] {1, 2};
 
             var result = collection.Prepend(null);
 
             Assert.Equal(collection, result);
         }
-        
+
         [Fact]
         public void Prepend_ParameterIsValid_PrependsItems()
         {
-            var collection = new[] { 1, 2 };
+            var collection = new[] {1, 2};
 
-            var added = new[] { 6, 4 };
+            var added = new[] {6, 4};
 
             var result = collection.Prepend(added);
 
-            Assert.Equal(new[] { 6, 4, 1, 2 }, result);
+            Assert.Equal(new[] {6, 4, 1, 2}, result);
         }
 
         [Fact]
-        public void SymmetricExcept_Scenario_ExpectedBehavior()
+        public void SymmetricExcept_ForTwoNonEmptyCollections_ReturnsCorrectValue()
         {
             var c1 = new[] {0, 1, 2, 3, 4, 5};
             var c2 = new[] {3, 4, 5, 6, 7};
@@ -110,58 +108,23 @@ namespace Pentagon.Common.Tests.Extensions
         }
 
         [Fact]
-        public void Requeue_ParameterQueueIsNull_Throws()
+        public void GroupBySize_ForNonEmptyCollection_ReturnsCorrectValue()
         {
-            Queue<int> queue = null;
+            var collection = new[] {1, 5, 9, 15, 71, 36, 1, 5, 97};
 
-            Assert.Throws<ArgumentNullException>(() => queue.Requeue(5));
+            var groupBySize = collection.GroupBySize(2);
+
+            Assert.Equal(new[] {new[] {1, 5}, new[] {9, 15}, new[] {71, 36}, new[] {1, 5}, new[] {97}}, groupBySize);
         }
 
         [Fact]
-        public void Requeue_ParameterQueueIsEmpty_Throws()
+        public void GroupBySize_ForNonEmptyCollection_ReturnsCorrectValue2()
         {
-            var queue = new Queue<int>();
+            var collection = new[] {1};
 
-            Assert.Throws<InvalidOperationException>(() => queue.Requeue(5));
-        }
+            var groupBySize = collection.GroupBySize(2);
 
-        [Fact]
-        public void Requeue_Invoke_ReturnsLastValue()
-        {
-            var queue = new Queue<int>();
-
-            queue.Enqueue(1);
-            queue.Enqueue(2);
-
-            var value = queue.Requeue(5);
-
-            Assert.Equal(1, value);
-        }
-
-        [Fact]
-        public void Requeue_Invoke_AddsValueToQueue()
-        {
-            var queue = new Queue<int>();
-
-            queue.Enqueue(1);
-            queue.Enqueue(2);
-
-            queue.Requeue(5);
-
-            Assert.Equal(5, queue.Last());
-        }
-
-        [Fact]
-        public void Requeue_Invoke_CountIsNotChanged()
-        {
-            var queue = new Queue<int>();
-
-            queue.Enqueue(1);
-            queue.Enqueue(2);
-
-            queue.Requeue(5);
-
-            Assert.Equal(2, queue.Count);
+            Assert.Equal(new[] {new[] {1}}, groupBySize);
         }
     }
 }
