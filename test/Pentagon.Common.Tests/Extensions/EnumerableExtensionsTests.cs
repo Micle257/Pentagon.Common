@@ -6,6 +6,7 @@
 
 namespace Pentagon.Common.Tests.Extensions
 {
+    using System;
     using System.Linq;
     using Pentagon.Extensions;
     using Xunit;
@@ -125,6 +126,36 @@ namespace Pentagon.Common.Tests.Extensions
             var groupBySize = collection.GroupBySize(2);
 
             Assert.Equal(new[] {new[] {1}}, groupBySize);
+        }
+
+        [Fact]
+        public void WhereNotNull_ForCollectionWithNullItems_ReturnsCorrectElementCount()
+        {
+            var collection = new[] { null, new object() };
+
+            var filtered = collection.WhereNotNull();
+
+            Assert.Equal(1, filtered.Count());
+        }
+
+        [Fact]
+        public void OrderBySelf_ReturnsCorrectSequence()
+        {
+            var collection = new[] { 1, 6, 7, -6 };
+
+            var filtered = collection.OrderBySelf();
+
+            Assert.Equal(new [] {-6,1,6,7}, filtered);
+        }
+
+        [Fact]
+        public void OrderBySelfDescending_ReturnsCorrectSequence()
+        {
+            var collection = new[] { 1, 6, 7, -6 };
+
+            var filtered = collection.OrderBySelfDescending();
+
+            Assert.Equal(new[] { 7,6,1,-6 }, filtered);
         }
     }
 }

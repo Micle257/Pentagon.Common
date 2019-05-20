@@ -155,18 +155,17 @@ namespace Pentagon.Extensions
         /// <param name="collection"> This collection. </param>
         /// <param name="toAdd"> To collection to prepend. </param>
         /// <returns> An iteration of prepended collection. </returns>
-        [NotNull] [Pure]
+        [NotNull]
+        [Pure]
         public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, params T[] toAdd) => Prepend(collection, toAdd.AsEnumerable());
 
-        /// <summary>
-        /// Groups the elements of a sequence into fixed-sized sub-sequences.
-        /// </summary>
-        /// <typeparam name="T">The type of an item.</typeparam>
-        /// <param name="collection">The collection.</param>
-        /// <param name="size">The size of a group.</param>
-        /// <returns>An iteration of grouped sub-sequences.</returns>
-        /// <exception cref="ArgumentNullException">collection</exception>
-        /// <exception cref="ArgumentOutOfRangeException">size - The size of group size must be non-zero positive integer.</exception>
+        /// <summary> Groups the elements of a sequence into fixed-sized sub-sequences. </summary>
+        /// <typeparam name="T"> The type of an item. </typeparam>
+        /// <param name="collection"> The collection. </param>
+        /// <param name="size"> The size of a group. </param>
+        /// <returns> An iteration of grouped sub-sequences. </returns>
+        /// <exception cref="ArgumentNullException"> collection </exception>
+        /// <exception cref="ArgumentOutOfRangeException"> size - The size of group size must be non-zero positive integer. </exception>
         [NotNull]
         [Pure]
         public static IEnumerable<IEnumerable<T>> GroupBySize<T>([NotNull] this IEnumerable<T> collection, int size)
@@ -175,12 +174,58 @@ namespace Pentagon.Extensions
                 throw new ArgumentNullException(nameof(collection));
 
             if (size <= 0)
-                throw new ArgumentOutOfRangeException(nameof(size), size, "The size of group size must be non-zero positive integer.");
+                throw new ArgumentOutOfRangeException(nameof(size), size, message: "The size of group size must be non-zero positive integer.");
 
             return collection
                    .Select((a, i) => new {Item = a, Index = i})
-                      .GroupBy(a => a.Index / size)
-                      .Select(a => a.Select(b => b.Item));
+                   .GroupBy(a => a.Index / size)
+                   .Select(a => a.Select(b => b.Item));
+        }
+
+        /// <summary> Sorts the elements of a sequence in ascending order. </summary>
+        /// <typeparam name="T"> The type of an element. </typeparam>
+        /// <param name="collection"> The collection. </param>
+        /// <returns> An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted. </returns>
+        /// <exception cref="ArgumentNullException"> collection </exception>
+        [NotNull]
+        [Pure]
+        public static IOrderedEnumerable<T> OrderBySelf<T>([NotNull] this IEnumerable<T> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            return collection.OrderBy(a => a, Comparer<T>.Default);
+        }
+
+        /// <summary> Sorts the elements of a sequence in descending order. </summary>
+        /// <typeparam name="T"> The type of an element. </typeparam>
+        /// <param name="collection"> The collection. </param>
+        /// <returns> An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted. </returns>
+        /// <exception cref="ArgumentNullException"> collection </exception>
+        [NotNull]
+        [Pure]
+        public static IOrderedEnumerable<T> OrderBySelfDescending<T>([NotNull] this IEnumerable<T> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            return collection.OrderByDescending(a => a, Comparer<T>.Default);
+        }
+
+        /// <summary> Filter null items from a sequence. </summary>
+        /// <typeparam name="T"> The type of an element. </typeparam>
+        /// <param name="collection"> The collection. </param>
+        /// <returns> An <see cref="IEnumerable{T}" /> without null values. </returns>
+        /// <exception cref="ArgumentNullException"> collection </exception>
+        [NotNull]
+        [Pure]
+        public static IEnumerable<T> WhereNotNull<T>([NotNull] this IEnumerable<T> collection)
+                where T : class
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            return collection.Where(a => a != null);
         }
     }
 }
