@@ -8,7 +8,7 @@
     <Product>Pentagon.Common</Product>
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
-    <Version>1.6.6</Version>
+    <Version>1.6.7</Version>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
@@ -17,6 +17,8 @@
     <DefineConstants>RELEASE</DefineConstants>
     <OutputPath>..\..\build\$(AssemblyName)\</OutputPath>
     <DocumentationFile>..\..\build\$(AssemblyName)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
