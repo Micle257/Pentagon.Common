@@ -8,15 +8,16 @@
     <Product>Pentagon.Common</Product>
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
-    <Version>1.6.7</Version>
+    <Version>1.7.0</Version>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
     <LangVersion>7.3</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>RELEASE</DefineConstants>
-    <OutputPath>..\..\build\$(AssemblyName)\</OutputPath>
-    <DocumentationFile>..\..\build\$(AssemblyName)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <OutputPath>..\..\build\$(AssemblyName)\$(Version)\</OutputPath>
+    <DocumentationFile>..\..\build\$(AssemblyName)\$(Version)\$(AssemblyName).xml</DocumentationFile>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
@@ -28,7 +29,8 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0"  />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.9.0" />
   </ItemGroup>
   
 </Project>
