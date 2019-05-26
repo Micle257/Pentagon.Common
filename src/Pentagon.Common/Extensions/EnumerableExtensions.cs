@@ -227,5 +227,20 @@ namespace Pentagon.Extensions
 
             return collection.Where(a => a != null);
         }
+
+        /// <summary>
+        /// Converts the byte iteration to HEX string representation.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns>A <see cref="string"/>.</returns>
+        [NotNull]
+        public static string ToHexString([NotNull] this IEnumerable<byte> bytes)
+        {
+            if (bytes == null)
+                throw new ArgumentNullException(nameof(bytes));
+
+            return bytes.Select(a => a.ToString(format: "X2"))
+                        .Aggregate((a, b) => $"{a} {b}") ?? throw new InvalidOperationException();
+        }
     }
 }

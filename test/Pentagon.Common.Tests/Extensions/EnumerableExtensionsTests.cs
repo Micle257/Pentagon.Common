@@ -157,5 +157,15 @@ namespace Pentagon.Common.Tests.Extensions
 
             Assert.Equal(new[] { 7,6,1,-6 }, filtered);
         }
+
+        [Fact]
+        public void ToHexString_ReturnsCorrectString()
+        {
+            var buffer = new byte[] {1, 5, 48, 154};
+
+            var hexString = buffer.ToHexString();
+
+            Assert.Equal("01 05 30 9A", hexString);
+        }
     }
 }
