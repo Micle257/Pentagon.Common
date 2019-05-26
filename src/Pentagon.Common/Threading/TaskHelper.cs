@@ -7,11 +7,12 @@
 namespace Pentagon.Threading
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using JetBrains.Annotations;
 
     /// <summary> Provides a helper methods for <seealso cref="Task" />. </summary>
-    public class TaskHelper
+    public static class TaskHelper
     {
         /// <summary> Attempts invoking the function for desired limit count, if the function throws an exception. </summary>
         /// <remarks> Method is from Microsoft docs. </remarks>
@@ -31,7 +32,7 @@ namespace Pentagon.Threading
                 {
                     var task = function();
                     if (task != null)
-                       return await task.ConfigureAwait(false);
+                        return await task.ConfigureAwait(false);
                 }
                 catch
                 {
@@ -44,6 +45,57 @@ namespace Pentagon.Threading
             }
 
             return default;
+        }
+
+        /// <summary> Wraps the task around timeout logic. If timeout occurs, exception will be thrown. </summary>
+        /// <typeparam name="TResult"> The type of the result. </typeparam>
+        /// <param name="task"> The task. </param>
+        /// <param name="timeout"> The timeout. </param>
+        /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
+        /// <exception cref="ArgumentNullException"> task </exception>
+        /// <exception cref="TimeoutException"> </exception>
+        public static async Task<TResult> TimeoutAfter<TResult>([NotNull] this Task<TResult> task, TimeSpan timeout)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            using (var timeoutCancellationTokenSource = new CancellationTokenSource())
+            {
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+
+                if (completedTask == task)
+                {
+                    timeoutCancellationTokenSource.Cancel();
+                    return await task.ConfigureAwait(false); // Very important in order to propagate exceptions
+                }
+
+                throw new TimeoutException();
+            }
+        }
+
+        /// <summary> Wraps the task around timeout logic. If timeout occurs, exception will be thrown. </summary>
+        /// <param name="task"> The task. </param>
+        /// <param name="timeout"> The timeout. </param>
+        /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
+        /// <exception cref="ArgumentNullException"> task </exception>
+        /// <exception cref="TimeoutException"> </exception>
+        public static async Task TimeoutAfter([NotNull] this Task task, TimeSpan timeout)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            using (var timeoutCancellationTokenSource = new CancellationTokenSource())
+            {
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+
+                if (completedTask == task)
+                {
+                    timeoutCancellationTokenSource.Cancel();
+                    await task.ConfigureAwait(false); // Very important in order to propagate exceptions
+                }
+
+                throw new TimeoutException();
+            }
         }
     }
 }
