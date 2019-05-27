@@ -9,6 +9,7 @@ namespace Pentagon.Helpers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using JetBrains.Annotations;
 
     public class CollectionEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
     {
@@ -21,9 +22,7 @@ namespace Pentagon.Helpers
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
-        #region IEquatable members
-
-        public bool Equals(IEnumerable<T> first, IEnumerable<T> second)
+        public bool Equals([CanBeNull] IEnumerable<T> first, [CanBeNull] IEnumerable<T> second)
         {
             if (first == null)
                 return second == null;
@@ -49,8 +48,6 @@ namespace Pentagon.Helpers
             return first.SequenceEqual(second);
         }
 
-        #endregion
-
         public int GetHashCode(IEnumerable<T> enumerable)
         {
             if (enumerable == null)
@@ -66,20 +63,16 @@ namespace Pentagon.Helpers
 
         bool HaveMismatchedElement(IEnumerable<T> first, IEnumerable<T> second)
         {
-            int firstNullCount;
-            int secondNullCount;
-
-            var firstElementCounts = GetElementCounts(first, out firstNullCount);
-            var secondElementCounts = GetElementCounts(second, out secondNullCount);
+            var firstElementCounts = GetElementCounts(first, out var firstNullCount);
+            var secondElementCounts = GetElementCounts(second, out var secondNullCount);
 
             if (firstNullCount != secondNullCount || firstElementCounts.Count != secondElementCounts.Count)
                 return true;
 
-            foreach (var kvp in firstElementCounts)
+            foreach (var value in firstElementCounts)
             {
-                var firstElementCount = kvp.Value;
-                int secondElementCount;
-                secondElementCounts.TryGetValue(kvp.Key, out secondElementCount);
+                var firstElementCount = value.Value;
+                secondElementCounts.TryGetValue(value.Key, out var secondElementCount);
 
                 if (firstElementCount != secondElementCount)
                     return true;
@@ -99,10 +92,9 @@ namespace Pentagon.Helpers
                     nullCount++;
                 else
                 {
-                    int num;
-                    dictionary.TryGetValue(element, out num);
-                    num++;
-                    dictionary[element] = num;
+                    dictionary.TryGetValue(element, out var number);
+                    number++;
+                    dictionary[element] = number;
                 }
             }
 

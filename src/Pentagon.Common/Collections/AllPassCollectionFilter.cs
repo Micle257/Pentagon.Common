@@ -7,6 +7,7 @@
 namespace Pentagon.Collections
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary> Represents an all pass collection filter. </summary>
     /// <typeparam name="T"> The type of an item. </typeparam>
@@ -19,12 +20,15 @@ namespace Pentagon.Collections
         }
 
         /// <inheritdoc />
-        public Predicate<T> Predicate { get; }
+        public Predicate<T> Predicate { get;  }
 
         /// <inheritdoc />
-        public void ApplyFilter(IFilterableCollection<T> coll)
+        public void ApplyFilter([NotNull] IFilterableCollection<T> coll)
         {
-            coll?.ApplyFilter(this);
+            if (coll == null)
+                throw new ArgumentNullException(nameof(coll));
+
+            coll.ApplyFilter(this);
         }
     }
 }

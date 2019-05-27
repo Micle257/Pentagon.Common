@@ -90,21 +90,11 @@ namespace Pentagon.Collections
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
-        public void Add(T item)
+        public void Add([CanBeNull] T item)
         {
             if (EqualityComparer<T>.Default.Equals(item, default))
                 throw new ArgumentNullException(nameof(item));
 
-            //var i = _allItems.BinarySearch(item, _comparer);
-            //if (i < 0)
-            //    i = ~i;
-            //else
-            //{
-            //    do
-            //    {
-            //        i++;
-            //    } while (i < Count && _comparer.Compare(_allItems[i], item) == 0);
-            //}
             var i = _allItems.FindOrderIndex(v => _comparer.Compare(_allItems[v], item) < 0);
 
             _allItems.Insert(i, item);

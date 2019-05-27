@@ -11,6 +11,7 @@ namespace Pentagon.Collections
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using JetBrains.Annotations;
 
     /// <summary> Represents a collection in hierarchy structure. </summary>
     /// <typeparam name="T"> The type of an item. </typeparam>
@@ -71,6 +72,7 @@ namespace Pentagon.Collections
             public HierarchyListNode<T> Current { get; private set; }
 
             /// <inheritdoc />
+            [CanBeNull]
             object IEnumerator.Current => Current;
 
             /// <inheritdoc />

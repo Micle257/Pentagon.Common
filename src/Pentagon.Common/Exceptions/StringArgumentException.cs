@@ -19,12 +19,12 @@ namespace Pentagon.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="StringArgumentException" /> class.
         /// </summary>
-        /// <param name="error">The message specifing the error.</param>
+        /// <param name="error">The message specifying the error.</param>
         /// <param name="paramName">Name of the parameter.</param>
         public StringArgumentException(string error, string paramName) : base(GetMessage(error), paramName) { }
 
         /// <summary> Initializes a new instance of the <see cref="StringArgumentException" /> class. </summary>
-        /// <param name="error"> The message specifing the error. </param>
+        /// <param name="error"> The message specifying the error. </param>
         /// <param name="innerException"> The inner exception. </param>
         public StringArgumentException(string error, Exception innerException) : base(GetMessage(error), innerException) { }
 

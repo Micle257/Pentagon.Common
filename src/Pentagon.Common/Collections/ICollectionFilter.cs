@@ -7,6 +7,7 @@
 namespace Pentagon.Collections
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary> Represents a filter for a collection, that can ensure public items exposure by the rule predicate. </summary>
     /// <typeparam name="T"> The type of an element. </typeparam>
@@ -18,6 +19,6 @@ namespace Pentagon.Collections
 
         /// <summary> Applies this filter to the filterable collection. </summary>
         /// <param name="coll"> The collection. </param>
-        void ApplyFilter(IFilterableCollection<T> coll);
+        void ApplyFilter([NotNull] IFilterableCollection<T> coll);
     }
 }
