@@ -61,14 +61,19 @@ namespace Pentagon.Helpers
         /// <param name="includeGenericParameters"> <c> true </c> to include generic parameters. </param>
         /// <param name="nestedTypeDelimiter"> Character to use as a delimiter in nested type names </param>
         /// <returns> The pretty printed type name. </returns>
-        public static string GetTypeDisplayName(Type type,
+        public static string GetTypeDisplayName([NotNull] Type type,
                                                 bool fullName = true,
                                                 bool includeGenericParameterNames = false,
                                                 bool includeGenericParameters = true,
                                                 char nestedTypeDelimiter = DefaultNestedTypeDelimiter)
         {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
             var builder = new StringBuilder();
+
             ProcessType(builder, type, new DisplayNameOptions(fullName, includeGenericParameterNames, includeGenericParameters, nestedTypeDelimiter));
+
             return builder.ToString();
         }
 
