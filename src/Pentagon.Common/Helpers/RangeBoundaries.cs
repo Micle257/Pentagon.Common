@@ -18,10 +18,10 @@ namespace Pentagon.Helpers
         /// <summary> The value which exclude both boundaries of the range. </summary>
         OutOut,
 
-        /// <summary> The value which includes right boundry and excludes left bounty of the range. </summary>
+        /// <summary> The value which includes right boundary and excludes left bounty of the range. </summary>
         InOut,
 
-        /// <summary> The value which excludes right boundry and includes left bounty of the range. </summary>
+        /// <summary> The value which excludes right boundary and includes left bounty of the range. </summary>
         OutIn
     }
 }

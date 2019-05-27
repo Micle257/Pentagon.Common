@@ -25,7 +25,7 @@ namespace Pentagon.Collections
         /// <inheritdoc />
         public void ApplyFilter(IFilterableCollection<T> coll)
         {
-            coll?.ApplyFilter(this);
+            coll.ApplyFilter(this);
         }
     }
 }

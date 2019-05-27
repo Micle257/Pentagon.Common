@@ -39,7 +39,7 @@ namespace Pentagon.Extensions
         }
 
         /// <summary>
-        /// Gets the value from the field or propertu member info.
+        /// Gets the value from the field or property member info.
         /// </summary>
         /// <param name="memberInfo">The member metadata.</param>
         /// <param name="instance">The instance.</param>

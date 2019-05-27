@@ -69,7 +69,7 @@ namespace Pentagon.Helpers
         #region IEquatable members
 
         /// <inheritdoc />
-        public bool Equals(Enumeration other)
+        public bool Equals([CanBeNull] Enumeration other)
         {
             if (ReferenceEquals(null, other))
                 return false;
@@ -79,7 +79,7 @@ namespace Pentagon.Helpers
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj))
                 return false;
@@ -96,7 +96,7 @@ namespace Pentagon.Helpers
         #endregion
 
         /// <inheritdoc />
-        public int CompareTo(Enumeration other)
+        public int CompareTo([CanBeNull] Enumeration other)
         {
             if (ReferenceEquals(this, other))
                 return 0;
@@ -106,7 +106,7 @@ namespace Pentagon.Helpers
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj))
                 return 1;

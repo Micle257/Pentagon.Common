@@ -23,13 +23,13 @@ namespace Pentagon.Helpers
         /// <summary> Determines if given culture name exists. </summary>
         /// <param name="name"> The name. </param>
         /// <returns> Flag indicating whether culture exists. </returns>
-        public static bool Exists(string name) => CultureNames.Contains(name);
+        public static bool Exists([CanBeNull] string name) => CultureNames.Contains(name);
 
         /// <summary> Tries to parse the culture name (if culture is <c> null </c> invariant is returned) to the <see cref="CultureInfo" />. </summary>
         /// <param name="culture"> The culture. </param>
         /// <param name="cultureInfo"> The culture information. </param>
         /// <returns> Flag indicating if parsing was successful. </returns>
-        public static bool TryParse(string culture, out CultureInfo cultureInfo)
+        public static bool TryParse([CanBeNull] string culture, [CanBeNull] out CultureInfo cultureInfo)
         {
             if (Exists(culture))
             {

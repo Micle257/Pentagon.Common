@@ -105,19 +105,19 @@ namespace Pentagon.Extensions
         /// <param name="toAdd"> To collection to append. </param>
         /// <returns> An iteration of appended collection. </returns>
         [Pure]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, IEnumerable<T> toAdd)
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, [NotNull] IEnumerable<T> toAdd)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
+            if (toAdd == null)
+                throw new ArgumentNullException(nameof(toAdd));
+
             foreach (var item in collection)
                 yield return item;
 
-            if (toAdd != null)
-            {
-                foreach (var item in toAdd)
-                    yield return item;
-            }
+            foreach (var item in toAdd)
+                yield return item;
         }
 
         /// <summary> Appends items of the collection at the end of this collection. </summary>
@@ -135,16 +135,16 @@ namespace Pentagon.Extensions
         /// <returns> An iteration of prepended collection. </returns>
         [NotNull]
         [Pure]
-        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, IEnumerable<T> toAdd)
+        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, [NotNull] IEnumerable<T> toAdd)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            if (toAdd != null)
-            {
-                foreach (var item in toAdd)
-                    yield return item;
-            }
+            if (toAdd == null)
+                throw new ArgumentNullException(nameof(toAdd));
+
+            foreach (var item in toAdd)
+                yield return item;
 
             foreach (var item in collection)
                 yield return item;

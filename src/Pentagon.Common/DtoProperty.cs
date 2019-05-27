@@ -6,6 +6,8 @@
 
 namespace Pentagon
 {
+    using JetBrains.Annotations;
+
     /// <summary> Represents a data transfer object property. Used to annotate/wrap as undefined for more verbose dynamic/static transfer. </summary>
     /// <typeparam name="TProperty"> The type of the property. </typeparam>
     public class DtoProperty<TProperty>
@@ -27,6 +29,7 @@ namespace Pentagon
 
         /// <summary> Gets the inner value. Value is invalid/undeterministic if <see cref="IsDefined" /> is <c> false </c>. </summary>
         /// <value> The value. </value>
+        [CanBeNull]
         public TProperty Value { get; }
 
         /// <summary> Gets a value indicating whether this instance is defined. </summary>

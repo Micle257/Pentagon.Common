@@ -49,6 +49,7 @@ namespace Pentagon.Collections
 
         /// <summary> Gets the parent. </summary>
         /// <value> The list of the <see cref="HierarchyListNode{T}" />. </value>
+        [CanBeNull]
         public HierarchyListNode<T> Parent { get; }
 
         /// <summary> Gets or sets the value. </summary>
