@@ -12,7 +12,6 @@ namespace Pentagon.Helpers
     using JetBrains.Annotations;
 
     /// <summary> Represents a custom implementation of <see cref="Enum" />. </summary>
-    [UsedImplicitly]
     public class Enumeration : IEnumeration, IValueDataType<Enumeration>
     {
         /// <summary> The unspecified name. </summary>
