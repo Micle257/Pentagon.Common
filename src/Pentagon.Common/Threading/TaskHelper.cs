@@ -61,6 +61,42 @@ namespace Pentagon.Threading
             throw new NotSupportedException(message: "Internal error: this code should be unreachable.");
         }
 
+        /// <summary> Adds cancel wrapper around task. </summary>
+        /// <typeparam name="T"> The type of the task's result. </typeparam>
+        /// <param name="task"> The task. </param>
+        /// <param name="cancellationToken"> The cancellation token. </param>
+        /// <returns> A <see cref="Task{TResult}" /> that represent asynchronous operation. </returns>
+        /// <exception cref="TaskCanceledException"> </exception>
+        [ItemCanBeNull]
+        public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
+        {
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+
+            using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
+            {
+                if (task != await Task.WhenAny(task, taskCompletionSource.Task))
+                    throw new TaskCanceledException(task);
+            }
+
+            return task.Result;
+        }
+
+        /// <summary> Adds cancel wrapper around task. </summary>
+        /// <param name="task"> The task. </param>
+        /// <param name="cancellationToken"> The cancellation token. </param>
+        /// <returns> A <see cref="Task" /> that represent asynchronous operation. </returns>
+        /// <exception cref="TaskCanceledException"> </exception>
+        public static async Task WithCancellation(this Task task, CancellationToken cancellationToken)
+        {
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+
+            using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
+            {
+                if (task != await Task.WhenAny(task, taskCompletionSource.Task))
+                    throw new TaskCanceledException(task);
+            }
+        }
+
         /// <summary> Wraps the task around timeout logic. If timeout occurs, exception will be thrown. </summary>
         /// <typeparam name="TResult"> The type of the result. </typeparam>
         /// <param name="task"> The task. </param>
