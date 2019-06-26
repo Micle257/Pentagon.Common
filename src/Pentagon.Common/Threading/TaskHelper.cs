@@ -172,5 +172,23 @@ namespace Pentagon.Threading
             => string.IsNullOrEmpty(filePath)
                        ? $"The operation timed out after reaching the limit of {timeout.TotalMilliseconds}ms."
                        : $"The operation at {filePath}:{lineNumber} timed out after reaching the limit of {timeout.TotalMilliseconds}ms.";
+    
+        private static readonly Action<Task> DefaultErrorContinuation =
+                t =>
+                {
+                    try { t.Wait(); }
+                    catch
+                    {
+                        // ignored
+                    }
+                };
+
+        public static void RunAndForget([NotNull] Func<Task> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            Task.Run(action).ConfigureAwait(false);
+        }
     }
 }

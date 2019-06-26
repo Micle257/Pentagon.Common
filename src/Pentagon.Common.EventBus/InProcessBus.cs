@@ -12,17 +12,25 @@ namespace Pentagon.EventBus
     using System.Threading;
     using System.Threading.Tasks;
     using System.Threading.Tasks.Dataflow;
+    using JetBrains.Annotations;
+    using Threading;
 
     public class InProcessBus : IEventBus
     {
+        readonly bool _defaultRunInBackground;
+
+        [NotNull]
         readonly ConcurrentQueue<Subscription> _subscriptionRequests = new ConcurrentQueue<Subscription>();
 
+        [NotNull]
         readonly ConcurrentQueue<Guid> _unsubscribeRequests = new ConcurrentQueue<Guid>();
 
         readonly ActionBlock<SendMessageRequest> _messageProcessor;
-        
-        public InProcessBus()
+
+        public InProcessBus(bool defaultRunInBackground = false)
         {
+            _defaultRunInBackground = defaultRunInBackground;
+
             // Only ever accessed from (single threaded) ActionBlock, so it is thread safe
             var subscriptions = new List<Subscription>();
 
@@ -51,7 +59,21 @@ namespace Pentagon.EventBus
 
                                                                            try
                                                                            {
-                                                                               await subscription.Handler(request.Payload, request.CancellationToken);
+                                                                               if (!subscription.IncludeDerivedTypes)
+                                                                               {
+                                                                                   if (subscription.MessageType != request.Payload.GetType())
+                                                                                       continue;
+                                                                               }
+                                                                               else
+                                                                               {
+                                                                                   if (!request.Payload.GetType().IsSubclassOf(subscription.MessageType) && request.Payload.GetType() != subscription.MessageType)
+                                                                                       continue;
+                                                                               }
+
+                                                                               if (subscription.RunDetached)
+                                                                                   TaskHelper.RunAndForget(() => subscription.Handler(request.Payload, request.CancellationToken));
+                                                                               else
+                                                                                   await subscription.Handler(request.Payload, request.CancellationToken);
                                                                            }
                                                                            catch
                                                                            {
@@ -64,28 +86,35 @@ namespace Pentagon.EventBus
                                                                    });
         }
 
-        public Task SendAsync<TMessage>(TMessage message) => SendAsync(message, CancellationToken.None);
-
         public Task SendAsync<TMessage>(TMessage message, CancellationToken cancellationToken)
         {
             var completionSource = new TaskCompletionSource<bool>();
+
             _messageProcessor.Post(new SendMessageRequest(message, cancellationToken, result => completionSource.SetResult(result)));
+
             return completionSource.Task;
         }
 
-        public Guid Subscribe<TMessage>(Action<TMessage> handler, Guid? id)
+        public Guid Subscribe<TMessage>(Func<TMessage, CancellationToken, Task> handler, Action<SubscriptionFactoryOptions<TMessage>> configure)
         {
-            return Subscribe<TMessage>((message, cancellationToken) =>
-                                       {
-                                           handler(message);
-                                           return Task.FromResult(0);
-                                       }, id);
-        }
+            var factory = new SubscriptionFactoryOptions<TMessage>();
 
-        public Guid Subscribe<TMessage>(Func<TMessage, CancellationToken, Task> handler, Guid? id)
-        {
-            var subscription = id.HasValue ? Subscription.Create(id.Value, handler) : Subscription.Create(handler);
+            configure?.Invoke(factory);
+
+            async Task HandlerWithCheck(object message, CancellationToken cancellationToken)
+            {
+                if (message is TMessage msg)
+                    await handler(msg, cancellationToken);
+            }
+
+            var subscription = new Subscription(factory.Id ?? Guid.NewGuid(),
+                                                typeof(TMessage),
+                                                factory.RunBlindly ?? _defaultRunInBackground,
+                                                factory.IncludeDerivedTypes ?? true,
+                                                HandlerWithCheck);
+
             _subscriptionRequests.Enqueue(subscription);
+
             return subscription.Id;
         }
 

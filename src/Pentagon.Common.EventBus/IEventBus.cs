@@ -12,10 +12,10 @@ namespace Pentagon.EventBus
 
     public interface IEventBus
     {
-        Task SendAsync<TMessage>(TMessage message);
         Task SendAsync<TMessage>(TMessage message, CancellationToken cancellationToken);
-        Guid Subscribe<TMessage>(Action<TMessage> handler, Guid? id = null);
-        Guid Subscribe<TMessage>(Func<TMessage, CancellationToken, Task> handler, Guid? id = null);
+
+        Guid Subscribe<TMessage>(Func<TMessage, CancellationToken, Task> handler, Action<SubscriptionFactoryOptions<TMessage>> configure = null);
+
         void Unsubscribe(Guid subscriptionId);
     }
 }
