@@ -22,9 +22,7 @@ namespace Pentagon.Common.PerformanceTests.Helpers
         [Benchmark]
         public void RetryOnException()
         {
-            Assert.Throws<ArgumentException>(() => RetryHelper.RetryOnException(Times,
-                                         TimeSpan.FromMilliseconds(Timeout),
-                                         Callback));
+            Assert.Throws<ArgumentException>(() => RetryHelper.RetryOnException(Callback, Times, TimeSpan.FromMilliseconds(Timeout)));
 
             void Callback()
             {

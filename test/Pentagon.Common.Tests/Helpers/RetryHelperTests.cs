@@ -15,9 +15,9 @@ namespace Pentagon.Common.Tests.Helpers
         [Fact]
         public void RetryOnException_Throws()
         {
-            Assert.Throws<ArgumentException>(() => RetryHelper.RetryOnException(3,
+            Assert.Throws<ArgumentException>(() => RetryHelper.RetryOnException(Callback,
+                                                                                3,
                                                                                 TimeSpan.FromMilliseconds(200),
-                                                                                Callback,
                                                                                 ExceptionPredicate,
                                                                                 ForceThrowCallback,
                                                                                 TimeSpan.FromMilliseconds(10),
