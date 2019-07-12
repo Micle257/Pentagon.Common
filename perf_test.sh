@@ -1,6 +1,1 @@
-#!/bin/bash
-dotnet restore
-
-for path in test/*.PerformanceTests/*.csproj; do
-    dotnet test -c Release ${path}
-done
+sh /c/Users/Michal/Source/GitHub/perf_test.sh Pentagon.Common
