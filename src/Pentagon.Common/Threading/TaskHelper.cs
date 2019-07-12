@@ -8,6 +8,7 @@ namespace Pentagon.Threading
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -107,9 +108,7 @@ namespace Pentagon.Threading
         /// <exception cref="ArgumentNullException"> task </exception>
         /// <exception cref="TimeoutException"> </exception>
         public static async Task<TResult> TimeoutAfter<TResult>([NotNull] this Task<TResult> task,
-                                                                TimeSpan timeout,
-                                                                [CallerFilePath] string filePath = "",
-                                                                [CallerLineNumber] int lineNumber = default)
+                                                                TimeSpan timeout)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
@@ -119,7 +118,7 @@ namespace Pentagon.Threading
 
             using (var timeoutCancellationTokenSource = new CancellationTokenSource())
             {
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
 
                 if (completedTask == task)
                 {
@@ -127,7 +126,7 @@ namespace Pentagon.Threading
                     return await task.ConfigureAwait(false); // Very important in order to propagate exceptions
                 }
 
-                throw new TimeoutException(CreateMessage(timeout, filePath, lineNumber));
+                throw new TimeoutException(CreateMessage(timeout));
             }
         }
 
@@ -140,9 +139,7 @@ namespace Pentagon.Threading
         /// <exception cref="ArgumentNullException"> task </exception>
         /// <exception cref="TimeoutException"> </exception>
         public static async Task TimeoutAfter([NotNull] this Task task,
-                                              TimeSpan timeout,
-                                              [CallerFilePath] string filePath = "",
-                                              [CallerLineNumber] int lineNumber = default)
+                                              TimeSpan timeout)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
@@ -155,7 +152,7 @@ namespace Pentagon.Threading
 
             using (var timeoutCancellationTokenSource = new CancellationTokenSource())
             {
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
 
                 if (completedTask == task)
                 {
@@ -164,31 +161,49 @@ namespace Pentagon.Threading
                     return;
                 }
 
-                throw new TimeoutException(CreateMessage(timeout, filePath, lineNumber));
+                throw new TimeoutException(CreateMessage(timeout));
             }
         }
 
-        static string CreateMessage(TimeSpan timeout, string filePath, int lineNumber)
-            => string.IsNullOrEmpty(filePath)
-                       ? $"The operation timed out after reaching the limit of {timeout.TotalMilliseconds}ms."
-                       : $"The operation at {filePath}:{lineNumber} timed out after reaching the limit of {timeout.TotalMilliseconds}ms.";
-    
-        private static readonly Action<Task> DefaultErrorContinuation =
-                t =>
-                {
-                    try { t.Wait(); }
-                    catch
-                    {
-                        // ignored
-                    }
-                };
-
-        public static void RunAndForget([NotNull] Func<Task> action)
+        /// <summary> Safely execute the Task without waiting for it to complete before moving to the next line of code. </summary>
+        /// <param name="callback"> Callback function. </param>
+        /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
+        /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
+        public static void RunAndForget([NotNull] Func<Task> callback,
+                                        bool continueOnCapturedContext = true,
+                                        Action<Exception> onException = null)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
 
-            Task.Run(action).ConfigureAwait(false);
+            var task = callback();
+
+            (task ?? throw new InvalidOperationException(message: "Invocation of callback returns null Task.")).RunAndForget(continueOnCapturedContext, onException);
         }
+
+        /// <summary> Safely execute the Task without waiting for it to complete before moving to the next line of code. </summary>
+        /// <param name="task"> Task. </param>
+        /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
+        /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
+        [SuppressMessage(category: "ReSharper", checkId: "AvoidAsyncVoid")]
+        public static async void RunAndForget([NotNull] this Task task,
+                                              bool continueOnCapturedContext = true,
+                                              Action<Exception> onException = null)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            try
+            {
+                await task.ConfigureAwait(continueOnCapturedContext);
+            }
+            catch (Exception ex) when (onException != null)
+            {
+                onException(ex);
+            }
+        }
+
+        static string CreateMessage(TimeSpan timeout)
+            => $"The operation timed out after reaching the limit of {timeout.TotalMilliseconds}ms.";
     }
 }
