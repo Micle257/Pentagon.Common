@@ -9,10 +9,27 @@ namespace Pentagon
     using System;
 
     /// <summary> Represents a void type, since <see cref="System.Void" /> is not a valid return type in C#. </summary>
-    public struct VoidValue : IEquatable<VoidValue>, IComparable<VoidValue>, IComparable
+    /// <remarks> Can be used as alternative to void or non-generic class override for generic class. </remarks>
+    public readonly struct VoidValue : IEquatable<VoidValue>, IComparable<VoidValue>, IComparable
     {
         /// <summary> Default and only value of the <see cref="VoidValue" /> type. </summary>
         public static readonly VoidValue Value = new VoidValue();
+
+        #region Operators
+
+        /// <summary> Implements the operator ==. </summary>
+        /// <param name="left"> The left. </param>
+        /// <param name="right"> The right. </param>
+        /// <returns> The result of the operator. </returns>
+        public static bool operator ==(VoidValue left, VoidValue right) => left.Equals(right);
+
+        /// <summary> Implements the operator !=. </summary>
+        /// <param name="left"> The left. </param>
+        /// <param name="right"> The right. </param>
+        /// <returns> The result of the operator. </returns>
+        public static bool operator !=(VoidValue left, VoidValue right) => !left.Equals(right);
+
+        #endregion
 
         /// <summary> Returns a hash code for this instance. </summary>
         /// <returns> A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </returns>
@@ -26,10 +43,17 @@ namespace Pentagon
         /// <summary> Compares the current object with another object of the same type. </summary>
         /// <param name="other"> An object to compare with this object. </param>
         /// <returns>
-        ///     A value that indicates the relative order of the objects being compared. The return value has the following meanings: - Less than zero: This object is less than the <paramref
-        ///                                                                                                                                                                              name="other" /> parameter. - Zero: This object is equal to <paramref
-        ///                                                                                                                                                                                                                                             name="other" />. - Greater than zero: This object is greater than <paramref
-        ///                                                                                                                                                                                                                                                                                                                   name="other" />.
+        ///     <para> A value that indicates the relative order of the objects being compared. </para>
+        ///     <para> The return value has the following meanings: </para>
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description> Less than zero: This object is less than the <paramref name="other" /> parameter. </description>
+        ///         </item> <item>
+        ///             <description> Zero: This object is equal to <paramref name="other" />. </description>
+        ///         </item> <item>
+        ///             <description> Greater than zero: This object is greater than <paramref name="other" />. </description>
+        ///         </item>
+        ///     </list>
         /// </returns>
         public int CompareTo(VoidValue other) => 0;
 

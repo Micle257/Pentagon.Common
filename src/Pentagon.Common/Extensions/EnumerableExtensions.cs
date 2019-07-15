@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------
 //  <copyright file="EnumerableExtensions.cs">
-//   Copyright (c) Michal Pokorný. All Rights Reserved.
+//   Copyright (c) Michal Pokornï¿½. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ namespace Pentagon.Extensions
             yield return firstElement;
         }
 
-        /// <summary> Changes collection so that it contains only the elements in one or the other collection — not both. </summary>
+        /// <summary> Changes collection so that it contains only the elements in one or the other collection ï¿½ not both. </summary>
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="coll"> The collection. </param>
         /// <param name="second"> The second collection. </param>
@@ -105,16 +105,16 @@ namespace Pentagon.Extensions
         /// <param name="toAdd"> To collection to append. </param>
         /// <returns> An iteration of appended collection. </returns>
         [Pure]
-        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, [NotNull] IEnumerable<T> toAdd)
+        public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> collection, [CanBeNull] IEnumerable<T> toAdd)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            if (toAdd == null)
-                throw new ArgumentNullException(nameof(toAdd));
-
             foreach (var item in collection)
                 yield return item;
+
+            if (toAdd == null)
+                yield break;
 
             foreach (var item in toAdd)
                 yield return item;
@@ -135,16 +135,16 @@ namespace Pentagon.Extensions
         /// <returns> An iteration of prepended collection. </returns>
         [NotNull]
         [Pure]
-        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, [NotNull] IEnumerable<T> toAdd)
+        public static IEnumerable<T> Prepend<T>([NotNull] this IEnumerable<T> collection, [CanBeNull] IEnumerable<T> toAdd)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            if (toAdd == null)
-                throw new ArgumentNullException(nameof(toAdd));
-
-            foreach (var item in toAdd)
-                yield return item;
+            if (toAdd != null)
+            {
+                foreach (var item in toAdd)
+                    yield return item;
+            }
 
             foreach (var item in collection)
                 yield return item;
@@ -177,7 +177,7 @@ namespace Pentagon.Extensions
                 throw new ArgumentOutOfRangeException(nameof(size), size, message: "The size of group size must be non-zero positive integer.");
 
             return collection
-                   .Select((a, i) => new {Item = a, Index = i})
+                   .Select((a, i) => new { Item = a, Index = i })
                    .GroupBy(a => a.Index / size)
                    .Select(a => a.Select(b => b.Item));
         }
