@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------
 //  <copyright file="EnumerableExtensions.cs">
-//   Copyright (c) Michal Pokorn�. All Rights Reserved.
+//   Copyright (c) Michal Pokorný. All Rights Reserved.
 //  </copyright>
 // -----------------------------------------------------------------------
 
@@ -9,6 +9,7 @@ namespace Pentagon.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using JetBrains.Annotations;
 
     /// <summary> Contains extension methods for <see cref="Enumerable" />. </summary>
@@ -177,7 +178,7 @@ namespace Pentagon.Extensions
                 throw new ArgumentOutOfRangeException(nameof(size), size, message: "The size of group size must be non-zero positive integer.");
 
             return collection
-                   .Select((a, i) => new { Item = a, Index = i })
+                   .Select((a, i) => new {Item = a, Index = i})
                    .GroupBy(a => a.Index / size)
                    .Select(a => a.Select(b => b.Item));
         }
@@ -218,6 +219,7 @@ namespace Pentagon.Extensions
         /// <returns> An <see cref="IEnumerable{T}" /> without null values. </returns>
         /// <exception cref="ArgumentNullException"> collection </exception>
         [NotNull]
+        [ItemNotNull]
         [Pure]
         public static IEnumerable<T> WhereNotNull<T>([NotNull] this IEnumerable<T> collection)
                 where T : class
@@ -228,19 +230,19 @@ namespace Pentagon.Extensions
             return collection.Where(a => a != null);
         }
 
-        /// <summary>
-        /// Converts the byte iteration to HEX string representation.
-        /// </summary>
-        /// <param name="bytes">The bytes.</param>
-        /// <returns>A <see cref="string"/>.</returns>
+        /// <summary> Converts the byte iteration to HEX string representation. </summary>
+        /// <param name="bytes"> The bytes. </param>
+        /// <returns> A <see cref="string" />. </returns>
         [NotNull]
         public static string ToHexString([NotNull] this IEnumerable<byte> bytes)
         {
             if (bytes == null)
                 throw new ArgumentNullException(nameof(bytes));
 
-            return bytes.Select(a => a.ToString(format: "X2"))
-                        .Aggregate((a, b) => $"{a} {b}") ?? throw new InvalidOperationException();
+            var sb = bytes.Select(a => a.ToString(format: "X2"))
+                          .Aggregate(new StringBuilder(), (a, b) => a?.Append(value: " ").Append(b), a => a?.ToString().Trim());
+
+            return sb ?? "";
         }
     }
 }
