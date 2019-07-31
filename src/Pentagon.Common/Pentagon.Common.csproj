@@ -18,6 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>RELEASE</DefineConstants>
     <OutputPath>..\..\build\$(AssemblyName)\$(Version)\</OutputPath>
+    <DocumentationFile>..\..\build\$(AssemblyName)\$(Version)\$(AssemblyName).xml</DocumentationFile>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
@@ -29,7 +30,11 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.13.0" PrivateAssets="All"/>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Update="Pentagon.Common.ExternalAnnotations" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+  </ItemGroup>
+
 </Project>
