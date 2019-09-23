@@ -35,7 +35,13 @@ namespace Pentagon.Collections
             PageSize = pageSize ?? _items.Count;
             PageIndex = pageIndex ?? 0;
 
-            TotalPages = (int) (TotalCount / (double) PageSize) + 1;
+            var totalPages = TotalCount / (double)PageSize;
+            var isRemainder = TotalCount % PageSize != 0;
+
+            if (isRemainder)
+                TotalPages = (int)totalPages + 1;
+            else
+                TotalPages = (int)totalPages;
         }
 
         /// <summary> Gets the element count of the page. </summary>

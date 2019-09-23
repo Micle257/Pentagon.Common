@@ -183,6 +183,16 @@
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
+  <member name="M:Pentagon.Extensions.PagedListExtensions.Select``2(Pentagon.Collections.PagedList{``0},System.Func{``0,``1})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <parameter name="list">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="callback">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
   <member name="M:Pentagon.Extensions.QueueExtensions.Requeue``1(System.Collections.Generic.Queue{``0},``0)">
     <parameter name="queue">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
