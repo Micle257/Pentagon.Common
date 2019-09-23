@@ -6,7 +6,7 @@
 
 namespace Pentagon.Common.Tests
 {
-    using Collections;
+    using Pentagon.Collections;
     using Xunit;
 
     public class HierarchyListTests
