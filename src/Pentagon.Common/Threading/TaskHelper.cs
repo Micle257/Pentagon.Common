@@ -27,7 +27,7 @@ namespace Pentagon.Threading
         /// <exception cref="ArgumentOutOfRangeException"> tryLimit - Try limit count must be greater or equal to one. </exception>
         /// <exception cref="NotSupportedException"> Internal error: this code should be unreachable. </exception>
         /// <remarks> Method is from Microsoft docs. </remarks>
-        public static async Task<T> TryInvokeAsync<T>([NotNull] Func<Task<T>> function, int tryLimit, int iterationDelayInMilliseconds = 0, CancellationToken cancellationToken = default)
+        public static async Task<T> TryInvokeAsync<T>([JetBrains.Annotations.NotNull] Func<Task<T>> function, int tryLimit, int iterationDelayInMilliseconds = 0, CancellationToken cancellationToken = default)
         {
             if (function == null)
                 throw new ArgumentNullException(nameof(function));
@@ -68,8 +68,11 @@ namespace Pentagon.Threading
         /// <returns> A <see cref="Task{TResult}" /> that represent asynchronous operation. </returns>
         /// <exception cref="TaskCanceledException"> </exception>
         [ItemCanBeNull]
-        public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
+        public static async Task<T> WithCancellation<T>([JetBrains.Annotations.NotNull] this Task<T> task, CancellationToken cancellationToken)
         {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
             var taskCompletionSource = new TaskCompletionSource<bool>();
 
             using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
@@ -78,7 +81,7 @@ namespace Pentagon.Threading
                     throw new TaskCanceledException(task);
             }
 
-            return task.Result;
+            return task.AwaitSynchronously();
         }
 
         /// <summary> Adds cancel wrapper around task. </summary>
@@ -106,7 +109,7 @@ namespace Pentagon.Threading
         /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
         /// <exception cref="ArgumentNullException"> task </exception>
         /// <exception cref="TimeoutException"> </exception>
-        public static async Task<TResult> TimeoutAfter<TResult>([NotNull] this Task<TResult> task,
+        public static async Task<TResult> TimeoutAfter<TResult>([JetBrains.Annotations.NotNull] this Task<TResult> task,
                                                                 TimeSpan timeout)
         {
             if (task == null)
@@ -137,7 +140,7 @@ namespace Pentagon.Threading
         /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
         /// <exception cref="ArgumentNullException"> task </exception>
         /// <exception cref="TimeoutException"> </exception>
-        public static async Task TimeoutAfter([NotNull] this Task task,
+        public static async Task TimeoutAfter([JetBrains.Annotations.NotNull] this Task task,
                                               TimeSpan timeout)
         {
             if (task == null)
@@ -168,7 +171,7 @@ namespace Pentagon.Threading
         /// <param name="callback"> Callback function. </param>
         /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
         /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
-        public static void RunAndForget([NotNull] Func<Task> callback,
+        public static void RunAndForget([JetBrains.Annotations.NotNull] Func<Task> callback,
                                         bool continueOnCapturedContext = true,
                                         Action<Exception> onException = null)
         {
@@ -185,7 +188,7 @@ namespace Pentagon.Threading
         /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
         /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
         [SuppressMessage(category: "ReSharper", checkId: "AvoidAsyncVoid")]
-        public static async void RunAndForget([NotNull] this Task task,
+        public static async void RunAndForget([JetBrains.Annotations.NotNull] this Task task,
                                               bool continueOnCapturedContext = true,
                                               Action<Exception> onException = null)
         {
@@ -207,7 +210,7 @@ namespace Pentagon.Threading
         /// <param name="task"> The task. </param>
         /// <returns> The result of asynchronous operation. </returns>
         /// <exception cref="ArgumentNullException"> task </exception>
-        public static TValue AwaitSynchronously<TValue>([NotNull] this Task<TValue> task)
+        public static TValue AwaitSynchronously<TValue>([JetBrains.Annotations.NotNull] this Task<TValue> task)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
@@ -218,7 +221,7 @@ namespace Pentagon.Threading
         /// <summary> Helper for awaiting task in synchronous context. Calls GetAwaiter and GetResult -> will throw exception from task. </summary>
         /// <param name="task"> The task. </param>
         /// <exception cref="ArgumentNullException"> task </exception>
-        public static void AwaitSynchronously([NotNull] this Task task)
+        public static void AwaitSynchronously([JetBrains.Annotations.NotNull] this Task task)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
