@@ -380,6 +380,16 @@
   <member name="P:Pentagon.OperationResults.ResultMessage.Title">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
+  <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously(System.Threading.Tasks.Task)">
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously``1(System.Threading.Tasks.Task{``0})">
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
   <member name="M:Pentagon.Threading.TaskHelper.RunAndForget(System.Func{System.Threading.Tasks.Task},System.Boolean,System.Action{System.Exception})">
     <parameter name="callback">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
@@ -407,5 +417,8 @@
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.WithCancellation``1(System.Threading.Tasks.Task{``0},System.Threading.CancellationToken)">
     <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
   </member>
 </assembly>
