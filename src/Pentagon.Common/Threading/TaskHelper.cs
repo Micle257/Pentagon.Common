@@ -9,7 +9,6 @@ namespace Pentagon.Threading
     using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
     using JetBrains.Annotations;
@@ -201,6 +200,30 @@ namespace Pentagon.Threading
             {
                 onException(ex);
             }
+        }
+
+        /// <summary> Helper for awaiting task in synchronous context. Calls GetAwaiter and GetResult -> will throw exception from task. </summary>
+        /// <typeparam name="TValue"> The type of the value. </typeparam>
+        /// <param name="task"> The task. </param>
+        /// <returns> The result of asynchronous operation. </returns>
+        /// <exception cref="ArgumentNullException"> task </exception>
+        public static TValue AwaitSynchronously<TValue>([NotNull] this Task<TValue> task)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            return task.GetAwaiter().GetResult();
+        }
+
+        /// <summary> Helper for awaiting task in synchronous context. Calls GetAwaiter and GetResult -> will throw exception from task. </summary>
+        /// <param name="task"> The task. </param>
+        /// <exception cref="ArgumentNullException"> task </exception>
+        public static void AwaitSynchronously([NotNull] this Task task)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+
+            task.GetAwaiter().GetResult();
         }
 
         static string CreateMessage(TimeSpan timeout)
