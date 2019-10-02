@@ -18,7 +18,7 @@ namespace Pentagon.Common.Tests.Threading
         {
             Func<Task<bool>> func = () => Task.Run((Func<bool>) (() => throw new ArgumentException()));
 
-            Assert.Throws<AggregateException>(() => TaskHelper.TryInvokeAsync(func, 5).Wait());
+            Assert.Throws<ArgumentException>(() => TaskHelper.TryInvokeAsync(func, 5).AwaitSynchronously());
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Pentagon.Common.Tests.Threading
         {
             Func<Task<bool>> func = () => Task.Run(() => true);
 
-            var result = TaskHelper.TryInvokeAsync(func, 2).Result;
+            var result = TaskHelper.TryInvokeAsync(func, 2).AwaitSynchronously();
 
             Assert.True(result);
         }
