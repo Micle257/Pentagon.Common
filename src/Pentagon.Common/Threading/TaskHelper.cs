@@ -93,7 +93,7 @@ namespace Pentagon.Threading
         {
             var taskCompletionSource = new TaskCompletionSource<bool>();
 
-            using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
+            await using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
             {
                 if (task != await Task.WhenAny(task, taskCompletionSource.Task))
                     throw new TaskCanceledException(task);

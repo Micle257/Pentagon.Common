@@ -18,20 +18,20 @@ namespace Pentagon.Helpers
         where T : IComparable<T>
     {
         /// <summary> Initializes a new instance of the <see cref="Range{T}" /> class. </summary>
-        /// <param name="firstBoundry"> The first boundry. </param>
-        /// <param name="secondBoundry"> The second boundry. </param>
+        /// <param name="firstBoundary"> The first boundary. </param>
+        /// <param name="secondBoundary"> The second boundary. </param>
         /// <param name="type"> The type or boundaries. </param>
-        public Range(T firstBoundry, T secondBoundry, RangeBoundaries type = RangeBoundaries.InIn)
+        public Range(T firstBoundary, T secondBoundary, RangeBoundaries type = RangeBoundaries.InIn)
         {
-            if (firstBoundry.CompareTo(secondBoundry) <= 0)
+            if (firstBoundary.CompareTo(secondBoundary) <= 0)
             {
-                Min = firstBoundry;
-                Max = secondBoundry;
+                Min = firstBoundary;
+                Max = secondBoundary;
             }
             else
             {
-                Min = secondBoundry;
-                Max = firstBoundry;
+                Min = secondBoundary;
+                Max = firstBoundary;
             }
 
             BoundariesType = type;
@@ -88,10 +88,10 @@ namespace Pentagon.Helpers
             }
         }
 
-        /// <summary> Determines if given value is inside boundaries. </summary>
+        /// <summary> Determines if given values is inside boundaries. </summary>
         /// <param name="value"> The value. </param>
-        /// <param name="min"> The down boundry. </param>
-        /// <param name="max"> The up boundry. </param>
+        /// <param name="min"> The down boundary. </param>
+        /// <param name="max"> The up boundary. </param>
         /// <param name="type"> The type of bounties. </param>
         /// <returns> A <c> true </c> if value is in range; otherwise <c> false </c>. </returns>
         public static bool InRange(in T value, T min, T max, RangeBoundaries type)
