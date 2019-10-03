@@ -75,7 +75,7 @@ namespace Pentagon.Threading
 
             var taskCompletionSource = new TaskCompletionSource<bool>();
 
-            using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
+            using (cancellationToken.Register(s => ((TaskCompletionSource<bool>)s).TrySetResult(true), taskCompletionSource))
             {
                 if (task != await Task.WhenAny(task, taskCompletionSource.Task))
                     throw new TaskCanceledException(task);
@@ -93,7 +93,7 @@ namespace Pentagon.Threading
         {
             var taskCompletionSource = new TaskCompletionSource<bool>();
 
-            await using (cancellationToken.Register(s => ((TaskCompletionSource<bool>) s).TrySetResult(true), taskCompletionSource))
+            await using (cancellationToken.Register(s => ((TaskCompletionSource<bool>)s).TrySetResult(true), taskCompletionSource))
             {
                 if (task != await Task.WhenAny(task, taskCompletionSource.Task))
                     throw new TaskCanceledException(task);
@@ -178,9 +178,29 @@ namespace Pentagon.Threading
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            var task = callback();
+            var task = Task.Run(callback);
 
-            (task ?? throw new InvalidOperationException(message: "Invocation of callback returns null Task.")).RunAndForget(continueOnCapturedContext, onException);
+            if (onException != null)
+            {
+                task.ContinueWith(a => onException(a.Exception.GetBaseException()), TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted);
+            }
+            else
+                task.ContinueWith(DefaultErrorContinuation, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted);
+
+            if (!continueOnCapturedContext)
+                task.ConfigureAwait(false);
+
+            static void DefaultErrorContinuation(Task task)
+            {
+                try
+                {
+                    task.AwaitSynchronously();
+                }
+                catch
+                {
+                    // ignore
+                }
+            };
         }
 
         /// <summary> Safely execute the Task without waiting for it to complete before moving to the next line of code. </summary>

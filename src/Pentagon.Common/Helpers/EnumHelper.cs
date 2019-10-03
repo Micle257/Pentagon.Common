@@ -71,7 +71,7 @@ namespace Pentagon.Helpers
 
                 return result;
             }
-            catch (Exception e)
+            catch
             {
                 return default;
             }
@@ -87,7 +87,7 @@ namespace Pentagon.Helpers
 
                 return result.Description;
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
