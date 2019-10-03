@@ -25,7 +25,7 @@ namespace Pentagon.Collections
         /// <param name="totalCount"> The total count. </param>
         /// <param name="pageSize"> Size of the page. </param>
         /// <param name="pageIndex"> Index of the page. </param>
-        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, int? pageIndex)
+        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, Index? pageIndex)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -49,12 +49,12 @@ namespace Pentagon.Collections
         public int PageSize { get; }
 
         /// <summary> Gets the page index. </summary>
-        /// <value> The <see cref="int" />. </value>
-        public int PageIndex { get; }
+        /// <value> The <see cref="Index" />. </value>
+        public Index PageIndex { get; }
 
         /// <summary> Gets the page number (one based). </summary>
         /// <value> The <see cref="int" />. </value>
-        public int PageNumber => PageIndex + 1;
+        public int PageNumber => PageIndex.Value + 1;
 
         /// <summary> Gets the total count of elements. </summary>
         /// <value> The <see cref="int" />. </value>
@@ -64,9 +64,22 @@ namespace Pentagon.Collections
         /// <value> The <see cref="int" />. </value>
         public int TotalPages { get; }
 
+        /// <summary> Gets the page index range. </summary>
+        /// <value> The <see cref="Range" />. </value>
+        public Range ItemRange
+        {
+            get
+            {
+                var start = PageIndex.Value * PageSize;
+                var end = start + Count - 1;
+
+                return start..end;
+            }
+        }
+
         /// <summary> Gets a value indicating whether this page has previous page. </summary>
         /// <value> <c> true </c> if this page has previous page; otherwise, <c> false </c>. </value>
-        public bool HasPreviousPage => PageIndex != 0;
+        public bool HasPreviousPage => PageIndex.Value != 0;
 
         /// <summary> Gets a value indicating whether this page has next page. </summary>
         /// <value> <c> true </c> if this page has next page; otherwise, <c> false </c>. </value>

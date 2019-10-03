@@ -1,4 +1,5 @@
 ﻿namespace Pentagon.Common.Tests.Collections {
+    using System;
     using System.Collections.Generic;
     using Pentagon.Collections;
     using Xunit;
@@ -93,6 +94,17 @@
             Assert.Equal(set.Expected.HasPreviousPage, list.HasPreviousPage);
         }
 
+        [Theory]
+        [MemberData(nameof(PagedListTestSet.Valid), MemberType = typeof(PagedListTestSet))]
+        public void ItemRange_ReturnsCorrectValue(PagedListTestSet set)
+        {
+            // ARRANGE
+            var list = new PagedList<int>(set.Input.Source, set.Input.TotalCount, set.Input.PageSize, set.Input.PageIndex);
+
+            // ASSERT
+            Assert.Equal(set.Expected.Range, list.ItemRange);
+        }
+
         public class PagedListTestSet
         {
             public InputData Input { get; } = new InputData();
@@ -120,6 +132,7 @@
                                                    PageIndex = 0,
                                                    PageNumber =  1,
                                                    TotalPages = 2,
+                                                   Range = ..4,
                                                    HasNextPage = true,
                                                    HasPreviousPage = false
                                            }
@@ -141,6 +154,7 @@
                                                    PageIndex       = 0,
                                                    PageNumber      =  1,
                                                    TotalPages      = 1,
+                                                   Range = ..5,
                                                    HasNextPage     = false,
                                                    HasPreviousPage = false
                                            }
@@ -162,7 +176,30 @@
                                                    PageIndex       = 10,
                                                    PageNumber      =  11,
                                                    TotalPages      = 5163,
+                                                   Range = 30..32,
                                                    HasNextPage     = true,
+                                                   HasPreviousPage = true
+                                           }
+                                   },
+                                   new PagedListTestSet
+                                   {
+                                           Input =
+                                           {
+                                                   Source     = new[] {15,78},
+                                                   TotalCount = 11,
+                                                   PageSize   = 3,
+                                                   PageIndex  = 3
+                                           },
+                                           Expected =
+                                           {
+                                                   PageSize        =3,
+                                                   TotalCount      = 11,
+                                                   Count           = 2,
+                                                   PageIndex       = 3,
+                                                   PageNumber      =  4,
+                                                   TotalPages      = 4,
+                                                   Range           = 9..10,
+                                                   HasNextPage     = false,
                                                    HasPreviousPage = true
                                            }
                                    }
@@ -189,6 +226,8 @@
                 public bool HasNextPage { get; set; }
 
                 public int Count { get; set; }
+
+                public Range Range { get; set; }
             }
 
             public class InputData
@@ -199,7 +238,7 @@
 
                 public int? PageSize { get; set; }
 
-                public int? PageIndex { get; set; }
+                public Index? PageIndex { get; set; }
             }
         }
     }
