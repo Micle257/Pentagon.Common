@@ -218,6 +218,22 @@
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
+  <member name="M:Pentagon.Helpers.AppDomainHelper.GetLoadableTypes(System.Reflection.Assembly)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="assembly">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Helpers.AppDomainHelper.GetLoadedTypes(System.AppDomain)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="appDomain">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
   <member name="M:Pentagon.Helpers.CollectionEqualityComparer`1.Equals(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`0})">
     <parameter name="first">
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
@@ -379,6 +395,16 @@
   </member>
   <member name="P:Pentagon.OperationResults.ResultMessage.Title">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously(System.Threading.Tasks.Task)">
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously``1(System.Threading.Tasks.Task{``0})">
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.RunAndForget(System.Func{System.Threading.Tasks.Task},System.Boolean,System.Action{System.Exception})">
     <parameter name="callback">
