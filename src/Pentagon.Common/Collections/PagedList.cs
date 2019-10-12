@@ -25,23 +25,23 @@ namespace Pentagon.Collections
         /// <param name="totalCount"> The total count. </param>
         /// <param name="pageSize"> Size of the page. </param>
         /// <param name="pageIndex"> Index of the page. </param>
-        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, int? pageIndex)
+        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, Index? pageIndex)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            _items = source.ToList();
+            _items     = source.ToList();
             TotalCount = totalCount ?? _items.Count;
-            PageSize = pageSize ?? _items.Count;
-            PageIndex = pageIndex ?? 0;
+            PageSize   = pageSize ?? _items.Count;
+            PageIndex  = pageIndex ?? 0;
 
-            var totalPages = TotalCount / (double)PageSize;
+            var totalPages  = TotalCount / (double) PageSize;
             var isRemainder = TotalCount % PageSize != 0;
 
             if (isRemainder)
-                TotalPages = (int)totalPages + 1;
+                TotalPages = (int) totalPages + 1;
             else
-                TotalPages = (int)totalPages;
+                TotalPages = (int) totalPages;
         }
 
         /// <summary> Gets the element count of the page. </summary>
@@ -49,14 +49,14 @@ namespace Pentagon.Collections
         public int PageSize { get; }
 
         /// <summary> Gets the page index. </summary>
-        /// <value> The <see cref="int" />. </value>
-        public int PageIndex { get; }
+        /// <value> The <see cref="Index" />. </value>
+        public Index PageIndex { get; }
 
         /// <summary> Gets the page number (one based). </summary>
         /// <value> The <see cref="int" />. </value>
-        public int PageNumber => PageIndex + 1;
+        public int PageNumber => PageIndex.Value + 1;
 
-        /// <summary> Gets the total count of elements. </summary>
+        /// <summary> Gets the total count of elements in all pages. </summary>
         /// <value> The <see cref="int" />. </value>
         public int TotalCount { get; }
 
@@ -64,24 +64,47 @@ namespace Pentagon.Collections
         /// <value> The <see cref="int" />. </value>
         public int TotalPages { get; }
 
+        /// <summary> Gets the page index range. </summary>
+        /// <value> The <see cref="Range" />. </value>
+        public Range ItemRange
+        {
+            get
+            {
+                var start = PageIndex.Value * PageSize;
+                var end   = (start + Count) - 1;
+
+                return start..end;
+            }
+        }
+
         /// <summary> Gets a value indicating whether this page has previous page. </summary>
         /// <value> <c> true </c> if this page has previous page; otherwise, <c> false </c>. </value>
-        public bool HasPreviousPage => PageIndex != 0;
+        public bool HasPreviousPage => PageIndex.Value != 0;
 
         /// <summary> Gets a value indicating whether this page has next page. </summary>
         /// <value> <c> true </c> if this page has next page; otherwise, <c> false </c>. </value>
         public bool HasNextPage => PageNumber < TotalPages;
 
-        /// <inheritdoc />
+        /// <summary> Gets the number of elements in this page. </summary>
+        /// <returns> The <see cref="int" />. </returns>
         public int Count => _items.Count;
 
         /// <inheritdoc />
-        public TEntity this[int index] => _items[index];
+        public TEntity this[int index] => _items[index: index];
 
         /// <inheritdoc />
         public IEnumerator<TEntity> GetEnumerator() => _items.GetEnumerator();
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary> Creates <see cref="PagedList{TEntity}" /> without data. Used for computation of pagination parameters. </summary>
+        /// <param name="sourceCount"> The source count. </param>
+        /// <param name="totalCount"> The total count. </param>
+        /// <param name="pageSize"> Size of the page. </param>
+        /// <param name="pageIndex"> Index of the page. </param>
+        /// <returns> The <see cref="PagedList{TEntity}" /> with all elements of value <c> null </c>. </returns>
+        public static PagedList<TEntity> CreateBlank(int sourceCount, int? totalCount, int? pageSize, Index? pageIndex) =>
+                new PagedList<TEntity>(Enumerable.Repeat<TEntity>(default, count: sourceCount), totalCount: totalCount, pageSize: pageSize, pageIndex: pageIndex);
     }
 }

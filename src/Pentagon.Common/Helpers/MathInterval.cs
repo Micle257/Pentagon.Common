@@ -72,7 +72,7 @@ namespace Pentagon.Helpers
 
         /// <summary> Divides this range into collection given by length of an element. </summary>
         /// <param name="lengthOfElement"> The length of element. </param>
-        /// <returns> An <see cref="IEnumerable{T}" /> of diveded interval. </returns>
+        /// <returns> An <see cref="IEnumerable{T}" /> of divided interval. </returns>
         [NotNull]
         public IEnumerable<double> GetSampledInterval(double lengthOfElement)
         {

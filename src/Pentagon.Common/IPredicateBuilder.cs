@@ -8,7 +8,6 @@ namespace Pentagon
 {
     using System;
     using System.Linq.Expressions;
-    using Helpers;
 
     public interface IPredicateBuilder<T> : IStartedPredicateBuilder<T>
     {

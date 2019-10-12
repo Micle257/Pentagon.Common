@@ -37,7 +37,7 @@
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Collections.PagedList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+  <member name="M:Pentagon.Collections.PagedList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Index})">
     <parameter name="source">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
@@ -215,6 +215,22 @@
   </member>
   <member name="M:Pentagon.Extensions.TypeExtensions.GetValue(System.Reflection.MemberInfo,System.Object)">
     <parameter name="memberInfo">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Helpers.AppDomainHelper.GetLoadableTypes(System.Reflection.Assembly)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="assembly">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Helpers.AppDomainHelper.GetLoadedTypes(System.AppDomain)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="appDomain">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Pentagon</RootNamespace>
     <Authors>Michal Pokorný</Authors>
     <Company></Company>
@@ -9,7 +9,7 @@
     <Description>Class library providing general extensions and utility types used for common tasks.</Description>
     <Copyright>Copyright (c) Michal Pokorný. All Rights Reserved.</Copyright>
     <PackageProjectUrl>https://github.com/Micle257/Pentagon.Common</PackageProjectUrl>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
