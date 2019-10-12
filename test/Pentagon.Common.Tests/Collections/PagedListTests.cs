@@ -1,6 +1,7 @@
 ﻿namespace Pentagon.Common.Tests.Collections {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Pentagon.Collections;
     using Xunit;
 
@@ -103,6 +104,17 @@
 
             // ASSERT
             Assert.Equal(set.Expected.Range, list.ItemRange);
+        }
+
+        [Theory]
+        [MemberData(nameof(PagedListTestSet.Valid), MemberType = typeof(PagedListTestSet))]
+        public void CreateBlank_AllElementsDefault(PagedListTestSet set)
+        {
+            // ARRANGE
+            var list = PagedList<int>.CreateBlank(set.Input.Source.Count(), set.Input.TotalCount, set.Input.PageSize, set.Input.PageIndex);
+
+            // ASSERT
+            Assert.All(list, i => { if (i !=0) throw new Exception();});
         }
 
         public class PagedListTestSet
