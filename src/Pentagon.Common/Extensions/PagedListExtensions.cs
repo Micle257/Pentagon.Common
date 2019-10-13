@@ -9,6 +9,7 @@ namespace Pentagon.Extensions
     using System;
     using System.Linq;
     using Collections;
+    using Collections.Paged;
     using JetBrains.Annotations;
 
     public static class PagedListExtensions

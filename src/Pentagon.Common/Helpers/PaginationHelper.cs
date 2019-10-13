@@ -10,6 +10,7 @@ namespace Pentagon.Helpers
     using System.Collections.Generic;
     using System.Linq;
     using Collections;
+    using Collections.Paged;
     using JetBrains.Annotations;
 
     /// <summary> Provides helper logic for pagination. </summary>
