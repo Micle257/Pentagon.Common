@@ -8,6 +8,7 @@ namespace Pentagon.Collections.Paged
 {
     using System;
 
+    /// <summary> Represents a paged list. </summary>
     public interface IPagedList
     {
         /// <summary> Gets the element count of the page. </summary>

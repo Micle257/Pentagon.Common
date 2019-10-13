@@ -12,7 +12,7 @@ namespace Pentagon.Collections.Paged
     using System.Linq;
     using JetBrains.Annotations;
 
-    /// <summary> Represents a manager for managing paging for a collection. </summary>
+    /// <summary> Represents a paged list defined as <see cref="IReadOnlyList{T}"/>. </summary>
     /// <typeparam name="TEntity"> The type of the element. </typeparam>
     public class PagedList<TEntity> : IPagedList<TEntity>, IReadOnlyList<TEntity>
     {

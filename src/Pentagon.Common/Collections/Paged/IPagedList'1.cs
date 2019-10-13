@@ -9,6 +9,8 @@ namespace Pentagon.Collections.Paged
     using System;
     using System.Collections.Generic;
 
+    /// <summary> Represents a paged list with elements. </summary>
+    /// <typeparam name="TEntity"> The type of the element. </typeparam>
     public interface IPagedList<out TEntity> : IPagedList, IEnumerable<TEntity>
     {
         /// <summary> Gets the page index range. </summary>
