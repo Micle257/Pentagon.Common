@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Pentagon.Collections;
-    using Pentagon.Collections.Paged;
     using Xunit;
 
     public class PagedListTests

@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Collections.Paged
+namespace Pentagon.Collections
 {
     using System;
     using System.Collections;
