@@ -14,7 +14,7 @@ namespace Pentagon.Collections
 
     /// <summary> Represents a manager for managing paging for a collection. </summary>
     /// <typeparam name="TEntity"> The type of the element. </typeparam>
-    public class PagedList<TEntity> : IReadOnlyList<TEntity>
+    public class PagedList<TEntity> : IPagedList<TEntity>, IReadOnlyList<TEntity>
     {
         /// <summary> The source collection. </summary>
         [NotNull]
@@ -44,28 +44,28 @@ namespace Pentagon.Collections
                 TotalPages = (int) totalPages;
         }
 
-        /// <summary> Gets the element count of the page. </summary>
-        /// <value> The <see cref="int" />. </value>
+        /// <inheritdoc />
         public int PageSize { get; }
 
-        /// <summary> Gets the page index. </summary>
-        /// <value> The <see cref="Index" />. </value>
+        /// <inheritdoc />
         public Index PageIndex { get; }
 
-        /// <summary> Gets the page number (one based). </summary>
-        /// <value> The <see cref="int" />. </value>
+        /// <inheritdoc />
         public int PageNumber => PageIndex.Value + 1;
 
-        /// <summary> Gets the total count of elements in all pages. </summary>
-        /// <value> The <see cref="int" />. </value>
+        /// <inheritdoc />
         public int TotalCount { get; }
 
-        /// <summary> Gets the total count of pages. </summary>
-        /// <value> The <see cref="int" />. </value>
+        /// <inheritdoc />
         public int TotalPages { get; }
 
-        /// <summary> Gets the page index range. </summary>
-        /// <value> The <see cref="Range" />. </value>
+        /// <inheritdoc />
+        public bool HasPreviousPage => PageIndex.Value != 0;
+
+        /// <inheritdoc />
+        public bool HasNextPage => PageNumber < TotalPages;
+
+        /// <inheritdoc />
         public Range ItemRange
         {
             get
@@ -77,17 +77,11 @@ namespace Pentagon.Collections
             }
         }
 
-        /// <summary> Gets a value indicating whether this page has previous page. </summary>
-        /// <value> <c> true </c> if this page has previous page; otherwise, <c> false </c>. </value>
-        public bool HasPreviousPage => PageIndex.Value != 0;
-
-        /// <summary> Gets a value indicating whether this page has next page. </summary>
-        /// <value> <c> true </c> if this page has next page; otherwise, <c> false </c>. </value>
-        public bool HasNextPage => PageNumber < TotalPages;
-
-        /// <summary> Gets the number of elements in this page. </summary>
-        /// <returns> The <see cref="int" />. </returns>
+        /// <inheritdoc />
         public int Count => _items.Count;
+
+        /// <inheritdoc />
+        public bool IsPageFull => Count == PageSize;
 
         /// <inheritdoc />
         public TEntity this[int index] => _items[index: index];
@@ -104,7 +98,18 @@ namespace Pentagon.Collections
         /// <param name="pageSize"> Size of the page. </param>
         /// <param name="pageIndex"> Index of the page. </param>
         /// <returns> The <see cref="PagedList{TEntity}" /> with all elements of value <c> null </c>. </returns>
+        [NotNull]
+        [Pure]
         public static PagedList<TEntity> CreateBlank(int sourceCount, int? totalCount, int? pageSize, Index? pageIndex) =>
                 new PagedList<TEntity>(Enumerable.Repeat<TEntity>(default, count: sourceCount), totalCount: totalCount, pageSize: pageSize, pageIndex: pageIndex);
+
+        /// <summary> Creates <see cref="PagedList{TEntity}" /> without data. Used for computation of pagination parameters. </summary>
+        /// <param name="totalCount"> The total count. </param>
+        /// <param name="pageSize"> Size of the page. </param>
+        /// <returns> The <see cref="PagedList{TEntity}" /> with all elements of value <c> null </c>. </returns>
+        [NotNull]
+        [Pure]
+        public static PagedList<TEntity> CreateBlank(int totalCount, int pageSize) =>
+                new PagedList<TEntity>(Array.Empty<TEntity>(), totalCount: totalCount, pageSize: pageSize, 0);
     }
 }
