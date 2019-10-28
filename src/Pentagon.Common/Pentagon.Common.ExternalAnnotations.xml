@@ -404,43 +404,57 @@
   <member name="P:Pentagon.OperationResults.ResultMessage.Title">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
+  <member name="T:Pentagon.Percentage">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
+  </member>
   <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously(System.Threading.Tasks.Task)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously``1(System.Threading.Tasks.Task{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.RunAndForget(System.Func{System.Threading.Tasks.Task},System.Boolean,System.Action{System.Exception})">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="callback">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.RunAndForget(System.Threading.Tasks.Task,System.Boolean,System.Action{System.Exception})">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Threading.TaskHelper.TimeoutAfter(System.Threading.Tasks.Task,System.TimeSpan)">
+  <member name="M:Pentagon.Threading.TaskHelper.TimeoutAfter(System.Threading.Tasks.Task,System.TimeSpan,System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Threading.TaskHelper.TimeoutAfter``1(System.Threading.Tasks.Task{``0},System.TimeSpan)">
+  <member name="M:Pentagon.Threading.TaskHelper.TimeoutAfter``1(System.Threading.Tasks.Task{``0},System.TimeSpan,System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.TryInvokeAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Int32,System.Int32,System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="function">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
+  <member name="M:Pentagon.Threading.TaskHelper.WithCancellation(System.Threading.Tasks.Task,System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
+  </member>
   <member name="M:Pentagon.Threading.TaskHelper.WithCancellation``1(System.Threading.Tasks.Task{``0},System.Threading.CancellationToken)">
     <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
