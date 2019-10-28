@@ -1,1 +1,1 @@
-sh /c/Users/Michal/Source/GitHub/deploy.sh Pentagon.Common --test
+sh /c/Users/Michal/Source/GitHub/deploy.sh Pentagon.Common
