@@ -14,6 +14,7 @@ namespace Pentagon.Threading
     using JetBrains.Annotations;
 
     /// <summary> Provides a helper and extension methods for <seealso cref="Task" />. </summary>
+    [SuppressMessage("ReSharper", "AsyncConverter.AsyncMethodNamingHighlighting")]
     public static class TaskHelper
     {
         /// <summary> Attempts invoking the function for desired limit count, if the function throws an exception. </summary>
@@ -27,6 +28,7 @@ namespace Pentagon.Threading
         /// <exception cref="ArgumentOutOfRangeException"> tryLimit - Try limit count must be greater or equal to one. </exception>
         /// <exception cref="NotSupportedException"> Internal error: this code should be unreachable. </exception>
         /// <remarks> Method is from Microsoft docs. </remarks>
+        [PublicAPI]
         public static async Task<T> TryInvokeAsync<T>([JetBrains.Annotations.NotNull] Func<Task<T>> function, int tryLimit, int iterationDelayInMilliseconds = 0, CancellationToken cancellationToken = default)
         {
             if (function == null)
@@ -68,6 +70,7 @@ namespace Pentagon.Threading
         /// <returns> A <see cref="Task{TResult}" /> that represent asynchronous operation. </returns>
         /// <exception cref="TaskCanceledException"> </exception>
         [ItemCanBeNull]
+        [PublicAPI]
         public static async Task<T> WithCancellation<T>([JetBrains.Annotations.NotNull] this Task<T> task, CancellationToken cancellationToken)
         {
             if (task == null)
@@ -89,6 +92,7 @@ namespace Pentagon.Threading
         /// <param name="cancellationToken"> The cancellation token. </param>
         /// <returns> A <see cref="Task" /> that represent asynchronous operation. </returns>
         /// <exception cref="TaskCanceledException"> </exception>
+        [PublicAPI]
         public static async Task WithCancellation(this Task task, CancellationToken cancellationToken)
         {
             var taskCompletionSource = new TaskCompletionSource<bool>();
@@ -100,77 +104,91 @@ namespace Pentagon.Threading
             }
         }
 
-        /// <summary> Wraps the task around timeout logic. If timeout occurs, exception will be thrown. </summary>
-        /// <typeparam name="TResult"> The type of the result. </typeparam>
-        /// <param name="task"> The task. </param>
-        /// <param name="timeout"> The timeout. </param>
-        /// <param name="filePath"> The file path. </param>
-        /// <param name="lineNumber"> The line number. </param>
-        /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
-        /// <exception cref="ArgumentNullException"> task </exception>
-        /// <exception cref="TimeoutException"> </exception>
+        /// <summary>
+        /// Wraps the task around timeout logic. If timeout occurs, exception will be thrown.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="continueOnCapturedContext">if set to <c>true</c> continue on captured context.</param>
+        /// <returns>
+        /// A <see cref="Task" /> that represents asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">task</exception>
+        /// <exception cref="TimeoutException">timeout occured</exception>
+        [PublicAPI]
         public static async Task<TResult> TimeoutAfter<TResult>([JetBrains.Annotations.NotNull] this Task<TResult> task,
-                                                                TimeSpan timeout)
+                                                                TimeSpan timeout,
+                                                                bool continueOnCapturedContext = true)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            if (task.IsCompleted || Debugger.IsAttached)
-                return await task.ConfigureAwait(false);
+            if (task.IsCompleted)
+                return await task.ConfigureAwait(continueOnCapturedContext);
 
-            using (var timeoutCancellationTokenSource = new CancellationTokenSource())
-            {
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
+            using var timeoutCancellationTokenSource = new CancellationTokenSource();
 
-                if (completedTask == task)
-                {
-                    timeoutCancellationTokenSource.Cancel();
-                    return await task.ConfigureAwait(false); // Very important in order to propagate exceptions
-                }
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
 
+            // if firstly completed operation is not input operation => operation reached timeout...
+            if (completedTask != task)
+                // throw
                 throw new TimeoutException(CreateMessage(timeout));
-            }
+
+            // cancel delay task
+            timeoutCancellationTokenSource.Cancel();
+
+            // return input operation to async context
+            // await for propagating exceptions
+            return await task.ConfigureAwait(continueOnCapturedContext);
+
         }
 
         /// <summary> Wraps the task around timeout logic. If timeout occurs, exception will be thrown. </summary>
-        /// <param name="task"> The task. </param>
-        /// <param name="timeout"> The timeout. </param>
-        /// <param name="filePath"> The file path. </param>
-        /// <param name="lineNumber"> The line number. </param>
-        /// <returns> A <see cref="Task" /> that represents asynchronous operation. </returns>
-        /// <exception cref="ArgumentNullException"> task </exception>
-        /// <exception cref="TimeoutException"> </exception>
+        /// <param name="task">The task.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="continueOnCapturedContext">if set to <c>true</c> continue on captured context.</param>
+        /// <returns>
+        /// A <see cref="Task" /> that represents asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">task</exception>
+        /// <exception cref="TimeoutException">timeout occured</exception>
+        [PublicAPI]
         public static async Task TimeoutAfter([JetBrains.Annotations.NotNull] this Task task,
-                                              TimeSpan timeout)
+                                              TimeSpan timeout,
+                                              bool continueOnCapturedContext = true)
         {
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            if (task.IsCompleted || Debugger.IsAttached)
+            if (task.IsCompleted)
             {
-                await task.ConfigureAwait(false);
+                await task.ConfigureAwait(continueOnCapturedContext);
                 return;
             }
 
-            using (var timeoutCancellationTokenSource = new CancellationTokenSource())
-            {
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
+            using var timeoutCancellationTokenSource = new CancellationTokenSource();
 
-                if (completedTask == task)
-                {
-                    timeoutCancellationTokenSource.Cancel();
-                    await task.ConfigureAwait(false); // Very important in order to propagate exceptions
-                    return;
-                }
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token)).ConfigureAwait(false);
 
+            // if firstly completed operation is not input operation => operation reached timeout...
+            if (completedTask != task)
+                    // throw
                 throw new TimeoutException(CreateMessage(timeout));
-            }
+
+            // cancel delay task
+            timeoutCancellationTokenSource.Cancel();
+
+            // await for propagating exceptions
+            await task.ConfigureAwait(continueOnCapturedContext);
         }
 
         /// <summary> Safely execute the Task without waiting for it to complete before moving to the next line of code. </summary>
         /// <param name="callback"> Callback function. </param>
         /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
         /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
+        [PublicAPI]
         public static void RunAndForget([JetBrains.Annotations.NotNull] Func<Task> callback,
                                         bool continueOnCapturedContext = true,
                                         Action<Exception> onException = null)
@@ -208,6 +226,7 @@ namespace Pentagon.Threading
         /// <param name="continueOnCapturedContext"> If set to <c> true </c> continue on captured context; this will ensure that the Synchronization Context returns to the calling thread. If set to <c> false </c> continue on a different context; this will allow the Synchronization Context to continue on a different thread </param>
         /// <param name="onException"> If an exception is thrown in the Task, <c> onException </c> will execute. If onException is null, the exception will be re-thrown </param>
         [SuppressMessage(category: "ReSharper", checkId: "AvoidAsyncVoid")]
+        [PublicAPI]
         public static async void RunAndForget([JetBrains.Annotations.NotNull] this Task task,
                                               bool continueOnCapturedContext = true,
                                               Action<Exception> onException = null)
@@ -230,6 +249,7 @@ namespace Pentagon.Threading
         /// <param name="task"> The task. </param>
         /// <returns> The result of asynchronous operation. </returns>
         /// <exception cref="ArgumentNullException"> task </exception>
+        [PublicAPI]
         public static TValue AwaitSynchronously<TValue>([JetBrains.Annotations.NotNull] this Task<TValue> task)
         {
             if (task == null)
@@ -241,6 +261,7 @@ namespace Pentagon.Threading
         /// <summary> Helper for awaiting task in synchronous context. Calls GetAwaiter and GetResult -> will throw exception from task. </summary>
         /// <param name="task"> The task. </param>
         /// <exception cref="ArgumentNullException"> task </exception>
+        [PublicAPI]
         public static void AwaitSynchronously([JetBrains.Annotations.NotNull] this Task task)
         {
             if (task == null)
