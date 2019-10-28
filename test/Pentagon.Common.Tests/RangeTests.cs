@@ -7,6 +7,7 @@
 namespace Pentagon.Common.Tests
 {
     using Pentagon.Helpers;
+    using Ranges;
     using Xunit;
 
     public class RangeTests

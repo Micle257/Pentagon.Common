@@ -13,9 +13,13 @@ namespace Pentagon.Extensions
     /// <summary> Contains extension methods for <see cref="System.String" />. </summary>
     public static class StringExtensions
     {
-        /// <summary> Surrounds the <see cref="string" /> with quotes. </summary>
-        /// <param name="value"> Modified <see cref="string" />. </param>
-        public static string Quote(this string value) => "'" + value + "'";
+        /// <summary>
+        /// Surrounds the <see cref="string" /> with quotes.
+        /// </summary>
+        /// <param name="value">Modified <see cref="string" />.</param>
+        /// <param name="quoteCharacter">The quote character. Default is '.</param>
+        /// <returns>A quoted string.</returns>
+        public static string Quote(this string value, char quoteCharacter = '\'') => quoteCharacter + value + quoteCharacter;
 
         /// <summary> Converts the <see cref="string" /> representation of a number as an <see cref="int" />. Equivalent to TryParse method. </summary>
         /// <param name="value"> String value to convert. </param>

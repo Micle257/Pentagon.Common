@@ -8,6 +8,7 @@ namespace Pentagon.Exceptions
 {
     using System;
     using System.Runtime.Serialization;
+    using Ranges;
 
     /// <summary> The exception that is thrown when a string value is not valid. </summary>
     /// <typeparam name="T"> Type of the value. </typeparam>

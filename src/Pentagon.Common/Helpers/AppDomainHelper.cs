@@ -18,13 +18,15 @@ namespace Pentagon.Helpers
     public static class AppDomainHelper
     {
         /// <summary>
-        /// Gets the loaded types from app domain.
+        /// Gets the loaded types from app domain excluding dynamically loaded types.
         /// </summary>
+        /// <remarks>This method prevents throwing <see cref="ReflectionTypeLoadException"/>.</remarks>
         /// <param name="appDomain">The application domain.</param>
-        /// <returns>Iteration of <see cref="Type"/>.</returns>
+        /// <returns>An iteration of <see cref="Type"/>.</returns>
         [NotNull]
         [ItemNotNull]
         [Pure]
+        [PublicAPI]
         public static IEnumerable<Type> GetLoadedTypes([NotNull] this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(GetLoadableTypes);
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace Pentagon.Helpers
         [NotNull]
         [ItemNotNull]
         [Pure]
+        [PublicAPI]
         public static IEnumerable<Type> GetLoadableTypes([NotNull] Assembly assembly)
         {
             try

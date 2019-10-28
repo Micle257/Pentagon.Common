@@ -11,7 +11,7 @@ namespace Pentagon.Helpers
     /// <summary> Provides helper logic for number operations. </summary>
     public static class NumberHelper
     {
-        /// <summary> Shifts the and then wrap value by given number of positions using left-shifting. Usage in distinct <see cref="object.GetHashCode" /> combinations. </summary>
+        /// <summary> Shifts the value and then wrap value by given number of positions using left-shifting. Usage in distinct <see cref="object.GetHashCode" /> combinations. </summary>
         /// <param name="value"> The value. </param>
         /// <param name="positions"> The positions. </param>
         /// <returns> The <see cref="int" />. </returns>
@@ -26,7 +26,7 @@ namespace Pentagon.Helpers
             return BitConverter.ToInt32(BitConverter.GetBytes((number << positions) | wrapped), 0);
         }
 
-        /// <summary> Shifts the and then wrap value by given number of positions using left-shifting. </summary>
+        /// <summary> Shifts the value and then wrap value by given number of positions using left-shifting. </summary>
         /// <param name="value"> The value. </param>
         /// <param name="positions"> The positions. </param>
         /// <returns> The <see cref="byte" />. </returns>

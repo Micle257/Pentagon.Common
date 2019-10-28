@@ -12,18 +12,17 @@ namespace Pentagon.Helpers
     using System.Linq;
     using JetBrains.Annotations;
 
-    /// <summary>
-    /// Provides helper logic for culture tasks.
-    /// </summary>
+    /// <summary> Provides helper logic for culture tasks. </summary>
     public static class CultureHelper
     {
+        /// <summary> The culture names. </summary>
         [NotNull]
         static readonly HashSet<string> CultureNames = CreateCultureNames();
 
         /// <summary> Determines if given culture name exists. </summary>
         /// <param name="name"> The name. </param>
         /// <returns> Flag indicating whether culture exists. </returns>
-        public static bool Exists([CanBeNull] string name) => CultureNames.Contains(name);
+        public static bool Exists([CanBeNull] string name) => CultureNames.Contains(item: name);
 
         /// <summary> Tries to parse the culture name (if culture is <c> null </c> invariant is returned) to the <see cref="CultureInfo" />. </summary>
         /// <param name="culture"> The culture. </param>
@@ -31,9 +30,9 @@ namespace Pentagon.Helpers
         /// <returns> Flag indicating if parsing was successful. </returns>
         public static bool TryParse([CanBeNull] string culture, [CanBeNull] out CultureInfo cultureInfo)
         {
-            if (Exists(culture))
+            if (Exists(name: culture))
             {
-                cultureInfo = culture == null ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(culture);
+                cultureInfo = culture == null ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(name: culture);
                 return true;
             }
 
@@ -41,16 +40,18 @@ namespace Pentagon.Helpers
             return false;
         }
 
+        /// <summary> Creates the culture names. </summary>
+        /// <returns> A string hash set. </returns>
         [Pure]
         [NotNull]
         [ItemNotNull]
         static HashSet<string> CreateCultureNames()
         {
-            var cultureInfos = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                                          .Where(x => !string.IsNullOrEmpty(x?.Name))
+            var cultureInfos = CultureInfo.GetCultures(types: CultureTypes.AllCultures)
+                                          .Where(x => !string.IsNullOrEmpty(value: x?.Name))
                                           .ToArray();
 
-            var allNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var allNames = new HashSet<string>(comparer: StringComparer.OrdinalIgnoreCase);
 
             allNames.UnionWith(cultureInfos.Select(x => x?.TwoLetterISOLanguageName));
             allNames.UnionWith(cultureInfos.Select(x => x?.Name));

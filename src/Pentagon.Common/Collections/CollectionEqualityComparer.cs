@@ -4,13 +4,17 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon.Collections
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// Provides equality comparer for <see cref="IEnumerable{T}"/>. Compares on count and item equality.
+    /// </summary>
+    /// <typeparam name="T">The type of element in <see cref="IEnumerable{T}"/>.</typeparam>
     public class CollectionEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
     {
         readonly bool _ignoreOrder;

@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon.Ranges
 {
     /// <summary> Specifies the boundaries of a <see cref="Range{T}" />. </summary>
     public enum RangeBoundaries

@@ -8,6 +8,7 @@ namespace Pentagon.Helpers
 {
     using System;
     using System.Globalization;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Provides helper logic for calendar.
@@ -18,6 +19,7 @@ namespace Pentagon.Helpers
         /// <param name="year"> The year. </param>
         /// <param name="weekOfYear"> The week number. </param>
         /// <returns> A <see cref="DateTime" /> of the first weekday. </returns>
+        [PublicAPI]
         public static DateTime GetFirstDateOfWeek(int year, int weekOfYear)
         {
             var jan1 = new DateTime(year, 1, 1);
