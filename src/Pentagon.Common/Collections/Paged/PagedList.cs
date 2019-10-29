@@ -11,6 +11,7 @@ namespace Pentagon.Collections
     using System.Collections.Generic;
     using System.Linq;
     using JetBrains.Annotations;
+    using Ranges;
 
     /// <summary> Represents a paged list defined as <see cref="IReadOnlyList{T}"/>. </summary>
     /// <typeparam name="TEntity"> The type of the element. </typeparam>
@@ -25,7 +26,7 @@ namespace Pentagon.Collections
         /// <param name="totalCount"> The total count. </param>
         /// <param name="pageSize"> Size of the page. </param>
         /// <param name="pageIndex"> Index of the page. </param>
-        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, Index? pageIndex)
+        public PagedList([NotNull] IEnumerable<TEntity> source, int? totalCount, int? pageSize, int? pageIndex)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -48,10 +49,10 @@ namespace Pentagon.Collections
         public int PageSize { get; }
 
         /// <inheritdoc />
-        public Index PageIndex { get; }
+        public int PageIndex { get; }
 
         /// <inheritdoc />
-        public int PageNumber => PageIndex.Value + 1;
+        public int PageNumber => PageIndex + 1;
 
         /// <inheritdoc />
         public int TotalCount { get; }
@@ -60,20 +61,20 @@ namespace Pentagon.Collections
         public int TotalPages { get; }
 
         /// <inheritdoc />
-        public bool HasPreviousPage => PageIndex.Value != 0;
+        public bool HasPreviousPage => PageIndex != 0;
 
         /// <inheritdoc />
         public bool HasNextPage => PageNumber < TotalPages;
 
         /// <inheritdoc />
-        public Range ItemRange
+        public Range<int> ItemRange
         {
             get
             {
-                var start = PageIndex.Value * PageSize;
+                var start = PageIndex * PageSize;
                 var end   = (start + Count) - 1;
 
-                return start..end;
+                return new Range<int>(start, end);
             }
         }
 
@@ -100,7 +101,7 @@ namespace Pentagon.Collections
         /// <returns> The <see cref="PagedList{TEntity}" /> with all elements of value <c> null </c>. </returns>
         [NotNull]
         [Pure]
-        public static PagedList<TEntity> CreateBlank(int sourceCount, int? totalCount, int? pageSize, Index? pageIndex) =>
+        public static PagedList<TEntity> CreateBlank(int sourceCount, int? totalCount, int? pageSize, int? pageIndex) =>
                 new PagedList<TEntity>(Enumerable.Repeat<TEntity>(default, count: sourceCount), totalCount: totalCount, pageSize: pageSize, pageIndex: pageIndex);
 
         /// <summary> Creates <see cref="PagedList{TEntity}" /> without data. Used for computation of pagination parameters. </summary>

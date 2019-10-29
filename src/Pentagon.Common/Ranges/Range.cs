@@ -14,8 +14,8 @@ namespace Pentagon.Ranges
     /// <summary> Represents a range over two values, which define the boundaries. </summary>
     /// <typeparam name="T"> The type of the value. </typeparam>
     [UsedImplicitly]
-    public class Range<T> : IRange<T>
-        where T : IComparable<T>
+    public class Range<T> : IRange<T>, IEquatable<Range<T>>
+            where T : IComparable<T>
     {
         /// <summary> Initializes a new instance of the <see cref="Range{T}" /> class. </summary>
         /// <param name="firstBoundary"> The first boundary. </param>
@@ -23,7 +23,7 @@ namespace Pentagon.Ranges
         /// <param name="type"> The type or boundaries. </param>
         public Range(T firstBoundary, T secondBoundary, RangeBoundaries type = RangeBoundaries.InIn)
         {
-            if (firstBoundary.CompareTo(secondBoundary) <= 0)
+            if (firstBoundary.CompareTo(other: secondBoundary) <= 0)
             {
                 Min = firstBoundary;
                 Max = secondBoundary;
@@ -49,17 +49,55 @@ namespace Pentagon.Ranges
 
         #region Operators
 
-        /// <summary> Performs an implicit conversion from value tuple to <see cref="Range{T}" />. </summary>
-        /// <param name="range"> The range. </param>
-        /// <returns> The <see cref="Range{T}" /> result of the conversion. </returns>
-        public static implicit operator Range<T>((T min, T max) range) => new Range<T>(range.min, range.max);
+        public static bool operator ==(Range<T> left, Range<T> right) => Equals(objA: left, objB: right);
+
+        public static bool operator !=(Range<T> left, Range<T> right) => !Equals(objA: left, objB: right);
 
         /// <summary> Performs an implicit conversion from value tuple to <see cref="Range{T}" />. </summary>
         /// <param name="range"> The range. </param>
         /// <returns> The <see cref="Range{T}" /> result of the conversion. </returns>
-        public static implicit operator Range<T>((T min, T max, RangeBoundaries type) range) => new Range<T>(range.min, range.max, range.type);
+        public static implicit operator Range<T>((T min, T max) range) => new Range<T>(firstBoundary: range.min, secondBoundary: range.max);
+
+        /// <summary> Performs an implicit conversion from value tuple to <see cref="Range{T}" />. </summary>
+        /// <param name="range"> The range. </param>
+        /// <returns> The <see cref="Range{T}" /> result of the conversion. </returns>
+        public static implicit operator Range<T>((T min, T max, RangeBoundaries type) range) => new Range<T>(firstBoundary: range.min, secondBoundary: range.max, type: range.type);
 
         #endregion
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, objB: obj))
+                return false;
+            if (ReferenceEquals(this, objB: obj))
+                return true;
+
+            return obj.GetType() == GetType() && Equals((Range<T>) obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int) BoundariesType;
+                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(obj: Min);
+                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(obj: Max);
+                return hashCode;
+            }
+        }
+
+        /// <inheritdoc />
+        public bool Equals(Range<T> other)
+        {
+            if (ReferenceEquals(null, objB: other))
+                return false;
+            if (ReferenceEquals(this, objB: other))
+                return true;
+
+            return BoundariesType == other.BoundariesType && EqualityComparer<T>.Default.Equals(x: Min, y: other.Min) && EqualityComparer<T>.Default.Equals(x: Max, y: other.Max);
+        }
 
         /// <inheritdoc />
         public virtual bool InRange(T value)
@@ -96,8 +134,8 @@ namespace Pentagon.Ranges
         /// <returns> A <c> true </c> if value is in range; otherwise <c> false </c>. </returns>
         public static bool InRange(in T value, T min, T max, RangeBoundaries type)
         {
-            var obj = new Range<T>(min, max, type);
-            return obj.InRange(value);
+            var obj = new Range<T>(firstBoundary: min, secondBoundary: max, type: type);
+            return obj.InRange(value: value);
         }
 
         /// <inheritdoc />
