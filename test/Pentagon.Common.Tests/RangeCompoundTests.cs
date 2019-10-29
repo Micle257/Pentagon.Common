@@ -9,6 +9,7 @@ namespace Pentagon.Common.Tests
     using System;
     using Helpers;
     using Pentagon.Helpers;
+    using Ranges;
     using Xunit;
 
     public class RangeCompoundTests

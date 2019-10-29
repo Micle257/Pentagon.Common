@@ -7,6 +7,7 @@
 namespace Pentagon.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using JetBrains.Annotations;
 
     /// <summary> Contains general extension methods. </summary>
@@ -16,20 +17,21 @@ namespace Pentagon.Extensions
         /// <typeparam name="T"> Type of value. </typeparam>
         /// <param name="value"> Modified object </param>
         /// <param name="pars"> Array of objects </param>
-        /// <returns> </returns>
+        /// <returns>Value indicating whether equal value was found in parameters.</returns>
         public static bool IsAnyEqual<T>(this T value, [NotNull] params T[] pars)
         {
             if (pars == null)
                 throw new ArgumentNullException(nameof(pars));
 
             if (pars.Length == 0)
-                throw new InvalidOperationException("Value cannot be an empty collection.");
+                throw new ArgumentException("Value cannot be an empty collection.");
 
             foreach (var item in pars)
             {
                 if (ReferenceEquals(value, item))
                     return true;
-                if (value.Equals(item))
+
+                if (EqualityComparer<T>.Default.Equals(value, item))
                     return true;
             }
 

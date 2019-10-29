@@ -9,7 +9,7 @@ namespace Pentagon.Extensions
     using System;
     using System.Globalization;
 
-    /// <summary> Contains extension methods for <see cref="DateTime" />. </summary>
+    /// <summary> Contains extension methods for <see cref="DateTime" /> and <see cref="DateTimeOffset"/>. </summary>
     public static class DateTimeExtensions
     {
         /// <summary> Gets the day difference between this time and current date. </summary>

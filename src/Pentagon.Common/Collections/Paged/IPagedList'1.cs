@@ -8,14 +8,15 @@ namespace Pentagon.Collections
 {
     using System;
     using System.Collections.Generic;
+    using Ranges;
 
     /// <summary> Represents a paged list with elements. </summary>
     /// <typeparam name="TEntity"> The type of the element. </typeparam>
     public interface IPagedList<out TEntity> : IPagedList, IEnumerable<TEntity>
     {
         /// <summary> Gets the page index range. </summary>
-        /// <value> The <see cref="Range" />. </value>
-        Range ItemRange { get; }
+        /// <value> The <see cref="Range{T}" />. </value>
+        Range<int> ItemRange { get; }
 
         /// <summary> Gets the number of elements in this page. </summary>
         /// <returns> The <see cref="int" />. </returns>

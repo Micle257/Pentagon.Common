@@ -5,6 +5,14 @@
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
+  <member name="M:Pentagon.Collections.CollectionEqualityComparer`1.Equals(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`0})">
+    <parameter name="first">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="second">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
   <member name="P:Pentagon.Collections.HierarchyListNode`1.Children">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
@@ -37,7 +45,7 @@
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Collections.PagedList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Index})">
+  <member name="M:Pentagon.Collections.PagedList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
     <parameter name="source">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
@@ -46,12 +54,35 @@
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
   </member>
-  <member name="M:Pentagon.Collections.PagedList`1.CreateBlank(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Index})">
+  <member name="M:Pentagon.Collections.PagedList`1.CreateBlank(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
   </member>
   <member name="P:Pentagon.DtoProperty`1.Value">
     <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Enumeration.CompareTo(Pentagon.Enumeration)">
+    <parameter name="other">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Enumeration.CompareTo(System.Object)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Enumeration.Equals(Pentagon.Enumeration)">
+    <parameter name="other">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Enumeration.Equals(System.Object)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:Pentagon.Enumeration.InstanceContainer">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
   <member name="M:Pentagon.Extensions.AttributeExtensions.GetAttributeValue``2(System.Type,System.Func{``0,``1})">
     <parameter name="type">
@@ -230,6 +261,7 @@
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="assembly">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
@@ -238,17 +270,13 @@
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="appDomain">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Helpers.CollectionEqualityComparer`1.Equals(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`0})">
-    <parameter name="first">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
-    <parameter name="second">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
+  <member name="M:Pentagon.Helpers.CalendarHelper.GetFirstDateOfWeek(System.Int32,System.Int32)">
+    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
   </member>
   <member name="M:Pentagon.Helpers.CultureHelper.Exists(System.String)">
     <parameter name="name">
@@ -263,37 +291,8 @@
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Helpers.Enumeration.CompareTo(Pentagon.Helpers.Enumeration)">
-    <parameter name="other">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="M:Pentagon.Helpers.Enumeration.CompareTo(System.Object)">
-    <parameter name="obj">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="M:Pentagon.Helpers.Enumeration.Equals(Pentagon.Helpers.Enumeration)">
-    <parameter name="other">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="M:Pentagon.Helpers.Enumeration.Equals(System.Object)">
-    <parameter name="obj">
-      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="F:Pentagon.Helpers.Enumeration.InstanceContainer">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-  </member>
   <member name="M:Pentagon.Helpers.EnumHelper.GetValues``2">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-  </member>
-  <member name="M:Pentagon.Helpers.MathInterval.GetSampledInterval(System.Double)">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-  </member>
-  <member name="M:Pentagon.Helpers.ObservableObject.OnPropertyChanged(System.String)">
-    <attribute ctor="M:JetBrains.Annotations.NotifyPropertyChangedInvocatorAttribute.#ctor" />
   </member>
   <member name="M:Pentagon.Helpers.PaginationHelper.CreateAllPages``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
@@ -304,14 +303,6 @@
   <member name="M:Pentagon.Helpers.PaginationHelper.CreatePagedList``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
     <parameter name="source">
-      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="T:Pentagon.Helpers.Range`1">
-    <attribute ctor="M:JetBrains.Annotations.UsedImplicitlyAttribute.#ctor" />
-  </member>
-  <member name="M:Pentagon.Helpers.RangeCompound`1.#ctor(Pentagon.IRange{`0}[])">
-    <parameter name="ranges">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
@@ -350,6 +341,12 @@
     <parameter name="type">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
+  </member>
+  <member name="T:Pentagon.NamespaceDocumentation">
+    <attribute ctor="M:JetBrains.Annotations.UsedImplicitlyAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.ObservableObject.OnPropertyChanged(System.String)">
+    <attribute ctor="M:JetBrains.Annotations.NotifyPropertyChangedInvocatorAttribute.#ctor" />
   </member>
   <member name="M:Pentagon.OperationResults.AnnotatedOperationResult.op_Addition(Pentagon.OperationResults.AnnotatedOperationResult,Pentagon.OperationResults.AnnotatedOperationResult)">
     <parameter name="op1">
@@ -406,6 +403,17 @@
   </member>
   <member name="T:Pentagon.Percentage">
     <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Ranges.MathInterval.GetSampledInterval(System.Double)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="T:Pentagon.Ranges.Range`1">
+    <attribute ctor="M:JetBrains.Annotations.UsedImplicitlyAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Ranges.RangeCompound`1.#ctor(Pentagon.Ranges.IRange{`0}[])">
+    <parameter name="ranges">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
   </member>
   <member name="M:Pentagon.Threading.TaskHelper.AwaitSynchronously(System.Threading.Tasks.Task)">
     <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />

@@ -16,8 +16,8 @@ namespace Pentagon.Collections
         int PageSize { get; }
 
         /// <summary> Gets the page index. </summary>
-        /// <value> The <see cref="Index" />. </value>
-        Index PageIndex { get; }
+        /// <value> The <see cref="int" />. </value>
+        int PageIndex { get; }
 
         /// <summary> Gets the page number (one based). </summary>
         /// <value> The <see cref="int" />. </value>

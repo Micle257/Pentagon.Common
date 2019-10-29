@@ -15,7 +15,7 @@ namespace Pentagon.Helpers
     /// <summary>
     /// Provides logic for displaying type name's in more controlled and pretty way.
     /// </summary>
-    public class TypeNameHelper
+    public static class TypeNameHelper
     {
         /// <summary>
         /// The default nested type delimiter.

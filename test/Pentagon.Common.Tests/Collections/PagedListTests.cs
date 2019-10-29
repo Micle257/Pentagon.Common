@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Pentagon.Collections;
+    using Ranges;
     using Xunit;
 
     public class PagedListTests
@@ -144,7 +145,7 @@
                                                    PageIndex = 0,
                                                    PageNumber =  1,
                                                    TotalPages = 2,
-                                                   Range = ..4,
+                                                   Range = (0,4),
                                                    HasNextPage = true,
                                                    HasPreviousPage = false
                                            }
@@ -166,7 +167,7 @@
                                                    PageIndex       = 0,
                                                    PageNumber      =  1,
                                                    TotalPages      = 1,
-                                                   Range = ..5,
+                                                   Range = (0,5),
                                                    HasNextPage     = false,
                                                    HasPreviousPage = false
                                            }
@@ -188,7 +189,7 @@
                                                    PageIndex       = 10,
                                                    PageNumber      =  11,
                                                    TotalPages      = 5163,
-                                                   Range = 30..32,
+                                                   Range = (30,32),
                                                    HasNextPage     = true,
                                                    HasPreviousPage = true
                                            }
@@ -210,7 +211,7 @@
                                                    PageIndex       = 3,
                                                    PageNumber      =  4,
                                                    TotalPages      = 4,
-                                                   Range           = 9..10,
+                                                   Range           = (9,10),
                                                    HasNextPage     = false,
                                                    HasPreviousPage = true
                                            }
@@ -239,7 +240,7 @@
 
                 public int Count { get; set; }
 
-                public Range Range { get; set; }
+                public Range<int> Range { get; set; }
             }
 
             public class InputData
@@ -250,7 +251,7 @@
 
                 public int? PageSize { get; set; }
 
-                public Index? PageIndex { get; set; }
+                public int? PageIndex { get; set; }
             }
         }
     }

@@ -6,6 +6,7 @@
 
 namespace Pentagon.Common.Tests.Helpers
 {
+    using Pentagon.Collections;
     using Pentagon.Helpers;
     using Xunit;
 

@@ -12,7 +12,7 @@ namespace Pentagon.Extensions
     using System.Text;
     using JetBrains.Annotations;
 
-    /// <summary> Contains extension methods for <see cref="Enumerable" />. </summary>
+    /// <summary> Contains extension methods for <see cref="IEnumerable{T}" />. </summary>
     public static class EnumerableExtensions
     {
         /// <summary> Finds the index where to insert value by given selector. </summary>
@@ -36,7 +36,7 @@ namespace Pentagon.Extensions
             return i;
         }
 
-        /// <summary> Dynamically shifts collection to the right. </summary>
+        /// <summary> Dynamically shifts collection to the right. Last element becomes first. </summary>
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="collection"> The collection. </param>
         /// <returns> An iteration of the shifted collection. </returns>
@@ -55,7 +55,7 @@ namespace Pentagon.Extensions
                 yield return list[i];
         }
 
-        /// <summary> Dynamically shifts collection to the left. </summary>
+        /// <summary> Dynamically shifts collection to the left. First element becomes last. </summary>
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="collection"> The collection. </param>
         /// <returns> An iteration of the shifted collection. </returns>
@@ -81,7 +81,7 @@ namespace Pentagon.Extensions
             yield return firstElement;
         }
 
-        /// <summary> Changes collection so that it contains only the elements in one or the other collection � not both. </summary>
+        /// <summary> Changes collection so that it contains only the elements in one or the other collection not both. </summary>
         /// <typeparam name="T"> The type of an element. </typeparam>
         /// <param name="coll"> The collection. </param>
         /// <param name="second"> The second collection. </param>

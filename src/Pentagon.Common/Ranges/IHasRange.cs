@@ -4,10 +4,9 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon
+namespace Pentagon.Ranges
 {
     using System;
-    using Helpers;
 
     /// <summary> Represents an ability of type to have range over some value. </summary>
     public interface IHasRange<T>

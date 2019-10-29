@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Helpers
+namespace Pentagon
 {
     using System;
     using System.Collections.Generic;
