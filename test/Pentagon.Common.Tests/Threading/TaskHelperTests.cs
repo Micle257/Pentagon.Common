@@ -14,24 +14,6 @@ namespace Pentagon.Common.Tests.Threading
     public class TaskHelperTests
     {
         [Fact]
-        public void TryInvokeAsync_RetryCountExceeded_Throws()
-        {
-            Func<Task<bool>> func = () => Task.Run((Func<bool>) (() => throw new ArgumentException()));
-
-            Assert.Throws<ArgumentException>(() => TaskHelper.TryInvokeAsync(func, 5).AwaitSynchronously());
-        }
-
-        [Fact]
-        public void TryInvokeAsync_RetryCountIsGreatenThanFunctionFailureCount_InvokesFunction()
-        {
-            Func<Task<bool>> func = () => Task.Run(() => true);
-
-            var result = TaskHelper.TryInvokeAsync(func, 2).AwaitSynchronously();
-
-            Assert.True(result);
-        }
-
-        [Fact]
         public Task AfterTimeout_TaskTimeout_Throws()
         {
             var longRunningTask = Task.Delay(2000);
