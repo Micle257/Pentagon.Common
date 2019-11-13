@@ -7,6 +7,7 @@
 namespace Pentagon.Helpers
 {
     using System;
+    using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
     using JetBrains.Annotations;
@@ -19,7 +20,6 @@ namespace Pentagon.Helpers
         /// <param name="times"> The times. </param>
         /// <param name="delay"> The delay. </param>
         /// <param name="exceptionPredicate"> The exception predicate. </param>
-        /// <param name="forceThrowCallback"> The force throw callback. </param>
         /// <param name="incrementDelay"> The increment delay. </param>
         /// <param name="maxDelay"> The maximum delay. </param>
         /// <exception cref="System.ArgumentNullException"> operation </exception>
@@ -27,14 +27,13 @@ namespace Pentagon.Helpers
                                             int times,
                                             TimeSpan delay,
                                             Func<Exception, RetryContext, bool> exceptionPredicate = null,
-                                            Func<Exception, bool> forceThrowCallback = null,
                                             TimeSpan? incrementDelay = null,
                                             TimeSpan? maxDelay = null)
         {
             if (operation == null)
                 throw new ArgumentNullException(nameof(operation));
 
-            exceptionPredicate = exceptionPredicate ?? ((_, __) => true);
+            exceptionPredicate??=((_, __) => true);
 
             var attempts = 0;
 
@@ -48,8 +47,13 @@ namespace Pentagon.Helpers
                 }
                 catch (Exception ex) when (exceptionPredicate(ex, new RetryContext {AttemptNumber = attempts, Exception = ex}))
                 {
-                    if (attempts >= times || (forceThrowCallback?.Invoke(ex) ?? false))
+                    if (attempts >= times)
+                    {
+                        ExceptionDispatchInfo.Capture(ex).Throw();
+
+                        // indication for compiler that we have thrown
                         throw;
+                    }
 
                     var dynamicDelay = delay.Add(incrementDelay.HasValue ? TimeSpan.FromTicks((attempts - 1) * incrementDelay.Value.Ticks) : TimeSpan.Zero);
 
@@ -65,7 +69,6 @@ namespace Pentagon.Helpers
         /// <param name="times"> The times. </param>
         /// <param name="delay"> The delay. </param>
         /// <param name="exceptionPredicate"> The exception predicate. </param>
-        /// <param name="forceThrowCallback"> The force throw callback. </param>
         /// <param name="incrementDelay"> The increment delay. </param>
         /// <param name="maxDelay"> The maximum delay. </param>
         /// <exception cref="System.ArgumentNullException"> operation </exception>
@@ -73,14 +76,13 @@ namespace Pentagon.Helpers
                                                        int times,
                                                        TimeSpan delay,
                                                        Func<Exception, RetryContext, bool> exceptionPredicate = null,
-                                                       Func<Exception, bool> forceThrowCallback = null,
                                                        TimeSpan? incrementDelay = null,
                                                        TimeSpan? maxDelay = null)
         {
             if (operation == null)
                 throw new ArgumentNullException(nameof(operation));
 
-            exceptionPredicate = exceptionPredicate ?? ((_, __) => true);
+            exceptionPredicate??=((_, __) => true);
 
             var attempts = 0;
 
@@ -89,13 +91,18 @@ namespace Pentagon.Helpers
                 try
                 {
                     attempts++;
-                    await operation();
+                    await operation().ConfigureAwait(false);
                     break;
                 }
                 catch (Exception ex) when (exceptionPredicate(ex, new RetryContext {AttemptNumber = attempts, Exception = ex}))
                 {
-                    if (attempts >= times || (forceThrowCallback?.Invoke(ex) ?? false))
+                    if (attempts >= times)
+                    {
+                        ExceptionDispatchInfo.Capture(ex).Throw();
+
+                        // indication for compiler that we have thrown
                         throw;
+                    }
 
                     var dynamicDelay = delay.Add(incrementDelay.HasValue ? TimeSpan.FromTicks((attempts - 1) * incrementDelay.Value.Ticks) : TimeSpan.Zero);
 
@@ -136,13 +143,18 @@ namespace Pentagon.Helpers
                 try
                 {
                     attempts++;
-                    result = await operation();
+                    result = await operation().ConfigureAwait(false);
                     break;
                 }
                 catch (Exception ex) when (exceptionPredicate(ex, new RetryContext {AttemptNumber = attempts, Exception = ex}))
                 {
                     if (attempts >= times || (forceThrowCallback?.Invoke(ex) ?? false))
+                    {
+                        ExceptionDispatchInfo.Capture(ex).Throw();
+
+                        // indication for compiler that we have thrown
                         throw;
+                    }
 
                     var dynamicDelay = delay.Add(incrementDelay.HasValue ? TimeSpan.FromTicks((attempts - 1) * incrementDelay.Value.Ticks) : TimeSpan.Zero);
 

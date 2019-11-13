@@ -321,7 +321,7 @@
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Helpers.RetryHelper.RetryOnExceptionAsync(System.Func{System.Threading.Tasks.Task},System.Int32,System.TimeSpan,System.Func{System.Exception,Pentagon.Helpers.RetryHelper.RetryContext,System.Boolean},System.Func{System.Exception,System.Boolean},System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
+  <member name="M:Pentagon.Helpers.RetryHelper.RetryOnExceptionAsync(System.Func{System.Threading.Tasks.Task},System.Int32,System.TimeSpan,System.Func{System.Exception,Pentagon.Helpers.RetryHelper.RetryContext,System.Boolean},System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
     <parameter name="operation">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
