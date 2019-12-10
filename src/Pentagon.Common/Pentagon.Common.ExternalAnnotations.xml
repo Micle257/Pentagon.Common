@@ -451,12 +451,6 @@
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="M:Pentagon.Threading.TaskHelper.TryInvokeAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Int32,System.Int32,System.Threading.CancellationToken)">
-    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
-    <parameter name="function">
-      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-    </parameter>
-  </member>
   <member name="M:Pentagon.Threading.TaskHelper.WithCancellation(System.Threading.Tasks.Task,System.Threading.CancellationToken)">
     <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
   </member>
