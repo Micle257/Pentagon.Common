@@ -13,15 +13,6 @@
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
     </parameter>
   </member>
-  <member name="P:Pentagon.Collections.HierarchyListNode`1.Children">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-  </member>
-  <member name="P:Pentagon.Collections.HierarchyListNode`1.Parent">
-    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
-  </member>
-  <member name="P:Pentagon.Collections.HierarchyListNode`1.Siblings">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-  </member>
   <member name="M:Pentagon.Collections.ICollectionFilter`1.ApplyFilter(Pentagon.Collections.IFilterableCollection{`0})">
     <parameter name="coll">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
@@ -57,6 +48,233 @@
   <member name="M:Pentagon.Collections.PagedList`1.CreateBlank(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Collections.Tree.HierarchyList`1.FromDictionary``1(System.Collections.Generic.IReadOnlyDictionary{`0,``0},System.Collections.Generic.IEqualityComparer{`0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="inputMap">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.HierarchyList`1.FromDictionaryFreely``1(`0,System.Collections.Generic.IReadOnlyDictionary{`0,``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="inputMap">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.HierarchyList`1.FromDictionaryFreely``1(System.Collections.Generic.IReadOnlyDictionary{`0,``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="inputMap">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:Pentagon.Collections.Tree.HierarchyList`1.Root">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Collections.Tree.HierarchyList`1.ToTreeString(System.Func{System.Int32,System.String})">
+    <parameter name="depthTextBuilder">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:Pentagon.Collections.Tree.HierarchyListNode`1.Children">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:Pentagon.Collections.Tree.HierarchyListNode`1.Parent">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.GetBranchNodes``1(Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.GetDegree``1(Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.GetHeight``1(Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.GetLeafNodes``1(Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.IsSubTreeOf``1(Pentagon.Collections.Tree.HierarchyList{``0},Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherTree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeExtensions.ToDictionaryMap``1(Pentagon.Collections.Tree.HierarchyList{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="tree">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.FindCommonParentNodeWith``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.FindRoot``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetAncestors``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetBranchDescendants``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetDescendants``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetLeafDescendants``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetNeighbors``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetNodeDegree``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetNodeHeight``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetNodeLevel``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.GetSiblings``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsAncestorOf``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsBranchNode``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsChildOf``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsDescendantOf``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsLeafNode``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsParentOf``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.IsRelatedWith``1(Pentagon.Collections.Tree.HierarchyListNode{``0},Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="otherNode">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.ToDictionaryMap``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:Pentagon.Collections.Tree.TreeNodeExtensions.ToSubTree``1(Pentagon.Collections.Tree.HierarchyListNode{``0})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.PureAttribute.#ctor" />
+    <parameter name="node">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
   </member>
   <member name="P:Pentagon.DtoProperty`1.Value">
     <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
@@ -448,12 +666,6 @@
   <member name="M:Pentagon.Threading.TaskHelper.TimeoutAfter``1(System.Threading.Tasks.Task{``0},System.TimeSpan,System.Boolean)">
     <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
     <parameter name="task">
-      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
-    </parameter>
-  </member>
-  <member name="M:Pentagon.Threading.TaskHelper.TryInvokeAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Int32,System.Int32,System.Threading.CancellationToken)">
-    <attribute ctor="M:JetBrains.Annotations.PublicAPIAttribute.#ctor" />
-    <parameter name="function">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>

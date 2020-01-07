@@ -4,15 +4,16 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace Pentagon.Collections
+namespace Pentagon.Collections.Tree
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using JetBrains.Annotations;
 
-    /// <summary> Represents an item in hierarchy structure. </summary>
+    /// <summary> Represents an item in hierarchy structure. Also implements <see cref="IReadOnlyCollection{T}"/> for <see cref="Children"/>. </summary>
     /// <typeparam name="T"> The type of the inner value. </typeparam>
-    public class HierarchyListNode<T>
+    public class HierarchyListNode<T> : IReadOnlyCollection<HierarchyListNode<T>>
     {
         /// <summary> The list of children. </summary>
         [NotNull]
@@ -24,10 +25,13 @@ namespace Pentagon.Collections
         /// <param name="depth"> The depth of a node. </param>
         internal HierarchyListNode(T value, HierarchyListNode<T> parent, int depth)
         {
+            Id = Guid.NewGuid();
             Value = value;
             Parent = parent;
             Depth = depth;
         }
+
+        public Guid Id { get; }
 
         /// <summary>Gets the depth in current hierarchy context.</summary>
         /// <value>The depth.</value>
@@ -37,11 +41,6 @@ namespace Pentagon.Collections
         /// <value> The list of the <see cref="IList{T}" />. </value>
         [NotNull]
         public IReadOnlyList<HierarchyListNode<T>> Children => _children;
-
-        /// <summary> Gets the item that share the same parent. </summary>
-        /// <value> The list of the <see cref="HierarchyListNode{T}" />. </value>
-        [NotNull]
-        public IReadOnlyList<HierarchyListNode<T>> Siblings => GetSiblings().ToList();
 
         /// <summary> Gets a value indicating whether this item is root. </summary>
         /// <value> <c> true </c> if this item is root; otherwise, <c> false </c>. </value>
@@ -58,43 +57,25 @@ namespace Pentagon.Collections
 
         /// <summary> Adds a children. </summary>
         /// <param name="item"> The children. </param>
-        public void AddChildren(T item)
+        public HierarchyListNode<T> AddChildren(T item)
         {
-            _children.Add(new HierarchyListNode<T>(item, this, Depth + 1));
+            var hierarchyListNode = new HierarchyListNode<T>(item, this, Depth + 1);
+
+            _children.Add(hierarchyListNode);
+
+            return hierarchyListNode;
         }
 
-        /// <summary>
-        /// Gets all children nodes.
-        /// </summary>
-        /// <returns>Read-only list of <see cref="HierarchyListNode{T}"/>.</returns>
-        public IReadOnlyList<HierarchyListNode<T>> GetAllChildren()
-        {
-            var result = new List<HierarchyListNode<T>>();
-            var cursor = Children;
+        /// <inheritdoc />
+        public IEnumerator<HierarchyListNode<T>> GetEnumerator() => Children.GetEnumerator();
 
-            while (cursor.Any())
-            {
-                result.AddRange(cursor);
-                cursor = cursor.SelectMany(a => a.Children).ToList();
-            }
+        /// <inheritdoc />
+        public override string ToString() => $"Hierarchy node (Depth={Depth}): {Value}";
 
-            return result;
-        }
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        /// <summary> Gets the siblings. </summary>
-        /// <returns> A list of the <see cref="HierarchyListNode{T}" />. </returns>
-        [NotNull]
-        [Pure]
-        IEnumerable<HierarchyListNode<T>> GetSiblings()
-        {
-            if (IsRoot || Parent == null)
-                yield break;
-
-            if (Parent.Children.Count == 0)
-                yield break;
-
-            foreach (var node in Parent.Children.Except(new[] {this}))
-                yield return node;
-        }
+        /// <inheritdoc />
+        public int Count => Children.Count;
     }
 }
