@@ -17,52 +17,6 @@ namespace Pentagon.Threading
     [SuppressMessage("ReSharper", "AsyncConverter.AsyncMethodNamingHighlighting")]
     public static class TaskHelper
     {
-        /// <summary> Attempts invoking the function for desired limit count, if the function throws an exception. </summary>
-        /// <typeparam name="T"> The type of the task result. </typeparam>
-        /// <param name="function"> The function to invoke. </param>
-        /// <param name="tryLimit"> The limit number of iterations. </param>
-        /// <param name="iterationDelayInMilliseconds"> The iteration delay in milliseconds. </param>
-        /// <param name="cancellationToken"> The cancellation token. </param>
-        /// <returns> An asynchronous operation <see cref="Task{T}" />, which was passed in <paramref name="function" />. </returns>
-        /// <exception cref="ArgumentNullException"> function or task </exception>
-        /// <exception cref="ArgumentOutOfRangeException"> tryLimit - Try limit count must be greater or equal to one. </exception>
-        /// <exception cref="NotSupportedException"> Internal error: this code should be unreachable. </exception>
-        /// <remarks> Method is from Microsoft docs. </remarks>
-        [PublicAPI]
-        public static async Task<T> TryInvokeAsync<T>([JetBrains.Annotations.NotNull] Func<Task<T>> function, int tryLimit, int iterationDelayInMilliseconds = 0, CancellationToken cancellationToken = default)
-        {
-            if (function == null)
-                throw new ArgumentNullException(nameof(function));
-
-            if (tryLimit < 1)
-                throw new ArgumentOutOfRangeException(nameof(tryLimit), tryLimit, message: "Try limit count must be greater or equal to one.");
-
-            for (var i = 0; i < tryLimit; i++)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                try
-                {
-                    var task = function();
-
-                    if (task == null)
-                        throw new ArgumentNullException(nameof(task));
-
-                    return await task.ConfigureAwait(false);
-                }
-                catch
-                {
-                    if (i == tryLimit - 1)
-                        throw;
-                }
-
-                if (iterationDelayInMilliseconds > 0) // ensure there is delay, otherwise it could be infinity delay
-                    await Task.Delay(iterationDelayInMilliseconds, cancellationToken);
-            }
-
-            throw new NotSupportedException(message: "Internal error: this code should be unreachable.");
-        }
-
         /// <summary> Adds cancel wrapper around task. </summary>
         /// <typeparam name="T"> The type of the task's result. </typeparam>
         /// <param name="task"> The task. </param>
