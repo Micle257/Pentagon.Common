@@ -9,3 +9,7 @@ build/
 
 # Resharper
 *.user
+
+# Fody
+FodyWeavers.*
+*.ExternalAnnotations.xml
