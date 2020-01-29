@@ -38,7 +38,7 @@ namespace Pentagon.Helpers
         [ItemNotNull]
         [Pure]
         [PublicAPI]
-        public static IEnumerable<Type> GetLoadableTypes([NotNull] Assembly assembly)
+        public static IEnumerable<Type> GetLoadableTypes([NotNull] this Assembly assembly)
         {
             try
             {
